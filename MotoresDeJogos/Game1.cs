@@ -13,7 +13,6 @@ namespace MotoresDeJogos
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
         List<Ship> ships;
         Camera camera;
         Random random;
@@ -29,7 +28,6 @@ namespace MotoresDeJogos
             graphics.PreferredBackBufferWidth = 1024;
             graphics.PreferredBackBufferHeight = 768;
             Content.RootDirectory = "Content";
-
         }
 
         /// <summary>
@@ -66,7 +64,6 @@ namespace MotoresDeJogos
                 Console.WriteLine();
                 ships.Add(ship);
             }
-
         }
 
         /// <summary>
@@ -111,7 +108,6 @@ namespace MotoresDeJogos
                 ship.Draw(camera);
             }
             
-
             DebugShapeRenderer.Draw(gameTime, camera.View, camera.Projection);
 
             base.Draw(gameTime);
