@@ -17,6 +17,7 @@ namespace MotoresDeJogos
         List<Ship> ships;
         Camera camera;
         Random random;
+        ConsoleWriter consoleWriter;
 
         public Game1()
         {
@@ -39,13 +40,12 @@ namespace MotoresDeJogos
         /// </summary>
         protected override void Initialize()
         {
-            random = new Random();
-
             camera = new Camera(new Vector3(0, 0, 500), graphics);
-
-            ships = new List<Ship>();
-
+            random = new Random();
             DebugShapeRenderer.Initialize(GraphicsDevice);
+            MessageBus.Initialize();
+            consoleWriter = new ConsoleWriter();
+            ships = new List<Ship>();
 
             base.Initialize();
         }
@@ -62,7 +62,8 @@ namespace MotoresDeJogos
             for (int i = 0; i <= 100; i++)
             {
                 Ship ship = new Ship(new Vector3(random.Next(-5000, 5000), random.Next(-5000, 5000), random.Next(-5000, 5000)), Content, random);
-                Console.WriteLine(ship.Position.Z);
+                MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ID - {0} | Ship Z:{1}", i, ship.Position.Z)));
+                Console.WriteLine();
                 ships.Add(ship);
             }
 
@@ -91,6 +92,8 @@ namespace MotoresDeJogos
             {
                 ship.Update(gameTime);
             }
+            consoleWriter.Update();
+            MessageBus.Update();
 
             base.Update(gameTime);
         }
@@ -107,6 +110,7 @@ namespace MotoresDeJogos
             {
                 ship.Draw(camera);
             }
+            
 
             DebugShapeRenderer.Draw(gameTime, camera.View, camera.Projection);
 
