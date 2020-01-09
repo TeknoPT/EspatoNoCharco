@@ -18,6 +18,10 @@ namespace MotoresDeJogos
         Random random;
         ConsoleWriter consoleWriter;
 
+        long initialMemory;
+        bool retrieveInitialMemory;
+        long lastMemMeasure;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -43,7 +47,9 @@ namespace MotoresDeJogos
             DebugShapeRenderer.Initialize(GraphicsDevice);
             MessageBus.Initialize();
             consoleWriter = new ConsoleWriter();
-            ships = new List<Ship>();
+            retrieveInitialMemory = true;
+            lastMemMeasure = 0;
+            ships = new List<Ship>(101);
 
             base.Initialize();
         }
@@ -91,6 +97,23 @@ namespace MotoresDeJogos
             }
             consoleWriter.Update();
             MessageBus.Update();
+
+            #region Garbage Collector Check
+            if (retrieveInitialMemory)
+            {
+                initialMemory = GC.GetTotalMemory(false);
+                retrieveInitialMemory = false;
+            }
+
+            long mem = (GC.GetTotalMemory(false) - initialMemory);
+
+            if (mem > 0 && mem > lastMemMeasure)
+            {
+                MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("MEM ALERT: {0}k", (mem / 1000))));
+            }
+
+            lastMemMeasure = mem;
+            #endregion
 
             base.Update(gameTime);
         }
