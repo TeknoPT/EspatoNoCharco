@@ -2,10 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MotoresDeJogos
 {
@@ -58,6 +54,7 @@ namespace MotoresDeJogos
             this.position = position;
             this.world = Matrix.CreateTranslation(position);
             this.speed = (float) random.Next(1, 5);
+            this.alive = true;
             LoadContent(content);
             foreach (ModelMesh mesh in this.model.Meshes)
             {
@@ -70,36 +67,42 @@ namespace MotoresDeJogos
         public void LoadContent(ContentManager content)
         {
             model = content.Load<Model>("models\\p1_saucer");
-            
         }
 
         public void Update(GameTime gameTime)
         {
-            position.Z -=speed * gameTime.ElapsedGameTime.Milliseconds;
-            world = Matrix.CreateTranslation(position);
-
-            if ( position.Z <= -10000)
+            if (alive)
             {
-                position.Z = 5000;
-                alive = false;
+                position.Z -= speed * gameTime.ElapsedGameTime.Milliseconds;
+                world = Matrix.CreateTranslation(position);
+
+                if (position.Z <= -10000)
+                {
+                    position.Z = 5000;
+                    alive = false;
+                }
             }
         }
 
         public void Draw(Camera camera)
         {
-            foreach (ModelMesh mesh in model.Meshes)
+            if (alive)
             {
-                foreach (BasicEffect effect in mesh.Effects)
+                foreach (ModelMesh mesh in model.Meshes)
                 {
-                    effect.LightingEnabled = false;
-                    effect.World = world * Matrix.CreateScale(0.001f);
-                    effect.View = camera.View;
-                    effect.Projection = camera.Projection;
-                }
+                    foreach (BasicEffect effect in mesh.Effects)
+                    {
+                        effect.LightingEnabled = false;
+                        effect.World = world * Matrix.CreateScale(0.001f);
+                        effect.View = camera.View;
+                        effect.Projection = camera.Projection;
+                    }
         
-                mesh.Draw();
+                    mesh.Draw();
+                }
+                DebugShapeRenderer.AddBoundingSphere(boundingSphere, Color.Red);
             }
-            DebugShapeRenderer.AddBoundingSphere(boundingSphere, Color.Red);
+
         }
 
     }
