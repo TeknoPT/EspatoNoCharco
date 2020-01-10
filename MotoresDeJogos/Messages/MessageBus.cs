@@ -9,8 +9,8 @@ namespace MotoresDeJogos
 
         public static void Initialize()
         {
-            messages = new List<Message>(1000);
-            tempMessageList = new List<Message>(1000);
+            messages = new List<Message>(100);
+            tempMessageList = new List<Message>(100);
         }
 
         public static List<Message> GetMessagesOfType(MessageType messageType)

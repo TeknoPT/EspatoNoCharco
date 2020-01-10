@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections.Generic;
 
 namespace MotoresDeJogos
 {
@@ -12,15 +11,15 @@ namespace MotoresDeJogos
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        List<Ship> ships;
         Camera camera;
         Random random;
         ConsoleWriter consoleWriter;
+        ShipManager shipManager;
 
         long initialMemory;
         bool retrieveInitialMemory;
         long lastMemMeasure;
+        long mem;
 
         public Game1()
         {
@@ -46,10 +45,12 @@ namespace MotoresDeJogos
             random = new Random();
             DebugShapeRenderer.Initialize(GraphicsDevice);
             MessageBus.Initialize();
+            shipManager = new ShipManager( random, Content );
+            shipManager.Initialize();
             consoleWriter = new ConsoleWriter();
             retrieveInitialMemory = true;
             lastMemMeasure = 0;
-            ships = new List<Ship>(101);
+            mem = 0;
 
             base.Initialize();
         }
@@ -61,15 +62,7 @@ namespace MotoresDeJogos
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            for (int i = 0; i <= 100; i++)
-            {
-                Ship ship = new Ship(new Vector3(random.Next(-5000, 5000), random.Next(-5000, 5000), random.Next(-5000, 5000)), Content, random);
-                MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ID - {0} | Ship Z:{1}", i, ship.Position.Z)));
-                Console.WriteLine();
-                ships.Add(ship);
-            }
+            //spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         /// <summary>
@@ -88,16 +81,10 @@ namespace MotoresDeJogos
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            foreach (Ship ship in ships)
-            {
-                ship.Update(gameTime);
-            }
-            consoleWriter.Update();
-            MessageBus.Update();
-
+            
             #region Garbage Collector Check
             if (retrieveInitialMemory)
             {
@@ -105,15 +92,20 @@ namespace MotoresDeJogos
                 retrieveInitialMemory = false;
             }
 
-            long mem = (GC.GetTotalMemory(false) - initialMemory);
+            mem = (GC.GetTotalMemory(false) - initialMemory);
 
             if (mem > 0 && mem > lastMemMeasure)
             {
                 MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("MEM ALERT: {0}k", (mem / 1000))));
+                Console.WriteLine(String.Format("MEM ALERT: {0}k", (mem / 1000)));
             }
 
             lastMemMeasure = mem;
             #endregion
+
+            shipManager.Update(gameTime);
+            consoleWriter.Update();
+            MessageBus.Update();
 
             base.Update(gameTime);
         }
@@ -126,11 +118,8 @@ namespace MotoresDeJogos
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            foreach (Ship ship in ships)
-            {
-                ship.Draw(camera);
-            }
-            
+            shipManager.Draw(camera);
+
             DebugShapeRenderer.Draw(gameTime, camera.View, camera.Projection);
 
             base.Draw(gameTime);
