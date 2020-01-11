@@ -53,14 +53,16 @@ namespace MotoresDeJogos
         {
             this.position = position;
             this.world = Matrix.CreateTranslation(position);
-            this.speed = (float) random.Next(1, 5);
+            this.speed = (float) random.Next(1, 20);
+            if (this.speed == 0) this.speed = (float)random.Next(1, 20);
             this.alive = true;
             LoadContent(content);
+
             foreach (ModelMesh mesh in this.model.Meshes)
             {
                 boundingSphere = BoundingSphere.CreateMerged(this.boundingSphere, mesh.BoundingSphere);
             }
-            boundingSphere.Radius *= 1;
+            
 
         }
 
@@ -76,15 +78,17 @@ namespace MotoresDeJogos
                 position.Z -= speed * gameTime.ElapsedGameTime.Milliseconds;
                 world = Matrix.CreateTranslation(position);
 
-                if (position.Z <= -10000)
+                if (position.Z <= -50000)
                 {
                     position.Z = 5000;
                     alive = false;
                 }
+
+                boundingSphere.Center = position;
             }
         }
 
-        public void Draw(Camera camera)
+        public void Draw()
         {
             if (alive)
             {
@@ -92,15 +96,16 @@ namespace MotoresDeJogos
                 {
                     foreach (BasicEffect effect in mesh.Effects)
                     {
-                        effect.LightingEnabled = false;
-                        effect.World = world * Matrix.CreateScale(0.001f);
-                        effect.View = camera.View;
-                        effect.Projection = camera.Projection;
+                        effect.LightingEnabled = true;
+                        effect.EnableDefaultLighting();
+                        effect.World = world;
+                        effect.View = ModedCamera.View;
+                        effect.Projection = ModedCamera.Projection;
                     }
         
                     mesh.Draw();
                 }
-                DebugShapeRenderer.AddBoundingSphere(boundingSphere, Color.Red);
+                DebugShapeRenderer.AddBoundingSphere(boundingSphere, Color.Green);
             }
 
         }
