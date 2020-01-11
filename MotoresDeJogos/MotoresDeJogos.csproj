@@ -44,7 +44,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Camera.cs" />
     <Compile Include="Messages\ConsoleMessage.cs" />
     <Compile Include="Messages\ConsoleWriter.cs" />
     <Compile Include="DebugShapeRenderer.cs" />

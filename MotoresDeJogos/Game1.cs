@@ -11,7 +11,6 @@ namespace MotoresDeJogos
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
-        Camera camera;
         Random random;
         ConsoleWriter consoleWriter;
         ShipManager shipManager;
@@ -121,7 +120,7 @@ namespace MotoresDeJogos
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            shipManager.Draw(camera);
+            shipManager.Draw();
 
             DebugShapeRenderer.Draw(gameTime, ModedCamera.View, ModedCamera.Projection);
 

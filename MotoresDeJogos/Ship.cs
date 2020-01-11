@@ -63,7 +63,6 @@ namespace MotoresDeJogos
                 boundingSphere = BoundingSphere.CreateMerged(this.boundingSphere, mesh.BoundingSphere);
             }
             
-            boundingSphere.Radius *= 1f;
 
         }
 
@@ -78,18 +77,18 @@ namespace MotoresDeJogos
             {
                 position.Z -= speed * gameTime.ElapsedGameTime.Milliseconds;
                 world = Matrix.CreateTranslation(position);
-                boundingSphere.Center = position;
-                //boundingSphere.Transform(world);
 
                 if (position.Z <= -50000)
                 {
                     position.Z = 5000;
                     alive = false;
                 }
+
+                boundingSphere.Center = position;
             }
         }
 
-        public void Draw(Camera camera)
+        public void Draw()
         {
             if (alive)
             {
@@ -97,8 +96,9 @@ namespace MotoresDeJogos
                 {
                     foreach (BasicEffect effect in mesh.Effects)
                     {
-                        effect.LightingEnabled = false;
-                        effect.World = world * Matrix.CreateScale(0.001f);
+                        effect.LightingEnabled = true;
+                        effect.EnableDefaultLighting();
+                        effect.World = world;
                         effect.View = ModedCamera.View;
                         effect.Projection = ModedCamera.Projection;
                     }

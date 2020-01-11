@@ -32,7 +32,7 @@ namespace MotoresDeJogos
         }
 
         //Velocidade do movimento (translação)
-        static private float moveSpeed = 0.1f;
+        static private float moveSpeed = 100f;
 
         //Velocidade da rotação
         static private float rotationSpeed = 0.005f;
@@ -56,7 +56,7 @@ namespace MotoresDeJogos
         static KeyboardState keyStateAnterior;
 
         //Near e far plane
-        static public float nearPlane = 0.1f;
+        static public float nearPlane = 1f;
         static public float farPlane;
 
         //RasterizerStates para solid / wireframe
@@ -100,7 +100,7 @@ namespace MotoresDeJogos
             Foward();
             Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45),
                 graphics.Viewport.AspectRatio,
-                0.01f, 100000);
+                1f, 50000000);
 
             //Criar e definir os resterizerStates a utilizar para desenhar a geometria
             //SOLID
