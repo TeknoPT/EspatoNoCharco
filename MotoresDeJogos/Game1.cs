@@ -11,7 +11,6 @@ namespace MotoresDeJogos
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
-        Camera camera;
         Random random;
         ConsoleWriter consoleWriter;
         ShipManager shipManager;
@@ -41,8 +40,9 @@ namespace MotoresDeJogos
         /// </summary>
         protected override void Initialize()
         {
-            camera = new Camera(new Vector3(0, 0, 500), graphics);
+            //camera = new Camera(new Vector3(0, 0, 500), graphics);
             random = new Random();
+            ModedCamera.Initialize(graphics.GraphicsDevice);
             DebugShapeRenderer.Initialize(GraphicsDevice);
             MessageBus.Initialize();
             shipManager = new ShipManager( random, Content );
@@ -84,7 +84,10 @@ namespace MotoresDeJogos
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
+
+            //camera.Update(gameTime);
+            ModedCamera.Update(gameTime, graphics.GraphicsDevice);
+
             #region Garbage Collector Check
             if (retrieveInitialMemory)
             {
@@ -97,7 +100,6 @@ namespace MotoresDeJogos
             if (mem > 0 && mem > lastMemMeasure)
             {
                 MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("MEM ALERT: {0}k", (mem / 1000))));
-                Console.WriteLine(String.Format("MEM ALERT: {0}k", (mem / 1000)));
             }
 
             lastMemMeasure = mem;
@@ -118,9 +120,9 @@ namespace MotoresDeJogos
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            shipManager.Draw(camera);
+            shipManager.Draw();
 
-            DebugShapeRenderer.Draw(gameTime, camera.View, camera.Projection);
+            DebugShapeRenderer.Draw(gameTime, ModedCamera.View, ModedCamera.Projection);
 
             base.Draw(gameTime);
         }
