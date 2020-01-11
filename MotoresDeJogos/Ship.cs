@@ -53,14 +53,17 @@ namespace MotoresDeJogos
         {
             this.position = position;
             this.world = Matrix.CreateTranslation(position);
-            this.speed = (float) random.Next(1, 5);
+            this.speed = (float) random.Next(1, 20);
+            if (this.speed == 0) this.speed = (float)random.Next(1, 20);
             this.alive = true;
             LoadContent(content);
+
             foreach (ModelMesh mesh in this.model.Meshes)
             {
                 boundingSphere = BoundingSphere.CreateMerged(this.boundingSphere, mesh.BoundingSphere);
             }
-            boundingSphere.Radius *= 1;
+            
+            boundingSphere.Radius *= 1f;
 
         }
 
@@ -75,8 +78,10 @@ namespace MotoresDeJogos
             {
                 position.Z -= speed * gameTime.ElapsedGameTime.Milliseconds;
                 world = Matrix.CreateTranslation(position);
+                boundingSphere.Center = position;
+                //boundingSphere.Transform(world);
 
-                if (position.Z <= -10000)
+                if (position.Z <= -50000)
                 {
                     position.Z = 5000;
                     alive = false;
@@ -94,13 +99,13 @@ namespace MotoresDeJogos
                     {
                         effect.LightingEnabled = false;
                         effect.World = world * Matrix.CreateScale(0.001f);
-                        effect.View = camera.View;
-                        effect.Projection = camera.Projection;
+                        effect.View = ModedCamera.View;
+                        effect.Projection = ModedCamera.Projection;
                     }
         
                     mesh.Draw();
                 }
-                DebugShapeRenderer.AddBoundingSphere(boundingSphere, Color.Red);
+                DebugShapeRenderer.AddBoundingSphere(boundingSphere, Color.Green);
             }
 
         }

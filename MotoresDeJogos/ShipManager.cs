@@ -7,10 +7,11 @@ namespace MotoresDeJogos
 {
     class ShipManager
     {
+        private int WorldSize = 50000;
         Random random;
         ContentManager Content;
-        private static int poolCounter = 100;
-        private static int poolMaxSize = 100;
+        private static int poolCounter = 1000;
+        private static int poolMaxSize = 1000;
 
         private List<Ship> shipsDead = new List<Ship>(poolMaxSize);
         private List<Ship> shipsAlive = new List<Ship>(poolMaxSize);
@@ -26,7 +27,7 @@ namespace MotoresDeJogos
             Ship ship;
             for (int i = 0; i < poolMaxSize; i++)
             {
-                ship = new Ship(new Vector3(random.Next(-5000, 5000), random.Next(-5000, 5000), random.Next(-5000, 5000)), Content, random);
+                ship = new Ship(new Vector3(random.Next(-WorldSize, WorldSize), random.Next(-WorldSize, WorldSize), random.Next(WorldSize, WorldSize)), Content, random);
                 MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ID - {0} | Ship Z:{1}", i, ship.Position.Z)));
                 shipsAlive.Add(ship);
             }
@@ -49,14 +50,15 @@ namespace MotoresDeJogos
                 poolCounter--;
                 shipsDead.Add(ship);
                 
-                MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ListID - {0} | Pool {1}", shipsDead.IndexOf(ship), poolCounter)));
+                //MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ListID - {0} | Pool {1}", shipsDead.IndexOf(ship), poolCounter)));
             }
         }
         public void Update(GameTime gameTime)
         {
+            
             foreach(Ship ship in shipsAlive)
             {
-                if( ship.Alive ) ship.Update(gameTime);
+                if ( ship.Alive ) ship.Update(gameTime);
                 else
                 {
                     sendToGrave(ship);

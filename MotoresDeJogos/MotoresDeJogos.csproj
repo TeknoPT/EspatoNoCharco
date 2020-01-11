@@ -52,6 +52,7 @@
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MessageBus.cs" />
     <Compile Include="Messages\MessageType.cs" />
+    <Compile Include="ModedCamera.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ship.cs" />
