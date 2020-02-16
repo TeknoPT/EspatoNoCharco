@@ -49,14 +49,14 @@ namespace MotoresDeJogos
             set { alive = value; }
         }
 
-        public Ship(Vector3 position, ContentManager content, Random random)
+        public Ship(Vector3 position, ContentManager content, Random random, Model model)
         {
             this.position = position;
             this.world = Matrix.CreateTranslation(position);
             this.speed = (float) random.Next(1, 20);
             if (this.speed == 0) this.speed = (float)random.Next(1, 20);
             this.alive = true;
-            LoadContent(content);
+            this.Model = model;
 
             foreach (ModelMesh mesh in this.model.Meshes)
             {
@@ -66,11 +66,7 @@ namespace MotoresDeJogos
 
         }
 
-        public void LoadContent(ContentManager content)
-        {
-            model = content.Load<Model>("models\\p1_saucer");
-        }
-
+      
         public void Update(GameTime gameTime)
         {
             if (alive)

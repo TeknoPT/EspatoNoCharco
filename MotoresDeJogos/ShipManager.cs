@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
@@ -29,16 +30,17 @@ namespace MotoresDeJogos
         public void Initialize()
         {
             Ship ship;
+            Model model = Content.Load<Model>("models\\p1_saucer");
             for (int i = 0; i < poolMaxSize; i++)
             {
-                ship = new Ship(new Vector3(random.Next(-WorldSize, WorldSize), random.Next(-WorldSize, WorldSize), random.Next(-WorldSize, WorldSize)), Content, random);
+                ship = new Ship(new Vector3(random.Next(-WorldSize, WorldSize), random.Next(-WorldSize, WorldSize), random.Next(-WorldSize, WorldSize)), Content, random, model);
                 MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ID - {0} | Ship Z:{1}", i, ship.Position.Z)));
                 shipsAlive.Add(ship);
-            }
+            }   
             this.collisionDetection = new CollisionDetection(shipsAlive, shipsDead);
         }
 
-        public void reviveShip(Ship ship)
+       public void reviveShip(Ship ship)
         {
             if (poolCounter < poolMaxSize)
             {
