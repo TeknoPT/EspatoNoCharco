@@ -14,6 +14,7 @@ namespace MotoresDeJogos
         Random random;
         ConsoleWriter consoleWriter;
         ShipManager shipManager;
+        InputManager inputManager;
 
         long initialMemory;
         bool retrieveInitialMemory;
@@ -45,6 +46,7 @@ namespace MotoresDeJogos
             ModedCamera.Initialize(graphics.GraphicsDevice);
             DebugShapeRenderer.Initialize(GraphicsDevice);
             MessageBus.Initialize();
+            inputManager = new InputManager(this);
             shipManager = new ShipManager( random, Content );
             shipManager.Initialize();
             consoleWriter = new ConsoleWriter();
@@ -105,6 +107,7 @@ namespace MotoresDeJogos
             lastMemMeasure = mem;
             #endregion
 
+            inputManager.Update(gameTime);
             shipManager.Update(gameTime);
             consoleWriter.Update();
             MessageBus.Update();
