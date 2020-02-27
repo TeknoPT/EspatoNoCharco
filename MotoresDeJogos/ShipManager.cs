@@ -78,7 +78,11 @@ namespace MotoresDeJogos
         {
             foreach (Ship ship in shipsAlive)
             {
-                ship.Draw();
+                if (ModedCamera.frustum.Intersects(ship.BoundingShpere))
+                {
+                    ship.Draw();
+                }
+
             }
         }
     }

@@ -81,6 +81,7 @@ namespace MotoresDeJogos
                 }
 
                 boundingSphere.Center = position;
+
             }
         }
 

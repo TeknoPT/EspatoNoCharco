@@ -98,9 +98,9 @@ namespace MotoresDeJogos
             //Inicializar as matrizes world, view e projection
             World = Matrix.Identity;
             Foward();
-            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45),
+            Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(60),
                 graphics.Viewport.AspectRatio,
-                1f, 50000000);
+                1f, 50000);
 
             //Criar e definir os resterizerStates a utilizar para desenhar a geometria
             //SOLID
