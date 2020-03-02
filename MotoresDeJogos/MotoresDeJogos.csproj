@@ -44,6 +44,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CollisionDetection.cs" />
+    <Compile Include="Sorting.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Messages\ConsoleMessage.cs" />
     <Compile Include="Messages\ConsoleWriter.cs" />
