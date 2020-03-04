@@ -11,14 +11,18 @@ namespace MotoresDeJogos
         private int WorldSize = 50000;
         Random random;
         ContentManager Content;
-        private static int poolCounter = 1000;
-        private static int poolMaxSize = 1000;
+        private static int poolCounter = 5000;
+        public static int poolMaxSize = 5000;
+        private int timer = 0;
+
+        CollisionDetection collisionDetection;
 
         private List<Ship> shipsDead = new List<Ship>(poolMaxSize);
         private List<Ship> shipsAlive = new List<Ship>(poolMaxSize);
 
         public ShipManager(Random random, ContentManager Content)
         {
+            
             this.random = random;
             this.Content = Content;
         }
@@ -32,9 +36,9 @@ namespace MotoresDeJogos
                 ship = new Ship(new Vector3(random.Next(-WorldSize, WorldSize), random.Next(-WorldSize, WorldSize), random.Next(-WorldSize, WorldSize)), Content, random, model);
                 MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ID - {0} | Ship Z:{1}", i, ship.Position.Z)));
                 shipsAlive.Add(ship);
-            }
-
-         }
+            }   
+            this.collisionDetection = new CollisionDetection(shipsAlive, shipsDead);
+        }
 
        public void reviveShip(Ship ship)
         {
@@ -58,8 +62,8 @@ namespace MotoresDeJogos
         }
         public void Update(GameTime gameTime)
         {
-            
-            foreach(Ship ship in shipsAlive)
+           
+            foreach (Ship ship in shipsAlive)
             {
                 if ( ship.Alive ) ship.Update(gameTime);
                 else
@@ -72,13 +76,21 @@ namespace MotoresDeJogos
             {
                 shipsAlive.Remove(ship);
             }
+            
+            timer += gameTime.ElapsedGameTime.Milliseconds;
+            if (timer > 100)
+            {
+                collisionDetection.CheckCollison();
+                timer = 0;
+            }
         }
 
         public void Draw()
         {
             foreach (Ship ship in shipsAlive)
             {
-                ship.Draw();
+                if (ModedCamera.frustum.Intersects(ship.BoundingShpere))
+                    ship.Draw();
             }
         }
     }
