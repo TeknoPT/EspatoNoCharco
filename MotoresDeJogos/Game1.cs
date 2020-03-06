@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MotoresDeJogos.World;
 using System;
 
 namespace MotoresDeJogos
@@ -45,10 +46,12 @@ namespace MotoresDeJogos
             random = new Random();
             ModedCamera.Initialize(graphics.GraphicsDevice);
             DebugShapeRenderer.Initialize(GraphicsDevice);
+            WorldObjects.InitModels(Content);
             MessageBus.Initialize();
             inputManager = new InputManager(this);
             shipManager = new ShipManager( random, Content );
             shipManager.Initialize();
+            
             consoleWriter = new ConsoleWriter();
             retrieveInitialMemory = true;
             lastMemMeasure = 0;
@@ -64,7 +67,6 @@ namespace MotoresDeJogos
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            //spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         /// <summary>
@@ -83,9 +85,10 @@ namespace MotoresDeJogos
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
+            #region Close Game Key
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            #endregion
 
             //camera.Update(gameTime);
             ModedCamera.Update(gameTime, graphics.GraphicsDevice);

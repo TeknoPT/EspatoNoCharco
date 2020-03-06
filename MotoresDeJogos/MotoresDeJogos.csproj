@@ -45,6 +45,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Char\Duck.cs" />
+    <Compile Include="CollisionDetection.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Manager.cs" />
     <Compile Include="Messages\ConsoleMessage.cs" />

@@ -8,29 +8,40 @@ using System.Threading.Tasks;
 
 namespace MotoresDeJogos.World
 {
-    static class WorldObjects
+    public static class WorldObjects
     {
-        static Dictionary<DuckTypes, Model> Ducks;
-        static Model Terrain;
-        static Model Tree;
-        static Model Flower;
-        static Model Fish;
-        static Model Fountain;
-        static Model Lake;
+        public static Dictionary<DuckTypes, Model> Ducks = new Dictionary<DuckTypes, Model>();
+        public static Model Terrain;
+        public static Model Tree;
+        public static Model Flower;
+        public static Model Fish;
+        public static Model Fountain;
+        public static Model Lake;
 
         public static void InitModels(ContentManager content)
         {
-            Ducks.Add( DuckTypes.Black, content.Load<Model>("models\\p1_saucer"));
-            Ducks.Add( DuckTypes.While, content.Load<Model>("models\\p1_saucer"));
-            Ducks.Add( DuckTypes.Red, content.Load<Model>("models\\p1_saucer"));
-            Ducks.Add( DuckTypes.Green, content.Load<Model>("models\\p1_saucer"));
-            Ducks.Add( DuckTypes.Blue, content.Load<Model>("models\\p1_saucer"));
-            Terrain = content.Load<Model>("models\\terrain");
-            Tree = content.Load<Model>("models\\tree");
-            Flower = content.Load<Model>("models\\p1_saucer");
-            Fish = content.Load<Model>("models\\p1_saucer");
-            Fountain = content.Load<Model>("models\\p1_saucer");
-            Lake = content.Load<Model>("models\\p1_saucer");
+            Ducks.Add( DuckTypes.Black, content.Load<Model>("models\\Black_duckie"));
+            Ducks.Add( DuckTypes.While, content.Load<Model>("models\\Black_duckie"));
+            Ducks.Add( DuckTypes.Red, content.Load<Model>("models\\Black_duckie"));
+            Ducks.Add( DuckTypes.Green, content.Load<Model>("models\\Black_duckie"));
+            Ducks.Add( DuckTypes.Blue, content.Load<Model>("models\\Black_duckie"));
+            Terrain = content.Load<Model>("models\\Black_duckie");
+            Tree = content.Load<Model>("models\\Black_duckie");
+            Flower = content.Load<Model>("models\\Black_duckie");
+            Fish = content.Load<Model>("models\\Black_duckie");
+            Fountain = content.Load<Model>("models\\droplet");
+            Lake = content.Load<Model>("models\\Black_duckie");
+        }
+
+        public static void UnloadEverything()
+        {
+            Ducks.Clear();
+            Terrain = null;
+            Tree = null;
+            Flower = null;
+            Fish = null;
+            Fountain = null;
+            Lake = null;
         }
     }
 

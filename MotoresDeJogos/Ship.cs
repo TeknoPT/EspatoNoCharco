@@ -75,7 +75,6 @@ namespace MotoresDeJogos
                 if (position.Z <= -50000)
                 {
                     position.Z = 5000;
-                    alive = false;
                 }
 
                 boundingSphere.Center = position;

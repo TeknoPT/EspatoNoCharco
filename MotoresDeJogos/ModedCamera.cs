@@ -310,7 +310,6 @@ namespace MotoresDeJogos
         static private void UpdateViewMatrix()
         {
            
-
             if (tipoCamera == TipoCamera.SurfaceFollow || tipoCamera == TipoCamera.Free)
             {
                 cameraRotation = Matrix.CreateFromYawPitchRoll(yaw, 0, pitch);
@@ -318,45 +317,9 @@ namespace MotoresDeJogos
                 direction = Vector3.Transform(new Vector3(1, 0, 0), cameraRotation);
                 target = position + direction;
                 View = Matrix.CreateLookAt(position, target, Vector3.Up);
-                
             }
 
-            /*if (tipoCamera == TipoCamera.ThirdPerson)
-            {
-
-                Matrix rotationMatrix = Matrix.CreateRotationX(-tank.CannonRotation)
-                    * Matrix.CreateRotationY(tank.TurretRotation)
-                    * Matrix.CreateRotationY(MathHelper.ToRadians(tank.rotacaoY))
-                    ;
-
-                //Vector3 thirdPersonReference = new Vector3(0, 5f, 8f);
-                Vector3 thirdPersonReference = new Vector3(0, 2.5f, 4f);
-
-                Vector3 transformedReference =
-                    Vector3.Transform(thirdPersonReference, rotationMatrix);
-
-                Vector3 cameraPosition = transformedReference + tank.position;
-
-                cameraPosition = LimitarCameraTerreno(cameraPosition);
-
-                //float alturaTerrenoPosicaoCam = getAlturaFromHeightmap(cameraPosition);
-
-                if (cameraPosition.Y < alturaTerrenoPosicaoCam + 0.5f)
-                {
-                    cameraPosition.Y = alturaTerrenoPosicaoCam + 0.5f;
-                }
-
-                View = Matrix.CreateLookAt(cameraPosition, tank.position + rotationMatrix.Forward * 3,
-                    Vector3.Cross(rotationMatrix.Left, transformedReference));
-
-                position = cameraPosition;
-                direction = tank.position - position;
-
-            }*/
-
             frustum.Matrix = View * Projection;
-
-
         }
 
     }
