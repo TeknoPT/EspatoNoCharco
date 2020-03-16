@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace MotoresDeJogos
 {
-    class ShipManager
+    class DuckManager
     {
         private int WorldSize = 50000;
         Random random;
@@ -21,7 +21,7 @@ namespace MotoresDeJogos
         private List<Ship> shipsDead = new List<Ship>(poolMaxSize);
         private List<Ship> shipsAlive = new List<Ship>(poolMaxSize);
 
-        public ShipManager(Random random, ContentManager Content)
+        public DuckManager(Random random, ContentManager Content)
         {
             
             this.random = random;

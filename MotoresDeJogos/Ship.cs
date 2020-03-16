@@ -41,6 +41,8 @@ namespace MotoresDeJogos
             set { boundingSphere = value; }
         }
 
+        BoundingBox b;
+
         private Boolean alive;
 
         public Boolean Alive
@@ -62,6 +64,8 @@ namespace MotoresDeJogos
             {
                 boundingSphere = BoundingSphere.CreateMerged(this.boundingSphere, mesh.BoundingSphere);
             }
+
+            b.Intersects(boundingSphere);
         }
 
       

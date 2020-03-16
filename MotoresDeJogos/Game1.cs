@@ -14,8 +14,10 @@ namespace MotoresDeJogos
         GraphicsDeviceManager graphics;
         Random random;
         ConsoleWriter consoleWriter;
-        ShipManager shipManager;
+        DuckManager duckManager;
         InputManager inputManager;
+
+        Pool managers = new Pool();
 
         long initialMemory;
         bool retrieveInitialMemory;
@@ -49,8 +51,8 @@ namespace MotoresDeJogos
             WorldObjects.InitModels(Content);
             MessageBus.Initialize();
             inputManager = new InputManager(this);
-            shipManager = new ShipManager( random, Content );
-            shipManager.Initialize();
+            duckManager = new DuckManager( random, Content );
+            duckManager.Initialize();
             
             consoleWriter = new ConsoleWriter();
             retrieveInitialMemory = true;
@@ -111,7 +113,7 @@ namespace MotoresDeJogos
             #endregion
 
             inputManager.Update(gameTime);
-            shipManager.Update(gameTime);
+            duckManager.Update(gameTime);
             consoleWriter.Update();
             MessageBus.Update();
 
@@ -126,7 +128,7 @@ namespace MotoresDeJogos
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            shipManager.Draw();
+            duckManager.Draw();
 
             DebugShapeRenderer.Draw(gameTime, ModedCamera.View, ModedCamera.Projection);
 
