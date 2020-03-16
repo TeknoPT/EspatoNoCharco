@@ -21,16 +21,16 @@ namespace MotoresDeJogos.World
         public static void InitModels(ContentManager content)
         {
             Ducks.Add( DuckTypes.Black, content.Load<Model>("models\\Black_duckie"));
-            Ducks.Add( DuckTypes.While, content.Load<Model>("models\\Black_duckie"));
-            Ducks.Add( DuckTypes.Red, content.Load<Model>("models\\Black_duckie"));
-            Ducks.Add( DuckTypes.Green, content.Load<Model>("models\\Black_duckie"));
-            Ducks.Add( DuckTypes.Blue, content.Load<Model>("models\\Black_duckie"));
-            Terrain = content.Load<Model>("models\\Black_duckie");
-            Tree = content.Load<Model>("models\\Black_duckie");
+            Ducks.Add( DuckTypes.While, content.Load<Model>("models\\White_duckie"));
+            Ducks.Add( DuckTypes.Red, content.Load<Model>("models\\Red_Duckie"));
+            Ducks.Add( DuckTypes.Green, content.Load<Model>("models\\Green_duckie"));
+            Ducks.Add( DuckTypes.Blue, content.Load<Model>("models\\Blue_Duckie"));
+            Terrain = content.Load<Model>("models\\Scenery");
+            Tree = content.Load<Model>("models\\tree");
             Flower = content.Load<Model>("models\\Black_duckie");
             Fish = content.Load<Model>("models\\Black_duckie");
             Fountain = content.Load<Model>("models\\droplet");
-            Lake = content.Load<Model>("models\\Black_duckie");
+            Lake = content.Load<Model>("models\\Water");
         }
 
         public static void UnloadEverything()
