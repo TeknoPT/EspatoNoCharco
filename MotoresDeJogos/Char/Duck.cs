@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MotoresDeJogos.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MotoresDeJogos.Char
 {
-    class Duck
+    class Duck :  ICollide
     {
 
         private float speed;
@@ -63,10 +64,12 @@ namespace MotoresDeJogos.Char
             this.alive = true;
             this.Model = model;
 
+            #region Creating Bounds
             foreach (ModelMesh mesh in this.model.Meshes)
             {
                 boundingSphere = BoundingSphere.CreateMerged(this.boundingSphere, mesh.BoundingSphere);
             }
+            #endregion
         }
 
 
@@ -100,7 +103,18 @@ namespace MotoresDeJogos.Char
                 }
                 DebugShapeRenderer.AddBoundingSphere(boundingSphere, Color.Green);
             }
-
         }
+
+        #region Collision
+        public bool IsColliding(BoundingSphere bounding)
+        {
+            return this.boundingSphere.Intersects(bounding);
+        }
+
+        public bool IsColliding(BoundingBox bounding)
+        {
+            return this.boundingSphere.Intersects(bounding);
+        }
+        #endregion
     }
 }

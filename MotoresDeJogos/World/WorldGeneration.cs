@@ -8,6 +8,8 @@ namespace MotoresDeJogos.World
 {
     class WorldGeneration
     {
+        public static float MAP_SIZE = 50000;
+
         public WorldGeneration()
         {
 
