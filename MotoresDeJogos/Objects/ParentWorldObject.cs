@@ -9,17 +9,9 @@ using System.Threading.Tasks;
 
 namespace MotoresDeJogos.Objects
 {
-    class Fish : ICollide, IStatic, IGenerate, IMDrawable
+    class ParentWorldObject : IStatic, IGenerate, IMDrawable
     {
-        private float speed;
-
-        public float Speed
-        {
-            get { return speed; }
-            set { speed = value; }
-        }
-
-        private Model model;
+        protected Model model;
 
         public Model Model
         {
@@ -27,7 +19,7 @@ namespace MotoresDeJogos.Objects
             set { model = value; }
         }
 
-        private Vector3 position;
+        protected Vector3 position;
 
         public Vector3 Position
         {
@@ -35,33 +27,12 @@ namespace MotoresDeJogos.Objects
             set { position = value; }
         }
 
-        private BoundingSphere boundingSphere;
+        protected Matrix world;
 
-        public BoundingSphere BoundingShpere
+        public ParentWorldObject()
         {
-            get { return boundingSphere; }
-            set { boundingSphere = value; }
-        }
-
-        private Matrix world;
-
-        public Fish()
-        {
-            model = World.WorldObjects.Fish;
             this.position = Generate();
             this.world = Matrix.CreateTranslation(position);
-
-            #region Creating Bounds
-            foreach (ModelMesh mesh in this.model.Meshes)
-            {
-                boundingSphere = BoundingSphere.CreateMerged(this.boundingSphere, mesh.BoundingSphere);
-            }
-            #endregion
-        }
-        
-        public void Update()
-        {
-
         }
 
         public void Draw()
@@ -81,25 +52,13 @@ namespace MotoresDeJogos.Objects
             }
         }
 
-
-        // Interfaces
-        public bool IsColliding(BoundingSphere bounding)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsColliding(BoundingBox bounding)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool IsStatic()
         {
-            return false;
+            return true;
         }
 
         public Vector3 Generate()
-        {   
+        {
             return Vector3.Zero;
         }
     }

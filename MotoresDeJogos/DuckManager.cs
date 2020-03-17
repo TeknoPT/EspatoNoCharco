@@ -35,7 +35,7 @@ namespace MotoresDeJogos
 
             for (int i = 0; i < poolMaxSize; i++)
             {
-                ship = new Ship(new Vector3(random.Next(-WorldSize, WorldSize), random.Next(-WorldSize, WorldSize), random.Next(-WorldSize, WorldSize)), Content, random, model);
+                ship = new Ship(new Vector3(random.Next(-WorldSize, WorldSize), 0, random.Next(-WorldSize, WorldSize)), Content, random, model);
                 MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ID - {0} | Ship Z:{1}", i, ship.Position.Z)));
                 shipsAlive.Add(ship);
             }   

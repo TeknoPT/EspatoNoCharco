@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using MotoresDeJogos.Interfaces;
+using MotoresDeJogos.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,27 +12,71 @@ namespace MotoresDeJogos.World
     class WorldGeneration
     {
         public static float MAP_SIZE = 50000;
+        public const int MAX_STATIC_OBJECTS = 10000;
+        List<IMDrawable> staticObjects = new List<IMDrawable>(MAX_STATIC_OBJECTS);
 
         public WorldGeneration()
         {
-
+            CreateWorld();
         }
+
+        private void GenerateWorldObjects()
+        {
+
+        }   
 
         private void CreateBounding()
         {
 
         }
 
-        public void CreateWorld()
+        private void CreateWorld()
         {
-
+            GenerateBasicWorld();
+            //GenerateTrees();
+            //GenerateFlowers();
+            //GenerateFishes();
         }
+
+        #region Generating
+        private void GenerateBasicWorld()
+        {
+            staticObjects.Add(new Fountain());
+            staticObjects.Add(new Terrain());
+            staticObjects.Add(new Water());
+        }
+
+        private void GenerateTrees()
+        {
+            for (int i = 0; i < 1000; i++)
+            {
+                staticObjects.Add(new Flower());
+            }
+        }
+
+        private void GenerateFlowers()
+        {
+            for (int i = 0; i < 3000; i++)
+            {
+                staticObjects.Add(new Flower());
+            }
+        }
+
+        private void GenerateFishes()
+        {
+            for(int i = 0; i < 1000; i++)
+            {
+                staticObjects.Add(new Fish());
+            }
+        }
+        #endregion
 
         public void Draw()
         {
-
+            foreach (IMDrawable myObject in staticObjects)
+            {
+                myObject.Draw();
+            }
         }
     }
-
-
 }

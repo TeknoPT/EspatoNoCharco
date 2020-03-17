@@ -1,5 +1,7 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MotoresDeJogos.World;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +26,6 @@ namespace MotoresDeJogos
 
         public Pool(Random random, ContentManager Content)
         {
-
             this.random = random;
             this.Content = Content;
         }

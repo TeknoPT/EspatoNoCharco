@@ -16,8 +16,8 @@ namespace MotoresDeJogos
         ConsoleWriter consoleWriter;
         DuckManager duckManager;
         InputManager inputManager;
-
-        Pool managers = new Pool();
+        WorldGeneration worldGeneration;
+        //Pool managers = new Pool();
 
         long initialMemory;
         bool retrieveInitialMemory;
@@ -49,6 +49,7 @@ namespace MotoresDeJogos
             ModedCamera.Initialize(graphics.GraphicsDevice);
             DebugShapeRenderer.Initialize(GraphicsDevice);
             WorldObjects.InitModels(Content);
+            worldGeneration = new WorldGeneration();
             MessageBus.Initialize();
             inputManager = new InputManager(this);
             duckManager = new DuckManager( random, Content );
@@ -129,6 +130,8 @@ namespace MotoresDeJogos
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             duckManager.Draw();
+
+            worldGeneration.Draw();
 
             DebugShapeRenderer.Draw(gameTime, ModedCamera.View, ModedCamera.Projection);
 
