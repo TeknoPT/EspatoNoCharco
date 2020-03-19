@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MotoresDeJogos.Interfaces;
+using MotoresDeJogos.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace MotoresDeJogos.Objects
 {
     class Terrain : ICollide, IStatic, IGenerate, IMDrawable
     {
-        private Model model;
+        private TerrainModel model;
 
-        public Model Model
+        public TerrainModel Model
         {
             get { return model; }
             set { model = value; }
@@ -38,21 +39,20 @@ namespace MotoresDeJogos.Objects
         private Matrix world;
 
 
-        public Terrain()
+        public Terrain(TerrainModel model)
         {
-            model = World.WorldObjects.Terrain;
+            this.model = model;
             this.position = Generate();
             this.world = Matrix.CreateTranslation(position);
 
             #region Creating Bounds
-
             boundingBox = GetBounds();
             #endregion
         }
 
         public void Draw()
         {
-            foreach (ModelMesh mesh in model.Meshes)
+            foreach (ModelMesh mesh in model.Model.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
@@ -73,7 +73,7 @@ namespace MotoresDeJogos.Objects
             Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
-            foreach (ModelMesh mesh in this.Model.Meshes)
+            foreach (ModelMesh mesh in this.Model.Model.Meshes)
             {
                 foreach (ModelMeshPart meshPart in mesh.MeshParts)
                 {

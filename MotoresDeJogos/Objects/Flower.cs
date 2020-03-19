@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MotoresDeJogos.Interfaces;
+using MotoresDeJogos.Models;
 using MotoresDeJogos.World;
 using System;
 using System.Collections.Generic;
@@ -10,14 +11,48 @@ using System.Threading.Tasks;
 
 namespace MotoresDeJogos.Objects
 {
-    class Flower : ParentWorldObject
+    class Flower : IStatic, IGenerate, IMDrawable
     {
+        protected FlowerModel model;
 
-        public Flower()
+        public FlowerModel Model
         {
-            model = World.WorldObjects.Flower;
+            get { return model; }
+            set { model = value; }
+        }
+
+        protected Vector3 position;
+
+        public Vector3 Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
+
+        protected Matrix world;
+        
+        public Flower(FlowerModel model)
+        {
+            this.model = model;
             this.position = Generate();
             this.world = Matrix.CreateTranslation(position);
+        }
+
+        public void Draw()
+        {
+            foreach (ModelMesh mesh in model.Model.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.LightingEnabled = true;
+                    effect.EnableDefaultLighting();
+                    effect.World = world;
+                    effect.View = ModedCamera.View;
+                    effect.Projection = ModedCamera.Projection;
+                }
+
+                mesh.Draw();
+            }
         }
 
         public bool IsStatic()

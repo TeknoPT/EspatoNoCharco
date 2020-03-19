@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MotoresDeJogos.Interfaces;
+using MotoresDeJogos.Models;
 using MotoresDeJogos.Objects;
 using System;
 using System.Collections.Generic;
@@ -33,32 +34,38 @@ namespace MotoresDeJogos.World
         #region Generating
         private void GenerateBasicWorld()
         {
-            staticObjects.Add(new Fountain());
-            staticObjects.Add(new Terrain());
-            staticObjects.Add(new Water());
+            FountainModel fountainModel = new FountainModel(WorldObjects.Fountain);
+            TerrainModel terrainModel = new TerrainModel(WorldObjects.Terrain);
+            WaterModel waterModel = new WaterModel(WorldObjects.Lake); 
+            staticObjects.Add(new Fountain(fountainModel));
+            staticObjects.Add(new Terrain(terrainModel));
+            staticObjects.Add(new Water(waterModel));
         }
 
         private void GenerateTrees()
         {
-            for (int i = 0; i < 1000; i++)
+            TreeModel treeModel = new TreeModel(WorldObjects.Tree);
+            for (int i = 0; i < 100; i++)
             {
-                staticObjects.Add(new Flower());
+                staticObjects.Add(new Tree(treeModel));
             }
         }
 
         private void GenerateFlowers()
         {
+            FlowerModel flowerModel = new FlowerModel(WorldObjects.Flower);
             for (int i = 0; i < 3000; i++)
             {
-                staticObjects.Add(new Flower());
+                staticObjects.Add(new Flower(flowerModel));
             }
         }
 
         private void GenerateFishes()
         {
+            FishModel fishModel = new FishModel(WorldObjects.Fish);
             for(int i = 0; i < 1000; i++)
             {
-                staticObjects.Add(new Fish());
+                staticObjects.Add(new Fish(fishModel));
             }
         }
         #endregion

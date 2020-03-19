@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MotoresDeJogos.Interfaces;
+using MotoresDeJogos.Models;
 using MotoresDeJogos.World;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,9 @@ namespace MotoresDeJogos.Objects
 {
     class Fountain : ICollide, IStatic, IGenerate, IMDrawable
     {
-        private Model model;
+        private FountainModel model;
 
-        public Model Model
+        public FountainModel Model
         {
             get { return model; }
             set { model = value; }
@@ -30,16 +31,16 @@ namespace MotoresDeJogos.Objects
 
         private Matrix world;
 
-        public Fountain()
+        public Fountain(FountainModel model)
         {
-            model = World.WorldObjects.Fountain;
+            this.model = model;
             this.position = Generate();
             this.world = Matrix.CreateTranslation(position);
         }
 
         public void Draw()
         {
-            foreach (ModelMesh mesh in model.Meshes)
+            foreach (ModelMesh mesh in model.Model.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {

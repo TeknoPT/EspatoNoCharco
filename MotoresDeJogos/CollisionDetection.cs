@@ -9,10 +9,10 @@ namespace MotoresDeJogos
 {
     class CollisionDetection
     {
-        private List<Duck> ducksAlive;
-        private List<Duck> ducksDead;
+        private List<DuckEnemy> ducksAlive;
+        private List<DuckEnemy> ducksDead;
 
-        public CollisionDetection(List<Duck> ducksAlive, List<Duck> ducksDead)
+        public CollisionDetection(List<DuckEnemy> ducksAlive, List<DuckEnemy> ducksDead)
         {
             this.ducksAlive = ducksAlive;
             this.ducksDead = ducksDead;

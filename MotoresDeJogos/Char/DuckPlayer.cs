@@ -11,10 +11,8 @@ using System.Threading.Tasks;
 
 namespace MotoresDeJogos.Char
 {
-    class Duck :  ICollide
+    class DuckPlayer : ICollide
     {
-        private bool isPlayer = false;
-
         private float speed;
 
         public float Speed
@@ -57,13 +55,13 @@ namespace MotoresDeJogos.Char
             set { alive = value; }
         }
 
-        public Duck(Vector3 position, ContentManager content, Random random, Model model)
+        #region Construtores
+        public DuckPlayer(Vector3 position, ContentManager content, Random random, Model model)
         {
-            isPlayer = true;
             Initialize(this.position, content, random, model);
         }
 
-        public Duck(ContentManager content, Random random, Model model)
+        public DuckPlayer(ContentManager content, Random random, Model model)
         {
             this.position = new Vector3(random.Next(-WorldGeneration.MAP_SIZE, WorldGeneration.MAP_SIZE), 0, random.Next(-WorldGeneration.MAP_SIZE, WorldGeneration.MAP_SIZE));
             Initialize(this.position, content, random, model);
@@ -84,20 +82,18 @@ namespace MotoresDeJogos.Char
             }
             #endregion
         }
+        #endregion
 
         public void Update(GameTime gameTime)
         {
-            if (isPlayer)
+            if (alive)
             {
-                /*world = Matrix.CreateTranslation(ModedCamera.getPosition());
-                boundingSphere.Center = position;*/
-            }
-            else if (alive)
-            {
-                position.Z -= speed * gameTime.ElapsedGameTime.Milliseconds;
-                world = Matrix.CreateTranslation(position);
-
-                boundingSphere.Center = position;
+                if ( ModedCamera.tipoCamera == TipoCamera.SurfaceFollow)
+                {
+                    world = Matrix.CreateTranslation(this.position+ModedCamera.getPosition());
+                    boundingSphere.Center = position;
+                }
+                
             }
         }
 

@@ -16,9 +16,10 @@ namespace MotoresDeJogos
         Random random;
         ConsoleWriter consoleWriter;
         DuckManager duckManager;
-        Duck Player;
+        DuckPlayer Player;
         InputManager inputManager;
         WorldGeneration worldGeneration;
+        GameStates gameState = GameStates.Play;
         //Pool managers = new Pool();
 
         long initialMemory;
@@ -57,7 +58,7 @@ namespace MotoresDeJogos
             inputManager = new InputManager(this);
             duckManager = new DuckManager( random, Content );
             duckManager.Initialize();
-            Player = new Duck(Vector3.Zero, Content, random, WorldObjects.Ducks[0]);
+            Player = new DuckPlayer(Vector3.Zero, Content, random, WorldObjects.Ducks[DuckTypes.Red]);
 
             consoleWriter = new ConsoleWriter();
             retrieveInitialMemory = true;
@@ -98,7 +99,6 @@ namespace MotoresDeJogos
             #endregion
 
             //camera.Update(gameTime);
-            ModedCamera.Update(gameTime, graphics.GraphicsDevice);
 
             #region Garbage Collector Check
             if (retrieveInitialMemory)
@@ -118,11 +118,14 @@ namespace MotoresDeJogos
             #endregion
 
             inputManager.Update(gameTime);
-            duckManager.Update(gameTime);
-            consoleWriter.Update();
+            if (gameState == GameStates.Play )
+            {
+                ModedCamera.Update(gameTime, graphics.GraphicsDevice);
+                duckManager.Update(gameTime);
+                consoleWriter.Update();
+                Player.Update(gameTime);
+            }
             MessageBus.Update();
-            Player.Update(gameTime);
-
             base.Update(gameTime);
         }
 
