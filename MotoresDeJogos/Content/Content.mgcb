@@ -386,6 +386,78 @@
 /processorParam:TextureFormat=Compressed
 /build:models/White_duckie.FBX
 
+#begin songs/Attacks/attack_B.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:songs/Attacks/attack_B.ogg
+
+#begin songs/Attacks/attack_G.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:songs/Attacks/attack_G.ogg
+
+#begin songs/Attacks/attack_K.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:songs/Attacks/attack_K.wav
+
+#begin songs/Attacks/attack_R.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:songs/Attacks/attack_R.ogg
+
+#begin songs/Attacks/attack_W.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:songs/Attacks/attack_W.ogg
+
+#begin songs/Dying/Char_Dying.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:songs/Dying/Char_Dying.ogg
+
+#begin songs/Dying/Enemy_Dying.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:songs/Dying/Enemy_Dying.ogg
+
+#begin songs/Loss/loss.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:songs/Loss/loss.wav
+
+#begin songs/Movement/Movement.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:songs/Movement/Movement.mp3
+
+#begin songs/Received Damage/TakingHits.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:songs/Received Damage/TakingHits.ogg
+
+#begin songs/Victory/victory (1).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:songs/Victory/victory (1).wav
+
+#begin songs/Victory/victory (2).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:songs/Victory/victory (2).wav
+
 #begin textures/pencil_p1_diff_v1.tga
 /importer:TextureImporter
 /processor:TextureProcessor

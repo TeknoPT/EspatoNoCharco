@@ -89,8 +89,8 @@ namespace MotoresDeJogos.Char
         {
             if (isPlayer)
             {
-                world = Matrix.CreateTranslation(ModedCamera.getPosition());
-                boundingSphere.Center = position;
+                /*world = Matrix.CreateTranslation(ModedCamera.getPosition());
+                boundingSphere.Center = position;*/
             }
             else if (alive)
             {
