@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MotoresDeJogos.Char;
+using MotoresDeJogos.World;
 using System;
 
 namespace MotoresDeJogos
@@ -13,8 +15,11 @@ namespace MotoresDeJogos
         GraphicsDeviceManager graphics;
         Random random;
         ConsoleWriter consoleWriter;
-        ShipManager shipManager;
+        DuckManager duckManager;
+        Duck Player;
         InputManager inputManager;
+        WorldGeneration worldGeneration;
+        //Pool managers = new Pool();
 
         long initialMemory;
         bool retrieveInitialMemory;
@@ -28,8 +33,8 @@ namespace MotoresDeJogos
             graphics.SynchronizeWithVerticalRetrace = true;
             graphics.PreferMultiSampling = true;
             graphics.GraphicsProfile = GraphicsProfile.HiDef;
-            graphics.PreferredBackBufferWidth = 1024;
-            graphics.PreferredBackBufferHeight = 768;
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.PreferredBackBufferHeight = 1080;
             Content.RootDirectory = "Content";
         }
 
@@ -44,11 +49,16 @@ namespace MotoresDeJogos
             //camera = new Camera(new Vector3(0, 0, 500), graphics);
             random = new Random();
             ModedCamera.Initialize(graphics.GraphicsDevice);
+
             DebugShapeRenderer.Initialize(GraphicsDevice);
+            WorldObjects.InitModels(Content);
+            worldGeneration = new WorldGeneration(random);
             MessageBus.Initialize();
             inputManager = new InputManager(this);
-            shipManager = new ShipManager( random, Content );
-            shipManager.Initialize();
+            duckManager = new DuckManager( random, Content );
+            duckManager.Initialize();
+            Player = new Duck(Vector3.Zero, Content, random, WorldObjects.Ducks[0]);
+
             consoleWriter = new ConsoleWriter();
             retrieveInitialMemory = true;
             lastMemMeasure = 0;
@@ -64,7 +74,6 @@ namespace MotoresDeJogos
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            //spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         /// <summary>
@@ -83,9 +92,10 @@ namespace MotoresDeJogos
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
+            #region Close Game Key
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            #endregion
 
             //camera.Update(gameTime);
             ModedCamera.Update(gameTime, graphics.GraphicsDevice);
@@ -108,9 +118,10 @@ namespace MotoresDeJogos
             #endregion
 
             inputManager.Update(gameTime);
-            shipManager.Update(gameTime);
+            duckManager.Update(gameTime);
             consoleWriter.Update();
             MessageBus.Update();
+            Player.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -123,7 +134,11 @@ namespace MotoresDeJogos
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            shipManager.Draw();
+            duckManager.Draw();
+
+            worldGeneration.Draw();
+
+            Player.Draw();
 
             DebugShapeRenderer.Draw(gameTime, ModedCamera.View, ModedCamera.Projection);
 
