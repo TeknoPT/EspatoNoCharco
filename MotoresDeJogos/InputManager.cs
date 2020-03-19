@@ -29,6 +29,7 @@ namespace MotoresDeJogos
         public int GamePadIndex;
         public GamePadState CurrentState;
         public GamePadState PreviousState;
+        // Will work on this later
         public Dictionary<Input, Keys> KeyboardMap;
 
         private const int KEYBOARD_INDEX = -1;
