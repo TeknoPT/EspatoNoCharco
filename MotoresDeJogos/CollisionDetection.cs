@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MotoresDeJogos.Char;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,29 +9,34 @@ namespace MotoresDeJogos
 {
     class CollisionDetection
     {
-        private List<Ship> shipsAlive;
-        private List<Ship> shipsDead;
+        private List<Duck> ducksAlive;
+        private List<Duck> ducksDead;
 
-        public CollisionDetection(List<Ship> shipsAlive, List<Ship> shipsDead)
+        public CollisionDetection(List<Duck> ducksAlive, List<Duck> ducksDead)
         {
-            this.shipsAlive = shipsAlive;
-            this.shipsDead = shipsDead;
+            this.ducksAlive = ducksAlive;
+            this.ducksDead = ducksDead;
         }
 
+        #region Collision with Object
+        #endregion
+
+        #region Basic Collision
         public void CheckCollison()
         {
-            for ( int i = 0; i < shipsAlive.Count; i++)
+            for ( int i = 0; i < ducksAlive.Count; i++)
             {
-                for (int j = 0; j < shipsAlive.Count; j++)
+                for (int j = 0; j < ducksAlive.Count; j++)
                 {
                     if (i == j) continue;
-                    if (shipsAlive[i].BoundingShpere.Intersects(shipsAlive[j].BoundingShpere))
+                    if (ducksAlive[i].IsColliding(ducksAlive[j].BoundingShpere))
                     {
-                        shipsAlive[i].Alive = false;
-                        shipsAlive[j].Alive = false;
+                        ducksAlive[i].Alive = false;
+                        ducksAlive[j].Alive = false;
                     }
                 }
-            }
+            }            
         }
+        #endregion
     }
 }

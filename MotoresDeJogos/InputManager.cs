@@ -106,10 +106,12 @@ namespace MotoresDeJogos
         {
             return currentMouseState.Position;
         }
+
         public bool IsMouseMoved()
         {
             return currentMouseState.X != previousMouseState.X || currentMouseState.Y != previousMouseState.Y;
         }
+
         public int GetMouseScroll()
         {
             return currentMouseState.ScrollWheelValue - previousMouseState.ScrollWheelValue;
