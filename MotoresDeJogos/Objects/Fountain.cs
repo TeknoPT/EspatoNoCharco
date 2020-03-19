@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MotoresDeJogos.Interfaces;
+using MotoresDeJogos.World;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace MotoresDeJogos.Objects
 
         public Fountain()
         {
-            model = World.WorldObjects.Terrain;
+            model = World.WorldObjects.Fountain;
             this.position = Generate();
             this.world = Matrix.CreateTranslation(position);
         }
@@ -71,7 +72,7 @@ namespace MotoresDeJogos.Objects
 
         public Vector3 Generate()
         {
-            return Vector3.Zero;
+            return new Vector3(0, 700, 0);
         }
     }
 }

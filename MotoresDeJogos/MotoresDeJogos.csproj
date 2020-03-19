@@ -48,10 +48,11 @@
     <Compile Include="Interfaces\IMDrawable.cs" />
     <Compile Include="Interfaces\IGenerate.cs" />
     <Compile Include="Interfaces\IKillable.cs" />
-    <Compile Include="Interfaces\IPhysics.cs" />
+    <Compile Include="Messages\IPhysics.cs" />
     <Compile Include="Interfaces\IStatic.cs" />
     <Compile Include="Objects\Fish.cs" />
     <Compile Include="Objects\ObjectType.cs" />
+    <Compile Include="Objects\ParentWorldObject.cs" />
     <Compile Include="Objects\Tree.cs" />
     <Compile Include="Objects\Terrain.cs" />
     <Compile Include="Objects\Water.cs" />

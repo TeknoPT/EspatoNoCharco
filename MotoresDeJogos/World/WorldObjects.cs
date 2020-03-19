@@ -27,9 +27,9 @@ namespace MotoresDeJogos.World
             Ducks.Add( DuckTypes.Blue, content.Load<Model>("models\\Blue_Duckie"));
             Terrain = content.Load<Model>("models\\Scenery");
             Tree = content.Load<Model>("models\\tree");
-            Flower = content.Load<Model>("models\\Black_duckie");
-            Fish = content.Load<Model>("models\\Black_duckie");
-            Fountain = content.Load<Model>("models\\droplet");
+            Flower = content.Load<Model>("models\\Flower_v3.1");
+            Fish = content.Load<Model>("models\\Flower_v3.1");
+            Fountain = content.Load<Model>("models\\Fountain_v1");
             Lake = content.Load<Model>("models\\Water");
         }
 

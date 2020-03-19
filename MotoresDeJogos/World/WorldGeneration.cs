@@ -11,30 +11,22 @@ namespace MotoresDeJogos.World
 {
     class WorldGeneration
     {
-        public static float MAP_SIZE = 50000;
+        public static Random random;
+        public static int MAP_SIZE = 50000;
         public const int MAX_STATIC_OBJECTS = 10000;
         List<IMDrawable> staticObjects = new List<IMDrawable>(MAX_STATIC_OBJECTS);
-
-        public WorldGeneration()
+        
+        public WorldGeneration(Random random)
         {
+            WorldGeneration.random = random;
             CreateWorld();
         }
-
-        private void GenerateWorldObjects()
-        {
-
-        }   
-
-        private void CreateBounding()
-        {
-
-        }
-
+        
         private void CreateWorld()
         {
             GenerateBasicWorld();
-            //GenerateTrees();
-            //GenerateFlowers();
+            GenerateTrees();
+            GenerateFlowers();
             //GenerateFishes();
         }
 

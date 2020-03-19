@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MotoresDeJogos.Interfaces;
+using MotoresDeJogos.World;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace MotoresDeJogos.Char
 {
     class Duck :  ICollide
     {
+        private bool isPlayer = false;
 
         private float speed;
 
@@ -57,7 +59,18 @@ namespace MotoresDeJogos.Char
 
         public Duck(Vector3 position, ContentManager content, Random random, Model model)
         {
-            this.position = position;
+            isPlayer = true;
+            Initialize(this.position, content, random, model);
+        }
+
+        public Duck(ContentManager content, Random random, Model model)
+        {
+            this.position = new Vector3(random.Next(-WorldGeneration.MAP_SIZE, WorldGeneration.MAP_SIZE), 0, random.Next(-WorldGeneration.MAP_SIZE, WorldGeneration.MAP_SIZE));
+            Initialize(this.position, content, random, model);
+        }
+
+        private void Initialize(Vector3 position, ContentManager content, Random random, Model model)
+        {
             this.world = Matrix.CreateTranslation(position);
             this.speed = (float)random.Next(1, 20);
             if (this.speed == 0) this.speed = (float)random.Next(1, 20);
@@ -72,10 +85,14 @@ namespace MotoresDeJogos.Char
             #endregion
         }
 
-
         public void Update(GameTime gameTime)
         {
-            if (alive)
+            if (isPlayer)
+            {
+                world = Matrix.CreateTranslation(ModedCamera.getPosition());
+                boundingSphere.Center = position;
+            }
+            else if (alive)
             {
                 position.Z -= speed * gameTime.ElapsedGameTime.Milliseconds;
                 world = Matrix.CreateTranslation(position);

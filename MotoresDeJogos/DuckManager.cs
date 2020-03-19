@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MotoresDeJogos.Char;
 using MotoresDeJogos.World;
 using System;
 using System.Collections.Generic;
@@ -18,8 +19,8 @@ namespace MotoresDeJogos
 
         CollisionDetection collisionDetection;
 
-        private List<Ship> shipsDead = new List<Ship>(poolMaxSize);
-        private List<Ship> shipsAlive = new List<Ship>(poolMaxSize);
+        private List<Duck> ducksDead = new List<Duck>(poolMaxSize);
+        private List<Duck> ducksAlive = new List<Duck>(poolMaxSize);
 
         public DuckManager(Random random, ContentManager Content)
         {
@@ -30,34 +31,35 @@ namespace MotoresDeJogos
 
         public void Initialize()
         {
-            Ship ship;
-            Model model = WorldObjects.Flower;
+            Duck duck;
+            Model model = WorldObjects.Ducks[0];
 
             for (int i = 0; i < poolMaxSize; i++)
             {
-                ship = new Ship(new Vector3(random.Next(-WorldSize, WorldSize), 0, random.Next(-WorldSize, WorldSize)), Content, random, model);
-                MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ID - {0} | Ship Z:{1}", i, ship.Position.Z)));
-                shipsAlive.Add(ship);
+                duck = new Duck( Content, random, model);
+                MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ID - {0} | Ship Z:{1}", i, duck.Position.Z)));
+                ducksAlive.Add(duck);
             }   
-            this.collisionDetection = new CollisionDetection(shipsAlive, shipsDead);
+
+            this.collisionDetection = new CollisionDetection(ducksAlive, ducksDead);
         }
 
-       public void reviveShip(Ship ship)
+       public void reviveShip(Duck duck)
         {
             if (poolCounter < poolMaxSize)
             {
                 poolCounter++;
-                shipsAlive.Add(ship);
-                shipsDead.Remove(ship);
+                ducksAlive.Add(duck);
+                ducksDead.Remove(duck);
             }
         }
 
-        public void sendToGrave(Ship ship)
+        public void sendToGrave(Duck duck)
         {
             if ( poolCounter > 0)
             {
                 poolCounter--;
-                shipsDead.Add(ship);
+                ducksDead.Add(duck);
                 
                 //MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ListID - {0} | Pool {1}", shipsDead.IndexOf(ship), poolCounter)));
             }
@@ -65,18 +67,18 @@ namespace MotoresDeJogos
         public void Update(GameTime gameTime)
         {
            
-            foreach (Ship ship in shipsAlive)
+            foreach (Duck duck in ducksAlive)
             {
-                if ( ship.Alive ) ship.Update(gameTime);
+                if (duck.Alive ) duck.Update(gameTime);
                 else
                 {
-                    sendToGrave(ship);
+                    sendToGrave(duck);
                 }
             }
 
-            foreach(Ship ship in shipsDead)
+            foreach(Duck duck in ducksDead)
             {
-                shipsAlive.Remove(ship);
+                ducksAlive.Remove(duck);
             }
             
             timer += gameTime.ElapsedGameTime.Milliseconds;
@@ -89,11 +91,11 @@ namespace MotoresDeJogos
 
         public void Draw()
         {
-            foreach (Ship ship in shipsAlive)
+            foreach (Duck duck in ducksAlive)
             {
-                if (ModedCamera.frustum.Intersects(ship.BoundingShpere))
+                if (ModedCamera.frustum.Intersects(duck.BoundingShpere))
                 {
-                    ship.Draw();
+                    duck.Draw();
                 }
             }
         }

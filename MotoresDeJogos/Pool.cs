@@ -41,7 +41,7 @@ namespace MotoresDeJogos
                 MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ID - {0} | Ship Z:{1}", i, ship.Position.Z)));
                 shipsAlive.Add(ship);
             }
-            this.collisionDetection = new CollisionDetection(shipsAlive, shipsDead);
+            //this.collisionDetection = new CollisionDetection(Ducks, shipsDead);
         }
 
         public void reviveShip(Ship ship)

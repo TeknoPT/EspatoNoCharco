@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MotoresDeJogos.Char;
 using MotoresDeJogos.World;
 using System;
 
@@ -15,6 +16,7 @@ namespace MotoresDeJogos
         Random random;
         ConsoleWriter consoleWriter;
         DuckManager duckManager;
+        Duck Player;
         InputManager inputManager;
         WorldGeneration worldGeneration;
         //Pool managers = new Pool();
@@ -47,14 +49,16 @@ namespace MotoresDeJogos
             //camera = new Camera(new Vector3(0, 0, 500), graphics);
             random = new Random();
             ModedCamera.Initialize(graphics.GraphicsDevice);
+
             DebugShapeRenderer.Initialize(GraphicsDevice);
             WorldObjects.InitModels(Content);
-            worldGeneration = new WorldGeneration();
+            worldGeneration = new WorldGeneration(random);
             MessageBus.Initialize();
             inputManager = new InputManager(this);
             duckManager = new DuckManager( random, Content );
             duckManager.Initialize();
-            
+            Player = new Duck(Vector3.Zero, Content, random, WorldObjects.Ducks[0]);
+
             consoleWriter = new ConsoleWriter();
             retrieveInitialMemory = true;
             lastMemMeasure = 0;
@@ -117,6 +121,7 @@ namespace MotoresDeJogos
             duckManager.Update(gameTime);
             consoleWriter.Update();
             MessageBus.Update();
+            Player.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -132,6 +137,8 @@ namespace MotoresDeJogos
             duckManager.Draw();
 
             worldGeneration.Draw();
+
+            Player.Draw();
 
             DebugShapeRenderer.Draw(gameTime, ModedCamera.View, ModedCamera.Projection);
 
