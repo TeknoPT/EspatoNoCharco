@@ -85,6 +85,7 @@ namespace MotoresDeJogos
                 Game1.gameState = GameStates.Pause;
 
             // Trigger menu
+            UIManager.ShowHideButtons();
         }
     }
 

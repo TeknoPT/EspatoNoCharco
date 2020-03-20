@@ -20,8 +20,9 @@ namespace MotoresDeJogos
         InputManager inputManager;
         InputHandler inputHandler;
         WorldGeneration worldGeneration;
-        public static GameStates gameState = GameStates.Play;
+        public static GameStates gameState = GameStates.Pause;
         SkyBox skyBox;
+        UIManager uiManager;
         //Pool managers = new Pool();
        
         #region Memory Variables
@@ -61,6 +62,7 @@ namespace MotoresDeJogos
             MessageBus.Initialize();
             inputManager = new InputManager(this);
             inputHandler = new InputHandler(this, inputManager);
+            uiManager = new UIManager(this);
             duckManager = new DuckManager( random, Content );
             duckManager.Initialize();
             Player = new DuckPlayer(Vector3.Zero, Content, random, WorldObjects.Ducks[DuckTypes.Red]);
@@ -70,6 +72,9 @@ namespace MotoresDeJogos
             lastMemMeasure = 0;
             mem = 0;
             this.IsMouseVisible = true;
+
+            this.IsMouseVisible = true;
+            this.Components.Add(uiManager);
 
             base.Initialize();
         }
