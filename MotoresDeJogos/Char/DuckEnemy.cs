@@ -78,6 +78,19 @@ namespace MotoresDeJogos
             }
         }
 
+        
+
+        private void RandomMovement(GameTime gameTime)
+        {
+            // Random movement
+            position.Z += random.Next(-10, 10) * speed * gameTime.ElapsedGameTime.Milliseconds;
+            position.X += random.Next(-10, 10) * speed * gameTime.ElapsedGameTime.Milliseconds;
+            world = Matrix.CreateTranslation(position);
+
+            boundingSphere.Center = position;
+        }
+
+        #region Draw
         public void Draw()
         {
             if (!IsDead())
@@ -98,15 +111,6 @@ namespace MotoresDeJogos
                 DebugShapeRenderer.AddBoundingSphere(boundingSphere, Color.Green);
             }
         }
-
-        private void RandomMovement(GameTime gameTime)
-        {
-            // Random movement
-            position.Z += random.Next(-10, 10) * speed * gameTime.ElapsedGameTime.Milliseconds;
-            position.X += random.Next(-10, 10) * speed * gameTime.ElapsedGameTime.Milliseconds;
-            world = Matrix.CreateTranslation(position);
-
-            boundingSphere.Center = position;
-        }
+        #endregion
     }
 }

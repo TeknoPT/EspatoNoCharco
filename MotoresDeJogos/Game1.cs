@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MotoresDeJogos.Char;
+using MotoresDeJogos.Managers;
 using MotoresDeJogos.World;
 using System;
 
@@ -16,14 +17,15 @@ namespace MotoresDeJogos
         Random random;
         ConsoleWriter consoleWriter;
         DuckManager duckManager;
-        DuckPlayer Player;
+        //DuckPlayer Player;
         InputManager inputManager;
         InputHandler inputHandler;
         WorldGeneration worldGeneration;
         public static GameStates gameState = GameStates.Play;
         SkyBox skyBox;
+        Controller controller;
         //Pool managers = new Pool();
-       
+
         #region Memory Variables
         long initialMemory;
         bool retrieveInitialMemory;
@@ -58,18 +60,25 @@ namespace MotoresDeJogos
             DebugShapeRenderer.Initialize(GraphicsDevice);
             WorldObjects.InitModels(Content);
             worldGeneration = new WorldGeneration(random);
+            controller = new Controller(DuckManager.poolMaxSize); 
+            Physics.Init(controller);
             MessageBus.Initialize();
             inputManager = new InputManager(this);
             inputHandler = new InputHandler(this, inputManager);
             duckManager = new DuckManager( random, Content );
             duckManager.Initialize();
-            Player = new DuckPlayer(Vector3.Zero, Content, random, WorldObjects.Ducks[DuckTypes.Red]);
+            Player.Init(20f,inputManager, WorldObjects.Ducks[DuckTypes.Black]);
+            //Player = new DuckPlayer(Vector3.Zero, Content, random, WorldObjects.Ducks[DuckTypes.Red]);
 
+
+
+            #region Start Memory variables
             consoleWriter = new ConsoleWriter();
             retrieveInitialMemory = true;
             lastMemMeasure = 0;
             mem = 0;
             this.IsMouseVisible = true;
+            #endregion
 
             base.Initialize();
         }
@@ -148,14 +157,16 @@ namespace MotoresDeJogos
             inputManager.Update(gameTime);
             inputHandler.Update(gameTime);
 
-
             if (gameState == GameStates.Play )
             {
                 ModedCamera.Update(gameTime, graphics.GraphicsDevice);
                 duckManager.Update(gameTime);
                 consoleWriter.Update();
                 MessageBus.Update();
-                Player.Update(gameTime);
+                Player.Update(gameTime); 
+                controller.Update(gameTime);
+                Physics.Update();
+                CollisionDetection.Update();
             }
 
             MessageBus.Update();
@@ -179,6 +190,8 @@ namespace MotoresDeJogos
             Player.Draw();
 
             DebugShapeRenderer.Draw(gameTime, ModedCamera.View, ModedCamera.Projection);
+
+            controller.Draw();
 
             skyBox.Draw();
 

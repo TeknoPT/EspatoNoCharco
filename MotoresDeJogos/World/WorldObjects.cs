@@ -47,11 +47,11 @@ namespace MotoresDeJogos.World
 
     public enum DuckTypes
     {
-        Black,
-        While,
-        Red,
-        Green,
-        Blue
+        Black = 0,
+        While = 1,
+        Red = 2,
+        Green = 3,
+        Blue = 4
     }
     
 }

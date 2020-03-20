@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using MotoresDeJogos.World;
 
 namespace MotoresDeJogos
 {
     public class InputHandler : GameComponent
     {
         // All Inputs Pass throw here
-        Command buttonUp, buttonDown, buttonRight, buttonLeft, buttonFire, buttonPause;
+        Command buttonUp, buttonDown, buttonRight, buttonLeft, buttonFire, buttonPause, buttonChangeCharacter;
         InputManager inputManager;
 
         public InputHandler(Game game, InputManager inputManager) : base(game)
@@ -23,6 +24,8 @@ namespace MotoresDeJogos
             buttonFire = new AttackCommand(new RedAttack(20, "attack_R"));
             // PauseButton
             buttonPause = new PauseCommand();
+            // Change Character Model
+            buttonChangeCharacter = new ChangeCharacterCommand(DuckTypes.Black);
         }
 
         public override void Update(GameTime gameTime)
@@ -61,6 +64,12 @@ namespace MotoresDeJogos
             if (inputManager.JustPressed(Keys.P))
             {
                 buttonPause.Execute();
+            }
+
+            // Change Character Model
+            if (inputManager.JustPressed(Keys.C))
+            {
+                buttonChangeCharacter.Execute();
             }
 
             // Test for DataManager

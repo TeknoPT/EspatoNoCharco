@@ -57,8 +57,7 @@ namespace MotoresDeJogos.Objects
 
                 mesh.Draw();
             }
-
-            DebugShapeRenderer.AddBoundingBox(boundingBox, Color.Gold);
+            
         }
 
         public BoundingBox GetBounds()

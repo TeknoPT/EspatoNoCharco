@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using MotoresDeJogos.Char;
+using MotoresDeJogos.World;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -85,6 +88,39 @@ namespace MotoresDeJogos
                 Game1.gameState = GameStates.Pause;
 
             // Trigger menu
+        }
+    }
+
+    public class ChangeCharacterCommand : Command
+    {
+        DuckTypes duckType = DuckTypes.Black;
+        public ChangeCharacterCommand(DuckTypes duckType)
+        {
+            this.duckType = duckType;
+        }
+
+        public override void Execute()
+        {
+            switch (duckType)
+            {
+                case DuckTypes.Black:
+                    duckType = DuckTypes.While;
+                    break;
+                case DuckTypes.While:
+                    duckType = DuckTypes.Red;
+                    break;
+                case DuckTypes.Red:
+                    duckType = DuckTypes.Green;
+                    break;
+                case DuckTypes.Green:
+                    duckType = DuckTypes.Blue;
+                    break;
+                case DuckTypes.Blue:
+                    duckType = DuckTypes.Black;
+                    break;
+            }
+
+            Player.LoadModel(WorldObjects.Ducks[duckType]);
         }
     }
 

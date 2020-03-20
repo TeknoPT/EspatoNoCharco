@@ -6,17 +6,15 @@ using MotoresDeJogos.World;
 using System;
 using System.Collections.Generic;
 
-namespace MotoresDeJogos
+namespace MotoresDeJogos.Managers
 {
     class DuckManager
     {
         Random random;
         ContentManager Content;
-        private static int poolCounter = 500;
-        public static int poolMaxSize = 500;
+        private static int poolCounter = 1000;
+        public static int poolMaxSize = 1000;
         private int timer = 0;
-
-        CollisionDetection collisionDetection;
 
         private List<DuckEnemy> ducksDead = new List<DuckEnemy>(poolMaxSize);
         private List<DuckEnemy> ducksAlive = new List<DuckEnemy>(poolMaxSize);
@@ -39,8 +37,6 @@ namespace MotoresDeJogos
                 MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ID - {0} | Ship Z:{1}", i, duck.Position.Z)));
                 ducksAlive.Add(duck);
             }   
-
-            this.collisionDetection = new CollisionDetection(ducksAlive, ducksDead);
         }
 
        public void reviveShip(DuckEnemy duck)
@@ -83,7 +79,7 @@ namespace MotoresDeJogos
             timer += gameTime.ElapsedGameTime.Milliseconds;
             if (timer > 30)
             {
-                collisionDetection.CheckCollison();
+                //CollisionDetection.CheckCollison();
                 timer = 0;
             }
         }

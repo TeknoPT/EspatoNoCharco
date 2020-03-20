@@ -34,6 +34,15 @@ namespace MotoresDeJogos.Abstracts
             set { health = value; }
         }
 
+        protected bool onGround;
+
+        public bool OnGround
+        {
+            get { return onGround; }
+            set { onGround = value; }
+        }
+
+
         public bool IsColliding(BoundingSphere bounding)
         {
             if (boundingBox != null)
