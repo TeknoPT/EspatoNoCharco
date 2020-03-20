@@ -42,15 +42,21 @@ namespace MotoresDeJogos.World
         {
             for (int i = 0; i < 1000; i++)
             {
-                staticObjects.Add(new Flower());
+                //staticObjects.Add(new Flower(new Vector3(0,0,0)));
             }
         }
 
         private void GenerateFlowers()
         {
-            for (int i = 0; i < 3000; i++)
+            for (int x = -50000; x <= 50000; x += 1000)
             {
-                staticObjects.Add(new Flower());
+                for (int z = -35000; z <= 35000; z += random.Next(1000, 1500))
+                {
+                    if (x > 28000 || x < -28000 || z > 18000 || z < -18000)
+                    {
+                        staticObjects.Add(new Flower(new Vector3(x + random.Next(-500, 500), -50, z)));
+                    }
+                }
             }
         }
 

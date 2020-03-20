@@ -18,7 +18,9 @@ namespace MotoresDeJogos
         DuckManager duckManager;
         Duck Player;
         InputManager inputManager;
+        InputHandler inputHandler;
         WorldGeneration worldGeneration;
+        SkyBox skyBox;
         //Pool managers = new Pool();
 
         long initialMemory;
@@ -55,6 +57,7 @@ namespace MotoresDeJogos
             worldGeneration = new WorldGeneration(random);
             MessageBus.Initialize();
             inputManager = new InputManager(this);
+            inputHandler = new InputHandler(this, inputManager);
             duckManager = new DuckManager( random, Content );
             duckManager.Initialize();
             Player = new Duck(Vector3.Zero, Content, random, WorldObjects.Ducks[0]);
@@ -74,6 +77,15 @@ namespace MotoresDeJogos
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
+            AudioManager.Initialize(this);
+
+            skyBox = new SkyBox(GraphicsDevice);
+            skyBox.Textures[0] = Content.Load<Texture2D>("skybox/bkg1_front5");
+            skyBox.Textures[1] = Content.Load<Texture2D>("skybox/bkg1_back6");
+            skyBox.Textures[2] = Content.Load<Texture2D>("skybox/bkg1_bottom4");
+            skyBox.Textures[3] = Content.Load<Texture2D>("skybox/bkg1_top3");
+            skyBox.Textures[4] = Content.Load<Texture2D>("skybox/bkg1_left2");
+            skyBox.Textures[5] = Content.Load<Texture2D>("skybox/bkg1_right1");
         }
 
         /// <summary>
@@ -118,10 +130,13 @@ namespace MotoresDeJogos
             #endregion
 
             inputManager.Update(gameTime);
+            inputHandler.Update(gameTime);
             duckManager.Update(gameTime);
             consoleWriter.Update();
             MessageBus.Update();
             Player.Update(gameTime);
+
+            skyBox.Update();
 
             base.Update(gameTime);
         }
@@ -141,6 +156,8 @@ namespace MotoresDeJogos
             Player.Draw();
 
             DebugShapeRenderer.Draw(gameTime, ModedCamera.View, ModedCamera.Projection);
+
+            skyBox.Draw();
 
             base.Draw(gameTime);
         }

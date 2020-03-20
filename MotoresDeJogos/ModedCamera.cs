@@ -100,7 +100,7 @@ namespace MotoresDeJogos
             Foward();
             Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(60),
                 graphics.Viewport.AspectRatio,
-                1f, 50000);
+                1f, 80000);
 
             //Criar e definir os resterizerStates a utilizar para desenhar a geometria
             //SOLID
