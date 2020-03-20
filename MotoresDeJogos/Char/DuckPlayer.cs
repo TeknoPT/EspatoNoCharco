@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MotoresDeJogos.Abstracts;
 using MotoresDeJogos.Interfaces;
 using MotoresDeJogos.World;
 using System;
@@ -11,10 +12,8 @@ using System.Threading.Tasks;
 
 namespace MotoresDeJogos.Char
 {
-    class Duck :  ICollide
+    class DuckPlayer : ACollidable
     {
-        private bool isPlayer = false;
-
         private float speed;
 
         public float Speed
@@ -41,29 +40,13 @@ namespace MotoresDeJogos.Char
             set { position = value; }
         }
 
-        private BoundingSphere boundingSphere;
-
-        public BoundingSphere BoundingShpere
+        #region Construtores
+        public DuckPlayer(Vector3 position, ContentManager content, Random random, Model model)
         {
-            get { return boundingSphere; }
-            set { boundingSphere = value; }
-        }
-
-        private Boolean alive;
-
-        public Boolean Alive
-        {
-            get { return alive; }
-            set { alive = value; }
-        }
-
-        public Duck(Vector3 position, ContentManager content, Random random, Model model)
-        {
-            isPlayer = true;
             Initialize(this.position, content, random, model);
         }
 
-        public Duck(ContentManager content, Random random, Model model)
+        public DuckPlayer(ContentManager content, Random random, Model model)
         {
             this.position = new Vector3(random.Next(-WorldGeneration.MAP_SIZE, WorldGeneration.MAP_SIZE), 0, random.Next(-WorldGeneration.MAP_SIZE, WorldGeneration.MAP_SIZE));
             Initialize(this.position, content, random, model);
@@ -72,9 +55,8 @@ namespace MotoresDeJogos.Char
         private void Initialize(Vector3 position, ContentManager content, Random random, Model model)
         {
             this.world = Matrix.CreateTranslation(position);
-            this.speed = (float)random.Next(1, 20);
-            if (this.speed == 0) this.speed = (float)random.Next(1, 20);
-            this.alive = true;
+            this.speed = 20f;
+            this.health = 100f;
             this.Model = model;
 
             #region Creating Bounds
@@ -84,26 +66,24 @@ namespace MotoresDeJogos.Char
             }
             #endregion
         }
+        #endregion
 
         public void Update(GameTime gameTime)
         {
-            if (isPlayer)
+            if (!IsDead())
             {
-                /*world = Matrix.CreateTranslation(ModedCamera.getPosition());
-                boundingSphere.Center = position;*/
-            }
-            else if (alive)
-            {
-                position.Z -= speed * gameTime.ElapsedGameTime.Milliseconds;
-                world = Matrix.CreateTranslation(position);
-
-                boundingSphere.Center = position;
+                if ( ModedCamera.tipoCamera == TipoCamera.SurfaceFollow)
+                {
+                    world = Matrix.CreateTranslation(this.position+ModedCamera.getPosition());
+                    boundingSphere.Center = position;
+                }
+                
             }
         }
 
         public void Draw()
         {
-            if (alive)
+            if (!IsDead())
             {
                 foreach (ModelMesh mesh in model.Meshes)
                 {
@@ -121,17 +101,5 @@ namespace MotoresDeJogos.Char
                 DebugShapeRenderer.AddBoundingSphere(boundingSphere, Color.Green);
             }
         }
-
-        #region Collision
-        public bool IsColliding(BoundingSphere bounding)
-        {
-            return this.boundingSphere.Intersects(bounding);
-        }
-
-        public bool IsColliding(BoundingBox bounding)
-        {
-            return this.boundingSphere.Intersects(bounding);
-        }
-        #endregion
     }
 }

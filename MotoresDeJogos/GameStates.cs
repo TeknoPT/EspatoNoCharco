@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MotoresDeJogos.Interfaces
+namespace MotoresDeJogos
 {
-    interface IKillable
+    public enum GameStates
     {
-        bool IsDead();
-        void Damage();
-        void Destroy();
+        Menu,
+        Play,
+        Pause
     }
 }

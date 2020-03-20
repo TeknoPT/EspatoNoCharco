@@ -70,6 +70,24 @@ namespace MotoresDeJogos
         }
     }
 
+    public class PauseCommand : Command
+    {
+        public PauseCommand()
+        {
+
+        }
+
+        public override void Execute()
+        {
+            if (Game1.gameState == GameStates.Pause)
+                Game1.gameState = GameStates.Play;
+            else if (Game1.gameState == GameStates.Play)
+                Game1.gameState = GameStates.Pause;
+
+            // Trigger menu
+        }
+    }
+
     public class DoNothing : Command
     {
         public override void Execute()

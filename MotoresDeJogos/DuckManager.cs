@@ -10,7 +10,6 @@ namespace MotoresDeJogos
 {
     class DuckManager
     {
-        private int WorldSize = 50000;
         Random random;
         ContentManager Content;
         private static int poolCounter = 500;
@@ -19,8 +18,8 @@ namespace MotoresDeJogos
 
         CollisionDetection collisionDetection;
 
-        private List<Duck> ducksDead = new List<Duck>(poolMaxSize);
-        private List<Duck> ducksAlive = new List<Duck>(poolMaxSize);
+        private List<DuckEnemy> ducksDead = new List<DuckEnemy>(poolMaxSize);
+        private List<DuckEnemy> ducksAlive = new List<DuckEnemy>(poolMaxSize);
 
         public DuckManager(Random random, ContentManager Content)
         {
@@ -31,12 +30,12 @@ namespace MotoresDeJogos
 
         public void Initialize()
         {
-            Duck duck;
-            Model model = WorldObjects.Ducks[0];
+            DuckEnemy duck;
+            Model model = WorldObjects.Ducks[DuckTypes.Green];
 
             for (int i = 0; i < poolMaxSize; i++)
             {
-                duck = new Duck( Content, random, model);
+                duck = new DuckEnemy( Content, random, model);
                 MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ID - {0} | Ship Z:{1}", i, duck.Position.Z)));
                 ducksAlive.Add(duck);
             }   
@@ -44,7 +43,7 @@ namespace MotoresDeJogos
             this.collisionDetection = new CollisionDetection(ducksAlive, ducksDead);
         }
 
-       public void reviveShip(Duck duck)
+       public void reviveShip(DuckEnemy duck)
         {
             if (poolCounter < poolMaxSize)
             {
@@ -54,7 +53,7 @@ namespace MotoresDeJogos
             }
         }
 
-        public void sendToGrave(Duck duck)
+        public void sendToGrave(DuckEnemy duck)
         {
             if ( poolCounter > 0)
             {
@@ -67,22 +66,22 @@ namespace MotoresDeJogos
         public void Update(GameTime gameTime)
         {
            
-            foreach (Duck duck in ducksAlive)
+            foreach (DuckEnemy duck in ducksAlive)
             {
-                if (duck.Alive ) duck.Update(gameTime);
+                if ( !duck.IsDead() ) duck.Update(gameTime);
                 else
                 {
                     sendToGrave(duck);
                 }
             }
 
-            foreach(Duck duck in ducksDead)
+            foreach(DuckEnemy duck in ducksDead)
             {
                 ducksAlive.Remove(duck);
             }
             
             timer += gameTime.ElapsedGameTime.Milliseconds;
-            if (timer > 100)
+            if (timer > 30)
             {
                 collisionDetection.CheckCollison();
                 timer = 0;
@@ -91,7 +90,7 @@ namespace MotoresDeJogos
 
         public void Draw()
         {
-            foreach (Duck duck in ducksAlive)
+            foreach (DuckEnemy duck in ducksAlive)
             {
                 if (ModedCamera.frustum.Intersects(duck.BoundingShpere))
                 {

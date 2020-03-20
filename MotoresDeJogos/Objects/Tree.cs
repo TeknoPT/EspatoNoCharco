@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MotoresDeJogos.Interfaces;
+using MotoresDeJogos.Models;
 using MotoresDeJogos.World;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,9 @@ namespace MotoresDeJogos.Objects
 {
     class Tree : IStatic, IGenerate, IMDrawable
     {
-        private Model model;
+        private TreeModel model;
 
-        public Model Model
+        public TreeModel Model
         {
             get { return model; }
             set { model = value; }
@@ -30,16 +31,16 @@ namespace MotoresDeJogos.Objects
 
         private Matrix world;
 
-        public Tree()
+        public Tree(Vector3 position, TreeModel model)
         {
-            model = World.WorldObjects.Tree;
-            this.position = Generate();
+            this.model = model;
+            this.position = position;
             this.world = Matrix.CreateTranslation(position);
         }
 
         public void Draw()
         {
-            foreach (ModelMesh mesh in model.Meshes)
+            foreach (ModelMesh mesh in model.Model.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MotoresDeJogos.Abstracts;
 using MotoresDeJogos.Interfaces;
+using MotoresDeJogos.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MotoresDeJogos.Objects
 {
-    class Fish : ICollide, IStatic, IGenerate, IMDrawable
+    class Fish : ACollidable, IStatic, IGenerate, IMDrawable
     {
         private float speed;
 
@@ -19,9 +21,9 @@ namespace MotoresDeJogos.Objects
             set { speed = value; }
         }
 
-        private Model model;
+        private FishModel model;
 
-        public Model Model
+        public FishModel Model
         {
             get { return model; }
             set { model = value; }
@@ -35,26 +37,18 @@ namespace MotoresDeJogos.Objects
             set { position = value; }
         }
 
-        private BoundingSphere boundingSphere;
-
-        public BoundingSphere BoundingShpere
-        {
-            get { return boundingSphere; }
-            set { boundingSphere = value; }
-        }
-
         private Matrix world;
 
-        public Fish()
+        public Fish(FishModel model)
         {
-            model = World.WorldObjects.Fish;
+            this.model = model;
             this.position = Generate();
             this.world = Matrix.CreateTranslation(position);
 
             #region Creating Bounds
-            foreach (ModelMesh mesh in this.model.Meshes)
+            foreach (ModelMesh mesh in this.model.Model.Meshes)
             {
-                boundingSphere = BoundingSphere.CreateMerged(this.boundingSphere, mesh.BoundingSphere);
+                this.boundingSphere = BoundingSphere.CreateMerged(this.boundingSphere, mesh.BoundingSphere);
             }
             #endregion
         }
@@ -66,7 +60,7 @@ namespace MotoresDeJogos.Objects
 
         public void Draw()
         {
-            foreach (ModelMesh mesh in model.Meshes)
+            foreach (ModelMesh mesh in model.Model.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
@@ -79,18 +73,6 @@ namespace MotoresDeJogos.Objects
 
                 mesh.Draw();
             }
-        }
-
-
-        // Interfaces
-        public bool IsColliding(BoundingSphere bounding)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsColliding(BoundingBox bounding)
-        {
-            throw new NotImplementedException();
         }
 
         public bool IsStatic()

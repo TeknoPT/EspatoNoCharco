@@ -16,17 +16,20 @@ namespace MotoresDeJogos
         Random random;
         ConsoleWriter consoleWriter;
         DuckManager duckManager;
-        Duck Player;
+        DuckPlayer Player;
         InputManager inputManager;
         InputHandler inputHandler;
         WorldGeneration worldGeneration;
+        public static GameStates gameState = GameStates.Play;
         SkyBox skyBox;
         //Pool managers = new Pool();
-
+       
+        #region Memory Variables
         long initialMemory;
         bool retrieveInitialMemory;
         long lastMemMeasure;
         long mem;
+        #endregion
 
         public Game1()
         {
@@ -60,12 +63,13 @@ namespace MotoresDeJogos
             inputHandler = new InputHandler(this, inputManager);
             duckManager = new DuckManager( random, Content );
             duckManager.Initialize();
-            Player = new Duck(Vector3.Zero, Content, random, WorldObjects.Ducks[0]);
+            Player = new DuckPlayer(Vector3.Zero, Content, random, WorldObjects.Ducks[DuckTypes.Red]);
 
             consoleWriter = new ConsoleWriter();
             retrieveInitialMemory = true;
             lastMemMeasure = 0;
             mem = 0;
+            this.IsMouseVisible = true;
 
             base.Initialize();
         }
@@ -110,7 +114,19 @@ namespace MotoresDeJogos
             #endregion
 
             //camera.Update(gameTime);
-            ModedCamera.Update(gameTime, graphics.GraphicsDevice);
+
+            #region Cursor State
+            switch (gameState)
+            {
+                case GameStates.Play:
+                    this.IsMouseVisible = false;
+                    break;
+                case GameStates.Pause:
+                case GameStates.Menu:
+                    this.IsMouseVisible = true;
+                    break;
+            }
+            #endregion
 
             #region Garbage Collector Check
             if (retrieveInitialMemory)
@@ -131,11 +147,18 @@ namespace MotoresDeJogos
 
             inputManager.Update(gameTime);
             inputHandler.Update(gameTime);
-            duckManager.Update(gameTime);
-            consoleWriter.Update();
-            MessageBus.Update();
-            Player.Update(gameTime);
 
+
+            if (gameState == GameStates.Play )
+            {
+                ModedCamera.Update(gameTime, graphics.GraphicsDevice);
+                duckManager.Update(gameTime);
+                consoleWriter.Update();
+                MessageBus.Update();
+                Player.Update(gameTime);
+            }
+
+            MessageBus.Update();
             skyBox.Update();
 
             base.Update(gameTime);

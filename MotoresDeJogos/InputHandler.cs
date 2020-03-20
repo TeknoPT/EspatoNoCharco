@@ -8,7 +8,7 @@ namespace MotoresDeJogos
     public class InputHandler : GameComponent
     {
         // All Inputs Pass throw here
-        Command buttonUp, buttonDown, buttonRight, buttonLeft, buttonFire;
+        Command buttonUp, buttonDown, buttonRight, buttonLeft, buttonFire, buttonPause;
         InputManager inputManager;
 
         public InputHandler(Game game, InputManager inputManager) : base(game)
@@ -21,6 +21,8 @@ namespace MotoresDeJogos
             buttonLeft = new MoveCommand(MoveDirection.LEFT);
             // Attack
             buttonFire = new AttackCommand(new RedAttack(20, "attack_R"));
+            // PauseButton
+            buttonPause = new PauseCommand();
         }
 
         public override void Update(GameTime gameTime)
@@ -52,6 +54,13 @@ namespace MotoresDeJogos
             if (inputManager.JustPressed(Keys.Space))
             {
                 buttonFire.Execute();
+            }
+
+
+            // Pause
+            if (inputManager.JustPressed(Keys.P))
+            {
+                buttonPause.Execute();
             }
 
             // Test for DataManager

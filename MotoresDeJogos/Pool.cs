@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MotoresDeJogos.Interfaces;
+using MotoresDeJogos.Models;
+using MotoresDeJogos.Objects;
 using MotoresDeJogos.World;
 using System;
 using System.Collections.Generic;
@@ -10,19 +13,18 @@ using System.Threading.Tasks;
 
 namespace MotoresDeJogos
 {
-    class Pool<T>
+    class Pool<T , TModel> where TModel : BaseModel where T : BaseObjects,  new()
     {
-        private int WorldSize = 50000;
         Random random;
         ContentManager Content;
-        private static int poolCounter = 500;
+        private static int poolCounter = 1000;
         public static int poolMaxSize = 500;
         private int timer = 0;
 
         CollisionDetection collisionDetection;
 
-        private List<Ship> shipsDead = new List<Ship>(poolMaxSize);
-        private List<Ship> shipsAlive = new List<Ship>(poolMaxSize);
+        private List<T> listDead = new List<T>(poolMaxSize);
+        private List<T> listAlive = new List<T>(poolMaxSize);
 
         public Pool(Random random, ContentManager Content)
         {
@@ -32,19 +34,19 @@ namespace MotoresDeJogos
 
         public void Initialize()
         {
-            Ship ship;
-            Model model = WorldObjects.Flower;
+            T objectType;
+            
+            //K = WorldObjects.Flower;
 
             for (int i = 0; i < poolMaxSize; i++)
             {
-                ship = new Ship(new Vector3(random.Next(-WorldSize, WorldSize), random.Next(-WorldSize, WorldSize), random.Next(-WorldSize, WorldSize)), Content, random, model);
-                MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ID - {0} | Ship Z:{1}", i, ship.Position.Z)));
-                shipsAlive.Add(ship);
+                objectType = new T();
+                listAlive.Add(objectType);
             }
             //this.collisionDetection = new CollisionDetection(Ducks, shipsDead);
         }
 
-        public void reviveShip(Ship ship)
+        /*public void reviveShip(Ship ship)
         {
             if (poolCounter < poolMaxSize)
             {
@@ -98,6 +100,6 @@ namespace MotoresDeJogos
                     ship.Draw();
                 }
             }
-        }
+        }*/
     }
 }
