@@ -61,9 +61,16 @@ namespace MotoresDeJogos
         }
         #endregion
 
-        private void AddObjects(List<ACollidable> objects)
+        #region Add objects with different ways
+        public void AddObjects(List<ACollidable> objects)
         {
             this.worldObjects.Union(objects);
         }
+
+        public void AddObjects(ACollidable collidable)
+        {
+            this.worldObjects.Add(collidable);
+        }
+        #endregion
     }
 }

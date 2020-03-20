@@ -50,7 +50,7 @@ namespace MotoresDeJogos.Abstracts
             return boundingSphere.Intersects(bounding);
         }
 
-        public void Damage()
+        public virtual void Damage()
         {
             if ( health > 0)
             {
@@ -58,12 +58,12 @@ namespace MotoresDeJogos.Abstracts
             }
         }
 
-        public bool IsDead()
+        public virtual bool IsDead()
         {
             return health <= 0;
         }
 
-        public void Destroy()
+        public virtual void Destroy()
         {
             health = 0;
         }

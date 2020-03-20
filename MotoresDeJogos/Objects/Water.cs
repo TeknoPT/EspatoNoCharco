@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MotoresDeJogos.Abstracts;
 using MotoresDeJogos.Interfaces;
 using MotoresDeJogos.Models;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MotoresDeJogos.Objects
 {
-    class Water : IStatic, IGenerate, IMDrawable
+    class Water : ACollidable, IStatic, IGenerate, IMDrawable
     {
         private WaterModel model;
 
@@ -26,14 +27,6 @@ namespace MotoresDeJogos.Objects
         {
             get { return position; }
             set { position = value; }
-        }
-
-        private BoundingBox boundingBox;
-
-        public BoundingBox BoundingBox
-        {
-            get { return boundingBox; }
-            set { boundingBox = value; }
         }
 
         private Matrix world;
@@ -105,5 +98,21 @@ namespace MotoresDeJogos.Objects
         {
             return new Vector3(0,-11000f,0);
         }
+
+        public override void Damage()
+        {
+
+        }
+
+        public override bool IsDead()
+        {
+            return false;
+        }
+
+        public override void Destroy()
+        {
+
+        }
+
     }
 }

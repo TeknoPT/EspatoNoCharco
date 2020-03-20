@@ -55,8 +55,7 @@ namespace MotoresDeJogos.Char
         private void Initialize(Vector3 position, ContentManager content, Random random, Model model)
         {
             this.world = Matrix.CreateTranslation(position);
-            this.speed = (float)random.Next(1, 20);
-            if (this.speed == 0) this.speed = (float)random.Next(1, 20);
+            this.speed = 20f;
             this.health = 100f;
             this.Model = model;
 
@@ -71,7 +70,7 @@ namespace MotoresDeJogos.Char
 
         public void Update(GameTime gameTime)
         {
-            if (!this.IsDead())
+            if (!IsDead())
             {
                 if ( ModedCamera.tipoCamera == TipoCamera.SurfaceFollow)
                 {
@@ -84,7 +83,7 @@ namespace MotoresDeJogos.Char
 
         public void Draw()
         {
-            if (!this.IsDead())
+            if (!IsDead())
             {
                 foreach (ModelMesh mesh in model.Meshes)
                 {
