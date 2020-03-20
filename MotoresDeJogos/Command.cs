@@ -55,6 +55,21 @@ namespace MotoresDeJogos
         }
     }
 
+    public class AttackCommand : Command
+    {
+        Attack attack;
+
+        public AttackCommand(Attack attack)
+        {
+            this.attack = attack;
+        }
+
+        public override void Execute()
+        {
+            attack.Activate();
+        }
+    }
+
     public class DoNothing : Command
     {
         public override void Execute()

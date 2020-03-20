@@ -24,7 +24,7 @@ namespace MotoresDeJogos
         Button2
     }
 
-    class InputManager : GameComponent
+    public class InputManager : GameComponent
     {
         public int GamePadIndex;
         public GamePadState CurrentState;

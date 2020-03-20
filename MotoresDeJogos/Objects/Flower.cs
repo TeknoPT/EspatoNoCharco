@@ -12,20 +12,13 @@ namespace MotoresDeJogos.Objects
 {
     class Flower : ParentWorldObject
     {
-
-        public Flower()
+        public Flower(Vector3 position)
         {
-            model = World.WorldObjects.Flower;
-            this.position = Generate();
-            this.world = Matrix.CreateTranslation(position);
+            model = WorldObjects.Flower;
+            world = Matrix.CreateTranslation(position);
         }
 
-        public bool IsStatic()
-        {
-            return true;
-        }
-
-        public Vector3 Generate()
+        public new Vector3 Generate()
         {
             int x = 0;
             int z = 0;
