@@ -149,5 +149,8 @@ namespace MotoresDeJogos.World
 
             graphicsDevice.DepthStencilState = DepthStencilState.Default;
         }
+
+
+        
     }
 }
