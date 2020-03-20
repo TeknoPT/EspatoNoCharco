@@ -50,9 +50,12 @@ namespace MotoresDeJogos.World
         {
             for (int x = -50000; x <= 50000; x += 1000)
             {
-                for (int z = -35000; z <= 35000; z += 1000)
+                for (int z = -35000; z <= 35000; z += random.Next(1000, 1500))
                 {
-                    staticObjects.Add(new Flower(new Vector3(x, -50, z)));
+                    if (x > 28000 || x < -28000 || z > 18000 || z < -18000)
+                    {
+                        staticObjects.Add(new Flower(new Vector3(x + random.Next(-500, 500), -50, z)));
+                    }
                 }
             }
         }
