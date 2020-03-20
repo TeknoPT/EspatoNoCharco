@@ -75,6 +75,7 @@
     <Compile Include="Models\TerrainModel.cs" />
     <Compile Include="Models\WaterModel.cs" />
     <Compile Include="Models\TreeModel.cs" />
+    <Compile Include="Objects\BaseObjects.cs" />
     <Compile Include="Objects\Fish.cs" />
     <Compile Include="Objects\ObjectType.cs" />
     <Compile Include="Objects\Tree.cs" />

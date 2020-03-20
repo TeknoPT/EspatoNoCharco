@@ -1,4 +1,5 @@
 ﻿using MotoresDeJogos.Char;
+using MotoresDeJogos.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace MotoresDeJogos
     {
         private List<DuckEnemy> ducksAlive;
         private List<DuckEnemy> ducksDead;
+
+        private List<ICollide> worldObjects;
 
         public CollisionDetection(List<DuckEnemy> ducksAlive, List<DuckEnemy> ducksDead)
         {
@@ -38,5 +41,10 @@ namespace MotoresDeJogos
             }            
         }
         #endregion
+
+        private void AddObjects(List<ICollide> objects)
+        {
+            this.worldObjects.Union(objects);
+        }
     }
 }
