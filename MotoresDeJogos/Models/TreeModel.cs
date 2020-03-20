@@ -4,7 +4,7 @@ namespace MotoresDeJogos.Models
 {
     class TreeModel : BaseModel
     {
-        public TreeModel(Model model)
+        public TreeModel(Model model) : base(model)
         {
             this.model = model;
         }

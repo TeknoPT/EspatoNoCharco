@@ -68,7 +68,7 @@ namespace MotoresDeJogos
            
             foreach (DuckEnemy duck in ducksAlive)
             {
-                if (duck.Alive ) duck.Update(gameTime);
+                if ( !duck.IsDead() ) duck.Update(gameTime);
                 else
                 {
                     sendToGrave(duck);
@@ -81,7 +81,7 @@ namespace MotoresDeJogos
             }
             
             timer += gameTime.ElapsedGameTime.Milliseconds;
-            if (timer > 100)
+            if (timer > 30)
             {
                 collisionDetection.CheckCollison();
                 timer = 0;

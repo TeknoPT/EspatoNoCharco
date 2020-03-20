@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MotoresDeJogos.Abstracts;
 using MotoresDeJogos.Interfaces;
 using MotoresDeJogos.World;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MotoresDeJogos
 {
-    class DuckEnemy :  ICollide
+    class DuckEnemy :  ACollidable
     {
         private Random random;
 
@@ -40,23 +41,7 @@ namespace MotoresDeJogos
             get { return position; }
             set { position = value; }
         }
-
-        private BoundingSphere boundingSphere;
-
-        public BoundingSphere BoundingShpere
-        {
-            get { return boundingSphere; }
-            set { boundingSphere = value; }
-        }
-
-        private Boolean alive;
-
-        public Boolean Alive
-        {
-            get { return alive; }
-            set { alive = value; }
-        }
-
+        
         public DuckEnemy(Vector3 position, ContentManager content, Random random, Model model)
         {
             Initialize(this.position, content, random, model);
@@ -74,7 +59,7 @@ namespace MotoresDeJogos
             this.world = Matrix.CreateTranslation(position);
             this.speed = (float)random.Next(1, 20);
             if (this.speed == 0) this.speed = (float)random.Next(1, 20);
-            this.alive = true;
+            this.health = 100f;
             this.Model = model;
 
             #region Creating Bounds
@@ -87,7 +72,7 @@ namespace MotoresDeJogos
 
         public void Update(GameTime gameTime)
         {
-            if (alive)
+            if (!IsDead())
             {
                 RandomMovement(gameTime);
             }
@@ -95,7 +80,7 @@ namespace MotoresDeJogos
 
         public void Draw()
         {
-            if (alive)
+            if (!IsDead())
             {
                 foreach (ModelMesh mesh in model.Meshes)
                 {
@@ -123,17 +108,5 @@ namespace MotoresDeJogos
 
             boundingSphere.Center = position;
         }
-
-        #region Collision
-        public bool IsColliding(BoundingSphere bounding)
-        {
-            return this.boundingSphere.Intersects(bounding);
-        }
-
-        public bool IsColliding(BoundingBox bounding)
-        {
-            return this.boundingSphere.Intersects(bounding);
-        }
-        #endregion
     }
 }

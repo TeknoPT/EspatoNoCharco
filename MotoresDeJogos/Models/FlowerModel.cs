@@ -4,7 +4,7 @@ namespace MotoresDeJogos.Models
 {
     class FlowerModel : BaseModel
     {
-        public FlowerModel(Model model)
+        public FlowerModel(Model model) : base(model)
         {
             this.model = model;
         }

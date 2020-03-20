@@ -59,6 +59,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Abstracts\ACollidable.cs" />
     <Compile Include="Char\DuckEnemy.cs" />
     <Compile Include="Char\DuckPlayer.cs" />
     <Compile Include="GameStates.cs" />

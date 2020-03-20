@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MotoresDeJogos.Abstracts;
 using MotoresDeJogos.Interfaces;
 using MotoresDeJogos.Models;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MotoresDeJogos.Objects
 {
-    class Fish : ICollide, IStatic, IGenerate, IMDrawable
+    class Fish : ACollidable, IStatic, IGenerate, IMDrawable
     {
         private float speed;
 
@@ -36,14 +37,6 @@ namespace MotoresDeJogos.Objects
             set { position = value; }
         }
 
-        private BoundingSphere boundingSphere;
-
-        public BoundingSphere BoundingShpere
-        {
-            get { return boundingSphere; }
-            set { boundingSphere = value; }
-        }
-
         private Matrix world;
 
         public Fish(FishModel model)
@@ -55,7 +48,7 @@ namespace MotoresDeJogos.Objects
             #region Creating Bounds
             foreach (ModelMesh mesh in this.model.Model.Meshes)
             {
-                boundingSphere = BoundingSphere.CreateMerged(this.boundingSphere, mesh.BoundingSphere);
+                this.boundingSphere = BoundingSphere.CreateMerged(this.boundingSphere, mesh.BoundingSphere);
             }
             #endregion
         }
@@ -80,18 +73,6 @@ namespace MotoresDeJogos.Objects
 
                 mesh.Draw();
             }
-        }
-
-
-        // Interfaces
-        public bool IsColliding(BoundingSphere bounding)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsColliding(BoundingBox bounding)
-        {
-            throw new NotImplementedException();
         }
 
         public bool IsStatic()
