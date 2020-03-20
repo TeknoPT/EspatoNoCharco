@@ -30,13 +30,6 @@ namespace MotoresDeJogos.Objects
         }
 
         protected Matrix world;
-        
-        public Flower(FlowerModel model)
-        {
-            this.model = model;
-            this.position = Generate();
-            this.world = Matrix.CreateTranslation(position);
-        }
 
         public void Draw()
         {
@@ -55,9 +48,13 @@ namespace MotoresDeJogos.Objects
             }
         }
 
-        public bool IsStatic()
+        public bool IsStatic() => true;
+
+        public Flower(Vector3 position, FlowerModel model)
         {
-            return true;
+            this.model = model;
+            this.position = position;
+            world = Matrix.CreateTranslation(position);
         }
 
         public Vector3 Generate()

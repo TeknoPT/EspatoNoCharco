@@ -18,14 +18,18 @@ namespace MotoresDeJogos
         DuckManager duckManager;
         DuckPlayer Player;
         InputManager inputManager;
+        InputHandler inputHandler;
         WorldGeneration worldGeneration;
-        GameStates gameState = GameStates.Play;
+        public static GameStates gameState = GameStates.Play;
+        SkyBox skyBox;
         //Pool managers = new Pool();
-
+       
+        #region Memory Variables
         long initialMemory;
         bool retrieveInitialMemory;
         long lastMemMeasure;
         long mem;
+        #endregion
 
         public Game1()
         {
@@ -56,6 +60,7 @@ namespace MotoresDeJogos
             worldGeneration = new WorldGeneration(random);
             MessageBus.Initialize();
             inputManager = new InputManager(this);
+            inputHandler = new InputHandler(this, inputManager);
             duckManager = new DuckManager( random, Content );
             duckManager.Initialize();
             Player = new DuckPlayer(Vector3.Zero, Content, random, WorldObjects.Ducks[DuckTypes.Red]);
@@ -64,6 +69,7 @@ namespace MotoresDeJogos
             retrieveInitialMemory = true;
             lastMemMeasure = 0;
             mem = 0;
+            this.IsMouseVisible = true;
 
             base.Initialize();
         }
@@ -75,6 +81,15 @@ namespace MotoresDeJogos
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
+            AudioManager.Initialize(this);
+
+            skyBox = new SkyBox(GraphicsDevice);
+            skyBox.Textures[0] = Content.Load<Texture2D>("skybox/bkg1_front5");
+            skyBox.Textures[1] = Content.Load<Texture2D>("skybox/bkg1_back6");
+            skyBox.Textures[2] = Content.Load<Texture2D>("skybox/bkg1_bottom4");
+            skyBox.Textures[3] = Content.Load<Texture2D>("skybox/bkg1_top3");
+            skyBox.Textures[4] = Content.Load<Texture2D>("skybox/bkg1_left2");
+            skyBox.Textures[5] = Content.Load<Texture2D>("skybox/bkg1_right1");
         }
 
         /// <summary>
@@ -100,6 +115,19 @@ namespace MotoresDeJogos
 
             //camera.Update(gameTime);
 
+            #region Cursor State
+            switch (gameState)
+            {
+                case GameStates.Play:
+                    this.IsMouseVisible = false;
+                    break;
+                case GameStates.Pause:
+                case GameStates.Menu:
+                    this.IsMouseVisible = true;
+                    break;
+            }
+            #endregion
+
             #region Garbage Collector Check
             if (retrieveInitialMemory)
             {
@@ -118,14 +146,21 @@ namespace MotoresDeJogos
             #endregion
 
             inputManager.Update(gameTime);
+            inputHandler.Update(gameTime);
+
+
             if (gameState == GameStates.Play )
             {
                 ModedCamera.Update(gameTime, graphics.GraphicsDevice);
                 duckManager.Update(gameTime);
                 consoleWriter.Update();
+                MessageBus.Update();
                 Player.Update(gameTime);
             }
+
             MessageBus.Update();
+            skyBox.Update();
+
             base.Update(gameTime);
         }
 
@@ -144,6 +179,8 @@ namespace MotoresDeJogos
             Player.Draw();
 
             DebugShapeRenderer.Draw(gameTime, ModedCamera.View, ModedCamera.Projection);
+
+            skyBox.Draw();
 
             base.Draw(gameTime);
         }

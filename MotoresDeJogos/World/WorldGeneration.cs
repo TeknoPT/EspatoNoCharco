@@ -45,18 +45,32 @@ namespace MotoresDeJogos.World
         private void GenerateTrees()
         {
             TreeModel treeModel = new TreeModel(WorldObjects.Tree);
-            for (int i = 0; i < 100; i++)
+            int tempX = 0;
+            for (int x = -50000; x <= 50000; x += 15000)
             {
-                staticObjects.Add(new Tree(treeModel));
+                for (int z = -35000; z <= 35000; z += random.Next(1000, 1500))
+                {
+                    if (tempX > 28000 || tempX < -28000 || z > 18000 || z < -18000)
+                    {
+                        staticObjects.Add(new Tree(new Vector3(x + random.Next(-4000, 4000), -50, z), treeModel));
+                    }
+                }
             }
         }
 
         private void GenerateFlowers()
         {
             FlowerModel flowerModel = new FlowerModel(WorldObjects.Flower);
-            for (int i = 0; i < 3000; i++)
+
+            for (int x = -50000; x <= 50000; x += 1000)
             {
-                staticObjects.Add(new Flower(flowerModel));
+                for (int z = -35000; z <= 35000; z += random.Next(1000, 1500))
+                {
+                    if (x > 28000 || x < -28000 || z > 18000 || z < -18000)
+                    {
+                        staticObjects.Add(new Flower(new Vector3(x + random.Next(-500, 500), -50, z), flowerModel));
+                    }
+                }
             }
         }
 

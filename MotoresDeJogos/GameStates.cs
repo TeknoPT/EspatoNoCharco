@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MotoresDeJogos
 {
-    enum GameStates
+    public enum GameStates
     {
         Menu,
         Play,

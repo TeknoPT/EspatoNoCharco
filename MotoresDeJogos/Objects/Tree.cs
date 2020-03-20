@@ -31,10 +31,10 @@ namespace MotoresDeJogos.Objects
 
         private Matrix world;
 
-        public Tree(TreeModel model)
+        public Tree(Vector3 position, TreeModel model)
         {
             this.model = model;
-            this.position = Generate();
+            this.position = position;
             this.world = Matrix.CreateTranslation(position);
         }
 
