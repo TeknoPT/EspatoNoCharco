@@ -45,7 +45,7 @@ namespace MotoresDeJogos
                 BackgroundColor = Color.CadetBlue,
                 Location = new Vector2(700, 750)
             };
-            creditsBtn.Clicked += creditsBtn_Clicked;
+            //creditsBtn.Clicked += creditsBtn_Clicked;
             Controls.Add(creditsBtn);
 
             exitBtn = new Button()
