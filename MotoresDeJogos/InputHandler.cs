@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using MotoresDeJogos.Char;
 using MotoresDeJogos.World;
 
 namespace MotoresDeJogos
@@ -24,7 +25,7 @@ namespace MotoresDeJogos
             buttonRotLeft = new MoveCommand(MoveDirection.ROTLEFT);
             buttonRotRight = new MoveCommand(MoveDirection.ROTRIGHT);
             // Attack
-            buttonFire = new AttackCommand();
+            buttonFire = new AttackCommand(Player.WorldPosition(), Player.GetRotation(), Player.duckModelType);
             // PauseButton
             buttonPause = new PauseCommand();
             // Change Character Model
@@ -67,6 +68,7 @@ namespace MotoresDeJogos
 
             if (inputManager.JustPressed(Keys.Space))
             {
+                ((AttackCommand)buttonFire).UpdateVariables(Player.WorldPosition(), Player.GetRotation(), Player.duckModelType);
                 buttonFire.Execute();
             }
 

@@ -18,7 +18,17 @@ namespace MotoresDeJogos
     {
         Vector3 currentGravityValue;
 
+        Vector3 valueToAdd;
+
+        private Matrix AttackWorld;
+
+        private DuckTypes duckModelType;
+
+        Command command;
+
         private Random random;
+
+        private float moveSoundTimer;
 
         private float speed;
 
@@ -36,6 +46,8 @@ namespace MotoresDeJogos
             set { model = value; }
         }
 
+        private float rotation;
+
         private Matrix world;
 
         private Vector3 position;
@@ -46,21 +58,23 @@ namespace MotoresDeJogos
             set { position = value; }
         }
         
-        public DuckEnemy(Vector3 position, Random random, Model model)
+        public DuckEnemy(Vector3 position, Random random, Model model, DuckTypes duckModelType)
         {
-            Initialize(position, random, model);
-        }
-
-        private void Initialize(Vector3 position, Random random, Model model)
-        {
-            currentGravityValue = new Vector3(0, -5f, 0);
             this.random = random;
+            currentGravityValue = Physics.GravityAmount();
             OnGround = false;
+            OnWall = false;
+            rotation = 0f;
             this.world = Matrix.CreateTranslation(position);
             this.speed = (float)random.Next(1, 20);
             if (this.speed == 0) this.speed = (float)random.Next(1, 20);
-            this.health = 100f;
+
+            this.duckModelType = duckModelType;
             this.Model = model;
+            command = new AttackCommand(world, rotation, duckModelType);
+            
+            this.health = 100f;
+            moveSoundTimer = (float)random.Next(1, 5);
 
             #region Creating Bounds
             foreach (ModelMesh mesh in this.model.Meshes)
@@ -70,6 +84,11 @@ namespace MotoresDeJogos
             #endregion
         }
 
+        public void AI()
+        {
+
+        }
+
         public void Update(float deltaTime)
         {
             if (!IsDead())
@@ -77,13 +96,26 @@ namespace MotoresDeJogos
                 if (!OnGround)
                 {
                     currentGravityValue += Physics.GravityAmount();
-                    Vector3 valueToAdd = (currentGravityValue) * deltaTime;
+                    valueToAdd = (currentGravityValue) * deltaTime;
                     world = Matrix.CreateTranslation(world.Translation + valueToAdd);
                 }
                 else
                 {
-                    //Vector3 valueToAdd =  speed * deltaTime;
+                    AI();
+                    // valueToAdd =  speed * deltaTime;
                     //worldPosition = Matrix.CreateRotationY(currentRotation + rotation) * Matrix.CreateTranslation(world.Translation + valueToAdd);
+                }
+
+                if (moveSoundTimer > 0)
+                {
+                    moveSoundTimer -= deltaTime;
+                }
+                else
+                {
+                    AttackWorld = Matrix.CreateTranslation(world.Translation + world.Forward * 50);
+                    ((AttackCommand)command).UpdateVariables(world, rotation, duckModelType);
+                    command.Execute();
+                    moveSoundTimer = (float) random.Next(1, 10);
                 }
 
                 //currentRotation += rotation;

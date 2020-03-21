@@ -20,6 +20,7 @@ namespace MotoresDeJogos.Char
 
         public static Matrix cameraView;
         static Matrix worldPosition;
+        static Matrix tempWorldPosition;
         static Matrix projection;
 
         static Model playerModel;
@@ -31,6 +32,7 @@ namespace MotoresDeJogos.Char
         static float moveSoundTimer;
 
         static Vector3 currentGravityValue;
+        static Vector3 valueToAdd;
 
         static RasterizerState rasterizerStateSolid;
 
@@ -122,22 +124,52 @@ namespace MotoresDeJogos.Char
             MovePlayer(Vector3.Zero, rotationAmount, deltaTime);
         }
 
+        /// <summary>
+        /// Check if the next position is not a wall
+        /// </summary>
+        /// <param name="valueToAdd"></param>
+        /// <returns></returns>
+        private static bool CheckIfHitWall()
+        {
+            return Player.PlayerCollider().Intersects(Controller.WorldBoundaries.CentralOvalSphere) ||
+                Player.PlayerCollider().Intersects(Controller.WorldBoundaries.LimitFront_BoundingBox) ||
+                Player.PlayerCollider().Intersects(Controller.WorldBoundaries.LimitBack_BoundingBox) ||
+                Player.PlayerCollider().Intersects(Controller.WorldBoundaries.LimitLeft_BoundingBox) ||
+                Player.PlayerCollider().Intersects(Controller.WorldBoundaries.LimitRight_BoundingBox);
+        }
+
+
         private static void MovePlayer(Vector3 vectorToAdd, float rotation, float deltaTime)
         {
             if (!collision)
             {
                 currentGravityValue += Physics.GravityAmount();
-                Vector3 valueToAdd = (vectorToAdd * movementSpeed + currentGravityValue) * deltaTime;
-                worldPosition =  Matrix.CreateRotationY(currentRotation + rotation) * Matrix.CreateTranslation(worldPosition.Translation + valueToAdd);
+                valueToAdd = (vectorToAdd * movementSpeed + currentGravityValue) * deltaTime;
             }
             else
             {
-                Vector3 valueToAdd = vectorToAdd * movementSpeed * deltaTime;
+                valueToAdd = vectorToAdd * movementSpeed * deltaTime;
+            }
+
+            if( !CheckIfHitWall())
+            {
                 worldPosition = Matrix.CreateRotationY(currentRotation + rotation) * Matrix.CreateTranslation(worldPosition.Translation + valueToAdd);
+            }
+            else
+            {
+                tempWorldPosition = worldPosition;
+                worldPosition = Matrix.CreateRotationY(currentRotation + rotation) * Matrix.CreateTranslation(worldPosition.Translation + valueToAdd);
+                boundingSphere.Center = worldPosition.Translation;
+
+                if (CheckIfHitWall())
+                {
+                    worldPosition = tempWorldPosition;
+                }
             }
 
             currentRotation += rotation;
             boundingSphere.Center = worldPosition.Translation;
+
         }
 
         public static float GetRotation()
@@ -183,7 +215,7 @@ namespace MotoresDeJogos.Char
             return boundingSphere;
         }
 
-        static bool InView(BoundingSphere boundingSphere)
+        public static bool InView(BoundingSphere boundingSphere)
         {
             return new BoundingFrustum(cameraView * projection).Intersects(boundingSphere);
         }

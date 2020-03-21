@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static MotoresDeJogos.Managers.Controller;
 
 namespace MotoresDeJogos.Managers
 {
@@ -45,10 +46,16 @@ namespace MotoresDeJogos.Managers
                         objects[i].OnGround  = false;
                     }
                     #endregion
+
+                    #region Check if Colliding with walls
+                    if (CheckIfHitBoundaries(objects[i]))
+                    {
+                        // CODE
+                    }
+                    #endregion
                 }
 
             }
-
 
             // Player Physics Stuff
             if (Player.PlayerCollider().Intersects(controller.FloorCollider()))
@@ -59,7 +66,20 @@ namespace MotoresDeJogos.Managers
             {
                 Player.Collision = false;
             }
+
+            
         }
+
+        #region Check Boundaries
+        private static bool CheckIfHitBoundaries(ACollidable obj)
+        {
+            return obj.IsColliding(WorldBoundaries.CentralOvalSphere) ||
+                obj.IsColliding(WorldBoundaries.LimitFront_BoundingBox) ||
+                obj.IsColliding(WorldBoundaries.LimitBack_BoundingBox) ||
+                obj.IsColliding(WorldBoundaries.LimitLeft_BoundingBox) ||
+                obj.IsColliding(WorldBoundaries.LimitRight_BoundingBox);
+        }
+        #endregion
 
         public static Vector3 GravityAmount()
         {

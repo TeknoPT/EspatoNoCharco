@@ -10,6 +10,7 @@ namespace MotoresDeJogos.Interfaces
     {
         bool IsDead();
         void Damage();
+        void Damage(float damage);
         void Destroy();
     }
 }

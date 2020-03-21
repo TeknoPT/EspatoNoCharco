@@ -13,6 +13,7 @@ namespace MotoresDeJogos.Managers
     {
         Random random;
         ContentManager Content;
+        DuckEnemy tempDuckEnemy;
         private static int poolCounter = 30;
         public static int poolMaxSize = 30;
         private int timer = 0;
@@ -34,8 +35,6 @@ namespace MotoresDeJogos.Managers
 
         public void Initialize()
         {
-            DuckEnemy duck;
-            Model model = WorldObjects.Ducks[DuckTypes.Green];
 
             float xSize = 12000;
             float zSize = 12000;
@@ -46,12 +45,50 @@ namespace MotoresDeJogos.Managers
                 {
                     if (x > 8000 || x < -8000 || z > 8000 || z < -8000)
                     {
-                        duck = new DuckEnemy(new Vector3(x, 0, z), random, model);
-                        ducksAlive.Add(duck);
+                        tempDuckEnemy = RandomDuckEnemy(new Vector3(x, 0, z));
+                        ducksAlive.Add(tempDuckEnemy);
+                        CollisionDetection.AddObject(tempDuckEnemy);
                     }
                 }
             }
-            CollisionDetection.AddObjects(ducksAlive);
+        }
+
+        private DuckEnemy RandomDuckEnemy(Vector3 position)
+        {
+            int duckInt = random.Next(0, 5);
+            DuckTypes duckType;
+            Model model;
+
+            switch (duckInt)
+            {
+                case (int) DuckTypes.Black:
+                    model = WorldObjects.Ducks[DuckTypes.Black];
+                    duckType = DuckTypes.Black;
+                    break;
+                case (int) DuckTypes.White:
+                    model = WorldObjects.Ducks[DuckTypes.White];
+                    duckType = DuckTypes.White;
+                    break;
+                case (int) DuckTypes.Red:
+                    model = WorldObjects.Ducks[DuckTypes.Red];
+                    duckType = DuckTypes.Red;
+                    break;
+                case (int) DuckTypes.Green:
+                    model = WorldObjects.Ducks[DuckTypes.Green];
+                    duckType = DuckTypes.Green;
+                    break;
+                case (int) DuckTypes.Blue:
+                    model = WorldObjects.Ducks[DuckTypes.Blue];
+                    duckType = DuckTypes.Blue;
+                    break;
+                default:
+                    model = WorldObjects.Ducks[DuckTypes.Red];
+                    duckType = DuckTypes.Red;
+                    break;
+            }
+
+
+            return new DuckEnemy(position, random, model, duckType);
         }
 
         public void reviveShip(DuckEnemy duck)
@@ -94,11 +131,10 @@ namespace MotoresDeJogos.Managers
         {
             foreach (DuckEnemy duck in ducksAlive)
             {
-                /*if (ModedCamera.frustum.Intersects(duck.BoundingShpere))
+                if (Player.InView(duck.BoundingShpere))
                 {
                     duck.Draw();
-                }*/
-                duck.Draw();
+                }
             }
         }
     }

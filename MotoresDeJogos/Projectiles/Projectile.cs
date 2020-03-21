@@ -19,18 +19,13 @@ namespace MotoresDeJogos.Projectiles
         float lifeTime;
         Model model;
         Matrix worldPosition;
-        
+        Vector3 valueToAdd;
+
+
         public Projectile(Model model)
         {
             this.model = model;
             health = 0;
-
-            #region Creating Bounds
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                boundingSphere = BoundingSphere.CreateMerged(boundingSphere, mesh.BoundingSphere);
-            }
-            #endregion
         }
 
         public void InitObject(Matrix position, float rotation, float speed, int damage, Model model)
@@ -43,11 +38,13 @@ namespace MotoresDeJogos.Projectiles
             this.speed = speed;
             this.damage = damage;
             this.rotation = rotation;
+
+            boundingSphere = new BoundingSphere(worldPosition.Translation, 250f);
         }
 
         public void Update(float deltaTime)
         {
-            Vector3 valueToAdd = (worldPosition.Forward * speed) * deltaTime;
+            valueToAdd = (worldPosition.Forward * speed) * deltaTime;
             worldPosition = Matrix.CreateRotationY(rotation) * Matrix.CreateTranslation(worldPosition.Translation + valueToAdd);
             boundingSphere.Center = worldPosition.Translation;
             if (lifeTime > 0)

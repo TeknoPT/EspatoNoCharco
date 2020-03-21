@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MotoresDeJogos.Char;
 using MotoresDeJogos.Managers;
 using MotoresDeJogos.World;
 using System;
@@ -28,7 +29,7 @@ namespace MotoresDeJogos.Projectiles
             }
             else
             {
-                Projectile projectile = new Projectile(WorldObjects.Projectiles[ProjectileTypes.Heart]);
+                Projectile projectile = new Projectile(WorldObjects.Projectiles[ProjectileTypes.Cloud]);
                 projectiles.Add(projectile);
                 CollisionDetection.AddObject(projectile);
                 return projectile;
@@ -50,7 +51,7 @@ namespace MotoresDeJogos.Projectiles
         {
             foreach (Projectile projectile in projectiles)
             {
-                if (!projectile.IsDead())
+                if (!projectile.IsDead() && Player.InView(projectile.BoundingShpere))
                 {
                     projectile.Draw();
                 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MotoresDeJogos.Char;
 using MotoresDeJogos.World;
@@ -75,33 +76,46 @@ namespace MotoresDeJogos
 
     public class AttackCommand : Command
     {
+        DuckTypes duckType;
+        Matrix world;
         Attack attack;
+        float rotation;
 
-        public AttackCommand()
+        public AttackCommand(Matrix world, float rotation, DuckTypes duckType)
         {
+            this.world = world;
+            this.rotation = rotation;
+            this.duckType = duckType;
             SelectAttack();
         }
 
         private void SelectAttack()
         {
-            switch (Player.duckModelType)
+            switch (duckType)
             {
                 case DuckTypes.Black:
-                    attack = new SkullAttack(25, "attack_K");
+                    attack = new SkullAttack(world, rotation, 25, "attack_K");
                     break;
                 case DuckTypes.White:
-                    attack = new CloudAttack(25, "attack_W");
+                    attack = new CloudAttack(world, rotation, 25, "attack_W");
                     break;
                 case DuckTypes.Red:
-                    attack = new HeartAttack(25, "attack_R");
+                    attack = new HeartAttack(world, rotation, 25, "attack_R");
                     break;
                 case DuckTypes.Green:
-                    attack = new ToxicAttack(25, "attack_G");
+                    attack = new ToxicAttack(world, rotation, 25, "attack_G");
                     break;
                 case DuckTypes.Blue:
-                    attack = new BlueFireBallAttack(25, "attack_B");
+                    attack = new BlueFireBallAttack(world, rotation, 25, "attack_B");
                     break;
             }
+        }
+
+        public void UpdateVariables(Matrix world, float rotation, DuckTypes duckType)
+        {
+            this.world = world;
+            this.rotation = rotation;
+            this.duckType = duckType;
         }
 
         public override void Execute()

@@ -7,12 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static MotoresDeJogos.Managers.Controller;
 
 namespace MotoresDeJogos.Managers
 {
     static class CollisionDetection
     {
-        private const int MAX_OBJECTS = 100000;
+        private const int MAX_OBJECTS = 10000;
 
         private static List<ACollidable> worldObjectsAlive;
         private static List<ACollidable> worldObjectsDead;
@@ -27,7 +28,7 @@ namespace MotoresDeJogos.Managers
 
         public static void Update()
         {
-            CheckAllCollisions();
+            //CheckAllCollisions();
         }
 
         #region Collision with Object
@@ -35,25 +36,36 @@ namespace MotoresDeJogos.Managers
         {
             for ( int i = 0; i < worldObjectsAlive.Count(); i++)
             {
+                if (worldObjectsAlive[i].IsDead())
+                    continue;
+
                 if (worldObjectsAlive[i].IsColliding(Player.PlayerCollider()))
                 {
                     // TODO
                 }
 
+                #region Check If Projectile Hit Wall
+                if (worldObjectsAlive[i] is Projectile)
+                {
+                    if (CheckIfHitBoundaries(worldObjectsAlive[i]))
+                    {
+                        worldObjectsAlive[i].Destroy();
+                        continue;
+                    }
+                }
+                #endregion
+
+
                 for (int j = 0; j < worldObjectsAlive.Count(); j++)
                 {
                     if (i == j) continue;
 
-                    if (!worldObjectsAlive[i].IsDead())
+                    if (!worldObjectsAlive[j].IsDead())
                     {
                         if (worldObjectsAlive[i].IsColliding(worldObjectsAlive[j].BoundingShpere))
                         {
-                            Console.WriteLine("BATII");
-
-                            if (worldObjectsAlive[i] is Projectile)
+                            if ( worldObjectsAlive[i] is Projectile && worldObjectsAlive[j] is DuckEnemy)
                             {
-                                Console.WriteLine("BATII Dentro");
-
                                 worldObjectsAlive[i].Destroy();
                                 worldObjectsAlive[j].Destroy();
                                 break;
@@ -65,7 +77,18 @@ namespace MotoresDeJogos.Managers
             }
         }
         #endregion
-        
+
+        #region Check Boundaries
+        private static bool CheckIfHitBoundaries(ACollidable obj)
+        {
+            return obj.IsColliding(WorldBoundaries.CentralOvalSphere) ||
+                obj.IsColliding(WorldBoundaries.LimitFront_BoundingBox) ||
+                obj.IsColliding(WorldBoundaries.LimitBack_BoundingBox) ||
+                obj.IsColliding(WorldBoundaries.LimitLeft_BoundingBox) ||
+                obj.IsColliding(WorldBoundaries.LimitRight_BoundingBox);
+        }
+        #endregion
+
         #region Add objects with different ways
         public static void AddObjects(List<ACollidable> objects)
         {

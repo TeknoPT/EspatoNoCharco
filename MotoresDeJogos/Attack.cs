@@ -16,10 +16,13 @@ namespace MotoresDeJogos
     {
         int damage;
         string soundName;
-        // Projectile
+        Matrix world;
+        float rotation;
 
-        public HeartAttack(int damageAmount, string soundName)
+        public HeartAttack(Matrix world, float rotation, int damageAmount, string soundName)
         {
+            this.world = world;
+            this.rotation = rotation;
             damage = damageAmount;
 
             this.soundName = soundName;
@@ -28,7 +31,7 @@ namespace MotoresDeJogos
         public override void Activate()
         {
             Projectile projectile = ProjectilePool.GetProjectile();
-            projectile.InitObject(Player.WorldPosition(), Player.GetRotation(), 6000f, damage, WorldObjects.Projectiles[ProjectileTypes.Heart]);
+            projectile.InitObject(world, rotation, 6000f, damage, WorldObjects.Projectiles[ProjectileTypes.Heart]);
             AudioManager.PlaySoundEffect(soundName);
         }
     }
@@ -37,10 +40,13 @@ namespace MotoresDeJogos
     {
         int damage;
         string soundName;
-        // Projectile
+        Matrix world;
+        float rotation;
 
-        public CloudAttack(int damageAmount, string soundName)
+        public CloudAttack(Matrix world, float rotation, int damageAmount, string soundName)
         {
+            this.world = world;
+            this.rotation = rotation;
             damage = damageAmount;
 
             this.soundName = soundName;
@@ -49,7 +55,7 @@ namespace MotoresDeJogos
         public override void Activate()
         {
             Projectile projectile = ProjectilePool.GetProjectile();
-            projectile.InitObject(Player.WorldPosition(), Player.GetRotation(), 6000f, damage, WorldObjects.Projectiles[ProjectileTypes.Cloud]);
+            projectile.InitObject(world, rotation, 6000f, damage, WorldObjects.Projectiles[ProjectileTypes.Cloud]);
             AudioManager.PlaySoundEffect(soundName);
         }
     }
@@ -58,10 +64,13 @@ namespace MotoresDeJogos
     {
         int damage;
         string soundName;
-        // Projectile
+        Matrix world;
+        float rotation;
 
-        public BlueFireBallAttack(int damageAmount, string soundName)
+        public BlueFireBallAttack(Matrix world, float rotation, int damageAmount, string soundName)
         {
+            this.world = world;
+            this.rotation = rotation;
             damage = damageAmount;
 
             this.soundName = soundName;
@@ -70,7 +79,7 @@ namespace MotoresDeJogos
         public override void Activate()
         {
             Projectile projectile = ProjectilePool.GetProjectile();
-            projectile.InitObject(Player.WorldPosition(), Player.GetRotation(), 6000f, damage, WorldObjects.Projectiles[ProjectileTypes.BlueFireBall]);
+            projectile.InitObject(world, rotation, 6000f, damage, WorldObjects.Projectiles[ProjectileTypes.BlueFireBall]);
             AudioManager.PlaySoundEffect(soundName);
         }
     }
@@ -79,10 +88,13 @@ namespace MotoresDeJogos
     {
         int damage;
         string soundName;
-        // Projectile
+        Matrix world;
+        float rotation;
 
-        public SkullAttack(int damageAmount, string soundName)
+        public SkullAttack(Matrix world, float rotation, int damageAmount, string soundName)
         {
+            this.world = world;
+            this.rotation = rotation;
             damage = damageAmount;
 
             this.soundName = soundName;
@@ -91,7 +103,7 @@ namespace MotoresDeJogos
         public override void Activate()
         {
             Projectile projectile = ProjectilePool.GetProjectile();
-            projectile.InitObject(Player.WorldPosition(), Player.GetRotation(), 6000f, damage, WorldObjects.Projectiles[ProjectileTypes.Skull]);
+            projectile.InitObject(world, rotation, 6000f, damage, WorldObjects.Projectiles[ProjectileTypes.Skull]);
             AudioManager.PlaySoundEffect(soundName);
         }
     }
@@ -100,10 +112,13 @@ namespace MotoresDeJogos
     {
         int damage;
         string soundName;
-        // Projectile
+        Matrix world;
+        float rotation;
 
-        public ToxicAttack(int damageAmount, string soundName)
+        public ToxicAttack(Matrix world, float rotation, int damageAmount, string soundName)
         {
+            this.world = world;
+            this.rotation = rotation;
             damage = damageAmount;
 
             this.soundName = soundName;
@@ -112,7 +127,7 @@ namespace MotoresDeJogos
         public override void Activate()
         {
             Projectile projectile = ProjectilePool.GetProjectile();
-            projectile.InitObject(Player.WorldPosition(), Player.GetRotation(), 6000f, damage, WorldObjects.Projectiles[ProjectileTypes.Toxic]);
+            projectile.InitObject(world, rotation, 6000f, damage, WorldObjects.Projectiles[ProjectileTypes.Toxic]);
             AudioManager.PlaySoundEffect(soundName);
         }
     }
