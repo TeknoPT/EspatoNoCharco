@@ -80,7 +80,8 @@ namespace MotoresDeJogos.Projectiles
                 }
                 mesh.Draw();
             }
-            DebugShapeRenderer.AddBoundingSphere(boundingSphere, Color.Black);
+            if (Game1.DebugMode)
+                DebugShapeRenderer.AddBoundingSphere(boundingSphere, Color.Black);
         }
     }
 }

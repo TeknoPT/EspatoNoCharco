@@ -21,11 +21,16 @@ namespace MotoresDeJogos
         InputManager inputManager;
         InputHandler inputHandler;
         WorldGeneration worldGeneration;
-        public static GameStates gameState = GameStates.Play;
+        public static GameStates gameState = GameStates.Menu;
+        public static bool DebugMode = false;
         SkyBox skyBox;
         Controller controller;
-
         float deltaTime = 0;
+
+        UIManager uiManager;
+        public static SpriteFont font;
+        public static SpriteBatch spriteBatch;
+        public static Texture2D logo; 
 
         #region Memory Variables
         long initialMemory;
@@ -68,7 +73,9 @@ namespace MotoresDeJogos
             Physics.Init(duckManager, controller);
             inputManager = new InputManager(this);
             inputHandler = new InputHandler(inputManager);
-            
+            uiManager = new UIManager(this);
+
+
             ProjectilePool.Init();
             Player.Init(5000f, GraphicsDevice, WorldObjects.Ducks[DuckTypes.White], DuckTypes.White);
             
@@ -79,6 +86,9 @@ namespace MotoresDeJogos
             mem = 0;
             this.IsMouseVisible = true;
             #endregion
+
+            this.IsMouseVisible = true;
+            this.Components.Add(uiManager);
 
             base.Initialize();
         }
@@ -99,6 +109,10 @@ namespace MotoresDeJogos
             skyBox.Textures[3] = Content.Load<Texture2D>("skybox/up");
             skyBox.Textures[4] = Content.Load<Texture2D>("skybox/left");
             skyBox.Textures[5] = Content.Load<Texture2D>("skybox/right");
+
+            font = Content.Load<SpriteFont>("defaultFont");
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            logo = this.Content.Load<Texture2D>("Logo");
         }
 
         /// <summary>
@@ -129,6 +143,8 @@ namespace MotoresDeJogos
                 case GameStates.Play:
                     this.IsMouseVisible = false;
                     break;
+                case GameStates.Victory:
+                case GameStates.Defeat:
                 case GameStates.Pause:
                 case GameStates.Menu:
                     this.IsMouseVisible = true;
@@ -152,12 +168,12 @@ namespace MotoresDeJogos
 
             lastMemMeasure = mem;
             #endregion
-
-            inputManager.Update(gameTime);
-            inputHandler.Update(deltaTime);
+            
 
             if (gameState == GameStates.Play )
             {
+                inputManager.Update(gameTime);
+                inputHandler.Update(deltaTime);
                 duckManager.Update(deltaTime);
                 consoleWriter.Update();
                 MessageBus.Update();
@@ -194,7 +210,25 @@ namespace MotoresDeJogos
 
             controller.Draw();
 
+            switch (gameState)
+            {
+                case GameStates.Play:
+                    this.IsMouseVisible = false;
+                    break;
+                case GameStates.Victory:
+                case GameStates.Defeat:
+                    break;
+                case GameStates.Pause:
+                case GameStates.Menu:
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(Game1.logo, new Vector2(600, 1));
+                    spriteBatch.End();
+                    break;
+            }
+
             skyBox.Draw();
+            
+
 
             base.Draw(gameTime);
         }

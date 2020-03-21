@@ -14,6 +14,8 @@ namespace MotoresDeJogos.Char
 {
     public class Player
     {
+        public static Data Data;
+
         public static DuckTypes duckModelType;
 
         static MouseState originalMouseState;
@@ -48,6 +50,7 @@ namespace MotoresDeJogos.Char
 
         public static void Init(float _speed, GraphicsDevice graphics, Model model, DuckTypes _duckModelType)
         {
+            Data = new Data() { score = 0, level = 1 };
             duckModelType = _duckModelType;
             playerModel = model;
             collision = false;

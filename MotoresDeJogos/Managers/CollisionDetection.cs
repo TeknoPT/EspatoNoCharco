@@ -68,6 +68,8 @@ namespace MotoresDeJogos.Managers
                             {
                                 worldObjectsAlive[i].Destroy();
                                 worldObjectsAlive[j].Destroy();
+                                Player.Data.score += 5;
+                                MessageBus.InsertNewMessage(new ConsoleMessage("Score :" + Player.Data.score));
                                 break;
                             }
                         }

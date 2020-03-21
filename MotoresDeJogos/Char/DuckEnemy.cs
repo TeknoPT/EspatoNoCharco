@@ -114,7 +114,7 @@ namespace MotoresDeJogos
                 {
                     AttackWorld = Matrix.CreateTranslation(world.Translation + world.Forward * 50);
                     ((AttackCommand)command).UpdateVariables(world, rotation, duckModelType);
-                    command.Execute();
+                    //command.Execute();
                     moveSoundTimer = (float) random.Next(1, 10);
                 }
 
@@ -153,7 +153,9 @@ namespace MotoresDeJogos
 
                     mesh.Draw();
                 }
-                DebugShapeRenderer.AddBoundingSphere(boundingSphere, Color.Black);
+
+                if (Game1.DebugMode)
+                    DebugShapeRenderer.AddBoundingSphere(boundingSphere, Color.Black);
             }
         }
         #endregion

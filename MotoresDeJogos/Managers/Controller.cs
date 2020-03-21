@@ -40,7 +40,6 @@ namespace MotoresDeJogos.Managers
         {
             objects = new List<ACollidable>();
 
-
             /*Vector3 position = new Vector3();
             int counter = 0;
             int distanceBetweenRows = 0;
@@ -103,12 +102,16 @@ namespace MotoresDeJogos.Managers
 
         public void Draw()
         {
-            DebugShapeRenderer.AddBoundingBox(WorldBoundaries.FloorBoundingBox, Color.Gold);
-            DebugShapeRenderer.AddBoundingSphere(WorldBoundaries.CentralOvalSphere, Color.Gray);
-            DebugShapeRenderer.AddBoundingBox(WorldBoundaries.LimitFront_BoundingBox, Color.Gray);
-            DebugShapeRenderer.AddBoundingBox(WorldBoundaries.LimitBack_BoundingBox, Color.Gray);
-            DebugShapeRenderer.AddBoundingBox(WorldBoundaries.LimitLeft_BoundingBox, Color.Gray);
-            DebugShapeRenderer.AddBoundingBox(WorldBoundaries.LimitRight_BoundingBox, Color.Gray);
+            if (Game1.DebugMode)
+            {
+                DebugShapeRenderer.AddBoundingBox(WorldBoundaries.FloorBoundingBox, Color.Gold);
+                DebugShapeRenderer.AddBoundingSphere(WorldBoundaries.CentralOvalSphere, Color.Gray);
+                DebugShapeRenderer.AddBoundingBox(WorldBoundaries.LimitFront_BoundingBox, Color.Gray);
+                DebugShapeRenderer.AddBoundingBox(WorldBoundaries.LimitBack_BoundingBox, Color.Gray);
+                DebugShapeRenderer.AddBoundingBox(WorldBoundaries.LimitLeft_BoundingBox, Color.Gray);
+                DebugShapeRenderer.AddBoundingBox(WorldBoundaries.LimitRight_BoundingBox, Color.Gray);
+            }
+                
         }
         
         public BoundingBox FloorCollider()
