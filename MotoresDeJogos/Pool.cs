@@ -21,7 +21,7 @@ namespace MotoresDeJogos
         public static int poolMaxSize = 500;
         private int timer = 0;
 
-        CollisionDetection collisionDetection;
+        //CollisionDetection collisionDetection;
 
         private List<T> listDead = new List<T>(poolMaxSize);
         private List<T> listAlive = new List<T>(poolMaxSize);

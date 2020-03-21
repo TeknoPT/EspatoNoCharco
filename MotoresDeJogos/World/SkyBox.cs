@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MotoresDeJogos.Char;
 
 namespace MotoresDeJogos.World
 {
@@ -118,9 +119,9 @@ namespace MotoresDeJogos.World
 
         public void Update()
         {
-            _effect.World = ModedCamera.World;
-            _effect.Projection = ModedCamera.Projection;
-            _effect.View = ModedCamera.View;
+            _effect.World = Player.WorldPosition();
+            _effect.Projection = Player.Projection();
+            _effect.View = Player.cameraView;
         }
 
         public void Draw()

@@ -10,6 +10,8 @@ namespace MotoresDeJogos
     {
         Menu,
         Play,
-        Pause
+        Pause,
+        Victory,
+        Defeat
     }
 }

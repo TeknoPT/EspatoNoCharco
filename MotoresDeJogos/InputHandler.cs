@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using MotoresDeJogos.Char;
+using MotoresDeJogos.World;
 
 namespace MotoresDeJogos
 {
-    public class InputHandler : GameComponent
+    public class InputHandler
     {
         // All Inputs Pass throw here
-        Command buttonUp, buttonDown, buttonRight, buttonLeft, buttonFire, buttonPause;
+        Command buttonUp, buttonDown, buttonRight, buttonLeft, buttonFire, buttonPause, buttonChangeCharacter, buttonRotRight, buttonRotLeft;
         InputManager inputManager;
 
-        public InputHandler(Game game, InputManager inputManager) : base(game)
+        public InputHandler(InputManager inputManager)
         {
             this.inputManager = inputManager;
             // Movement
@@ -19,40 +21,54 @@ namespace MotoresDeJogos
             buttonDown = new MoveCommand(MoveDirection.DOWN);
             buttonRight = new MoveCommand(MoveDirection.RIGHT);
             buttonLeft = new MoveCommand(MoveDirection.LEFT);
+            // Rotation
+            buttonRotLeft = new MoveCommand(MoveDirection.ROTLEFT);
+            buttonRotRight = new MoveCommand(MoveDirection.ROTRIGHT);
             // Attack
-            buttonFire = new AttackCommand(new RedAttack(20, "attack_R"));
+            buttonFire = new AttackCommand(Player.WorldPosition(), Player.GetRotation(), Player.duckModelType);
             // PauseButton
             buttonPause = new PauseCommand();
+            // Change Character Model
+            buttonChangeCharacter = new ChangeCharacterCommand(DuckTypes.Black);
         }
 
-        public override void Update(GameTime gameTime)
+        public void Update(float deltaTime)
         {
-            Handler();
-
-            base.Update(gameTime);
+            Handler(deltaTime);
         }
 
-        public void Handler()
+        public void Handler(float deltaTime)
         {
             // Take care of all Inputs of the game here
             if (inputManager.IsPressed(Keys.W))
             {
-                buttonUp.Execute();
+                buttonUp.Execute(deltaTime);
             }
             if (inputManager.IsPressed(Keys.S))
             {
-                buttonDown.Execute();
+                buttonDown.Execute(deltaTime);
             }
             if (inputManager.IsPressed(Keys.D))
             {
-                buttonRight.Execute();
+                buttonRight.Execute(deltaTime);
             }
             if (inputManager.IsPressed(Keys.A))
             {
-                buttonLeft.Execute();
+                buttonLeft.Execute(deltaTime);
             }
+
+            if (inputManager.IsPressed(Keys.Q))
+            {
+                buttonRotLeft.Execute(deltaTime);
+            }
+            if (inputManager.IsPressed(Keys.E))
+            {
+                buttonRotRight.Execute(deltaTime);
+            }
+
             if (inputManager.JustPressed(Keys.Space))
             {
+                ((AttackCommand)buttonFire).UpdateVariables(Player.WorldPosition(), Player.GetRotation(), Player.duckModelType);
                 buttonFire.Execute();
             }
 
@@ -61,17 +77,18 @@ namespace MotoresDeJogos
             if (inputManager.JustPressed(Keys.P))
             {
                 buttonPause.Execute();
-                UIManager.resumeBtn.IsVisible = true;
-                UIManager.exitPauseBtn.IsVisible = true;
-                UIManager.startBtn.IsVisible = false;
-                UIManager.creditsBtn.IsVisible = false;
-                UIManager.exitBtn.IsVisible = false;
+            }
+
+            // Change Character Model
+            if (inputManager.JustPressed(Keys.C))
+            {
+                buttonChangeCharacter.Execute();
             }
 
             // Test for DataManager
             if (inputManager.JustPressed(Keys.R))
             {
-                DataManager.Save(new Data() { score = 30, level = 20 });
+                DataManager.Save(Player.Data);
             }
             if (inputManager.JustPressed(Keys.L))
             {

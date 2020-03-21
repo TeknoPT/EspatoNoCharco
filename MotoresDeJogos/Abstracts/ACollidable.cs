@@ -34,19 +34,29 @@ namespace MotoresDeJogos.Abstracts
             set { health = value; }
         }
 
+        protected bool onWall;
+
+        public bool OnWall
+        {
+            get { return onWall; }
+            set { onWall = value; }
+        }
+
+        protected bool onGround;
+
+        public bool OnGround
+        {
+            get { return onGround; }
+            set { onGround = value; }
+        }
+        
         public bool IsColliding(BoundingSphere bounding)
         {
-            if (boundingBox != null)
-                return boundingBox.Intersects(bounding);
-
             return boundingSphere.Intersects(bounding);
         }
 
         public bool IsColliding(BoundingBox bounding)
         {
-            if (boundingBox != null)
-                return boundingBox.Intersects(bounding);
-
             return boundingSphere.Intersects(bounding);
         }
 
@@ -56,6 +66,11 @@ namespace MotoresDeJogos.Abstracts
             {
                 health -= 25;
             }
+        }
+
+        public virtual void Damage(float damage)
+        {
+            health -= 25;
         }
 
         public virtual bool IsDead()

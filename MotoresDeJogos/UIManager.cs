@@ -11,6 +11,7 @@ namespace MotoresDeJogos
 {
     class UIManager : ControlManager
     {
+        private static bool isActive;
         public static Button startBtn;
         public static Button creditsBtn;
         public static Button exitBtn;
@@ -20,6 +21,7 @@ namespace MotoresDeJogos
         //public static GameStates gameState;
         public UIManager(Game game) : base(game)
         {
+            isActive = true;
         }
 
         public override void InitializeComponent()
@@ -43,7 +45,7 @@ namespace MotoresDeJogos
                 BackgroundColor = Color.CadetBlue,
                 Location = new Vector2(700, 750)
             };
-            creditsBtn.Clicked += creditsBtn_Clicked;
+            //creditsBtn.Clicked += creditsBtn_Clicked;
             Controls.Add(creditsBtn);
 
             exitBtn = new Button()
@@ -75,9 +77,25 @@ namespace MotoresDeJogos
                 BackgroundColor = Color.CadetBlue,
                 Location = new Vector2(700, 800)
             };
-            exitPauseBtn.IsVisible = false;
             exitPauseBtn.Clicked += exitPauseBtn_Clicked;
             Controls.Add(exitPauseBtn);
+
+            ScreenOn();
+        }
+
+        private void ScreenOn()
+        {
+            //Main Menu
+            if (Game1.gameState == GameStates.Menu)
+            {
+                ShowMenu();
+            }
+
+            //Pause Menu
+            if (Game1.gameState == GameStates.Pause)
+            {
+                ShowPauseMenu();
+            }
         }
 
         private void startBtn_Clicked(object sender, EventArgs e)
@@ -114,12 +132,45 @@ namespace MotoresDeJogos
             System.Environment.Exit(1);
         }
 
-        public static void ShowHideButtons() {
+        public static void ShowHideButtons()
+        {
             startBtn.IsVisible = !startBtn.IsVisible;
             creditsBtn.IsVisible = !creditsBtn.IsVisible;
             exitBtn.IsVisible = !exitBtn.IsVisible;
             resumeBtn.IsVisible = !resumeBtn.IsVisible;
             exitPauseBtn.IsVisible = !exitPauseBtn.IsVisible;
         }
+
+        public static void HideEveryThing()
+        {
+            isActive = false;
+            startBtn.IsVisible = false;
+            creditsBtn.IsVisible = false;
+            exitBtn.IsVisible = false;
+            resumeBtn.IsVisible = false;
+            exitPauseBtn.IsVisible = false;
+        }
+
+        public static void ShowPauseMenu()
+        {
+            isActive = true;
+            startBtn.IsVisible = false;
+            creditsBtn.IsVisible = false;
+            exitBtn.IsVisible = false;
+            resumeBtn.IsVisible = true;
+            exitPauseBtn.IsVisible = true;
+        }
+
+        public static void ShowMenu()
+        {
+            isActive = true;
+            startBtn.IsVisible = true;
+            creditsBtn.IsVisible = true;
+            exitBtn.IsVisible = true;
+            resumeBtn.IsVisible = false;
+            exitPauseBtn.IsVisible = false;
+        }
+
+        public static bool IsActive() => isActive;
     }
 }

@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MotoresDeJogos.Char;
+using MotoresDeJogos.Managers;
+using MotoresDeJogos.Projectiles;
 using MotoresDeJogos.World;
 using System;
 
@@ -16,19 +18,20 @@ namespace MotoresDeJogos
         Random random;
         ConsoleWriter consoleWriter;
         DuckManager duckManager;
-        DuckPlayer Player;
         InputManager inputManager;
         InputHandler inputHandler;
         WorldGeneration worldGeneration;
-        public static GameStates gameState = GameStates.Pause;
+        public static GameStates gameState = GameStates.Menu;
+        public static bool DebugMode = false;
         SkyBox skyBox;
-        UIManager uiManager;
+        Controller controller;
+        float deltaTime = 0;
 
+        UIManager uiManager;
         public static SpriteFont font;
         public static SpriteBatch spriteBatch;
-        public static Texture2D logo;
+        public static Texture2D logo; 
         public static Texture2D victory;
-        //Pool managers = new Pool();
 
         #region Memory Variables
         long initialMemory;
@@ -57,26 +60,32 @@ namespace MotoresDeJogos
         /// </summary>
         protected override void Initialize()
         {
-            //camera = new Camera(new Vector3(0, 0, 500), graphics);
             random = new Random();
-            ModedCamera.Initialize(graphics.GraphicsDevice);
 
             DebugShapeRenderer.Initialize(GraphicsDevice);
             WorldObjects.InitModels(Content);
-            worldGeneration = new WorldGeneration(random);
             MessageBus.Initialize();
-            inputManager = new InputManager(this);
-            inputHandler = new InputHandler(this, inputManager);
-            uiManager = new UIManager(this);
-            duckManager = new DuckManager( random, Content );
-            duckManager.Initialize();
-            Player = new DuckPlayer(Vector3.Zero, Content, random, WorldObjects.Ducks[DuckTypes.Red]);
 
+            CollisionDetection.InitCollisionDetection();
+            worldGeneration = new WorldGeneration(random);
+            controller = new Controller(DuckManager.poolMaxSize);
+            duckManager = new DuckManager(random, Content);
+            duckManager.Initialize();
+            Physics.Init(duckManager, controller);
+            inputManager = new InputManager(this);
+            inputHandler = new InputHandler(inputManager);
+            uiManager = new UIManager(this);
+
+            ProjectilePool.Init();
+            Player.Init(5000f, GraphicsDevice, WorldObjects.Ducks[DuckTypes.White], DuckTypes.White);
+            
+            #region Start Memory variables
             consoleWriter = new ConsoleWriter();
             retrieveInitialMemory = true;
             lastMemMeasure = 0;
             mem = 0;
             this.IsMouseVisible = true;
+            #endregion
 
             this.IsMouseVisible = true;
             this.Components.Add(uiManager);
@@ -94,19 +103,16 @@ namespace MotoresDeJogos
             AudioManager.Initialize(this);
 
             skyBox = new SkyBox(GraphicsDevice);
-            skyBox.Textures[0] = Content.Load<Texture2D>("skybox/bkg1_front5");
-            skyBox.Textures[1] = Content.Load<Texture2D>("skybox/bkg1_back6");
-            skyBox.Textures[2] = Content.Load<Texture2D>("skybox/bkg1_bottom4");
-            skyBox.Textures[3] = Content.Load<Texture2D>("skybox/bkg1_top3");
-            skyBox.Textures[4] = Content.Load<Texture2D>("skybox/bkg1_left2");
-            skyBox.Textures[5] = Content.Load<Texture2D>("skybox/bkg1_right1");
+            skyBox.Textures[0] = Content.Load<Texture2D>("skybox/front");
+            skyBox.Textures[1] = Content.Load<Texture2D>("skybox/back");
+            skyBox.Textures[2] = Content.Load<Texture2D>("skybox/down");
+            skyBox.Textures[3] = Content.Load<Texture2D>("skybox/up");
+            skyBox.Textures[4] = Content.Load<Texture2D>("skybox/left");
+            skyBox.Textures[5] = Content.Load<Texture2D>("skybox/right");
 
             font = Content.Load<SpriteFont>("defaultFont");
             spriteBatch = new SpriteBatch(GraphicsDevice);
             logo = this.Content.Load<Texture2D>("Logo");
-            victory = this.Content.Load<Texture2D>("Victory");
-
-
         }
 
         /// <summary>
@@ -125,12 +131,11 @@ namespace MotoresDeJogos
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            deltaTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
             #region Close Game Key
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             #endregion
-
-            //camera.Update(gameTime);
 
             #region Cursor State
             switch (gameState)
@@ -138,6 +143,8 @@ namespace MotoresDeJogos
                 case GameStates.Play:
                     this.IsMouseVisible = false;
                     break;
+                case GameStates.Victory:
+                case GameStates.Defeat:
                 case GameStates.Pause:
                 case GameStates.Menu:
                     this.IsMouseVisible = true;
@@ -161,23 +168,27 @@ namespace MotoresDeJogos
 
             lastMemMeasure = mem;
             #endregion
-
-            inputManager.Update(gameTime);
-            inputHandler.Update(gameTime);
-
+            
 
             if (gameState == GameStates.Play )
             {
-                ModedCamera.Update(gameTime, graphics.GraphicsDevice);
-                duckManager.Update(gameTime);
+                GraphicsDevice.BlendState = BlendState.AlphaBlend;
+                GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+                inputManager.Update(gameTime);
+                inputHandler.Update(deltaTime);
+                duckManager.Update(deltaTime);
                 consoleWriter.Update();
                 MessageBus.Update();
-                Player.Update(gameTime);
+                Player.Update(deltaTime); 
+                controller.Update(gameTime);
+                ProjectilePool.Update(deltaTime);
+                Physics.Update();
+                CollisionDetection.Update();
             }
 
             MessageBus.Update();
             skyBox.Update();
-
+            
             base.Update(gameTime);
         }
 
@@ -195,21 +206,40 @@ namespace MotoresDeJogos
 
             Player.Draw();
 
-            DebugShapeRenderer.Draw(gameTime, ModedCamera.View, ModedCamera.Projection);
-            
+            ProjectilePool.Draw();
+
+            DebugShapeRenderer.Draw(gameTime, Player.cameraView, Player.Projection());
+
+            controller.Draw();
+
+            switch (gameState)
+            {
+                case GameStates.Play:
+                    this.IsMouseVisible = false;
+                    break;
+                case GameStates.Victory:
+                case GameStates.Defeat:
+                    break;
+                case GameStates.Pause:
+                case GameStates.Menu:
+                    GraphicsDevice.BlendState = BlendState.Opaque;
+                    GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(Game1.logo, new Vector2(600, 1));
+                    Game1.spriteBatch.DrawString(Game1.font, "Ines Oliveira", new Vector2(1300, 750), Color.Tomato);
+                    Game1.spriteBatch.DrawString(Game1.font, "Joao Novo", new Vector2(1300, 790), Color.Tomato);
+                    Game1.spriteBatch.DrawString(Game1.font, "Madalena Barros", new Vector2(1300, 830), Color.Tomato);
+                    spriteBatch.End();
+                    break;
+            }
+           
+
             skyBox.Draw();
 
-            spriteBatch.Begin();
-            spriteBatch.Draw(Game1.logo, new Vector2(600, 1));
             //spriteBatch.DrawString(Game1.font, "FPS:" + fps, new Vector2(50, 20), Color.Tomato);
             //spriteBatch.DrawString(Game1.font, "Health:" + health, new Vector2(50, 60), Color.Tomato);
             //spriteBatch.DrawString(Game1.font, "Score:" + score, new Vector2(50, 100), Color.Tomato);
             //spriteBatch.Draw(Game1.victory, new Vector2(800, 100));
-
-            Game1.spriteBatch.DrawString(Game1.font, "Ines Oliveira", new Vector2(1300, 750), Color.Tomato);
-            Game1.spriteBatch.DrawString(Game1.font, "Joao Novo", new Vector2(1300, 790), Color.Tomato);
-            Game1.spriteBatch.DrawString(Game1.font, "Madalena Barros", new Vector2(1300, 830), Color.Tomato);
-            spriteBatch.End();
 
             base.Draw(gameTime);
         }

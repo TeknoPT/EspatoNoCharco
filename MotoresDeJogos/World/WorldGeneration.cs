@@ -36,10 +36,12 @@ namespace MotoresDeJogos.World
         {
             FountainModel fountainModel = new FountainModel(WorldObjects.Fountain);
             TerrainModel terrainModel = new TerrainModel(WorldObjects.Terrain);
-            WaterModel waterModel = new WaterModel(WorldObjects.Lake); 
+            WaterModel waterModel = new WaterModel(WorldObjects.Lake);
+            Water floor = new Water(waterModel);
+            //CollisionDetection.SetFloor(floor);
             staticObjects.Add(new Fountain(fountainModel));
             staticObjects.Add(new Terrain(terrainModel));
-            staticObjects.Add(new Water(waterModel));
+            staticObjects.Add(floor);
         }
 
         private void GenerateTrees()
