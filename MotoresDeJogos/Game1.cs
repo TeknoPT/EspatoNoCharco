@@ -20,10 +20,15 @@ namespace MotoresDeJogos
         InputManager inputManager;
         InputHandler inputHandler;
         WorldGeneration worldGeneration;
-        public static GameStates gameState = GameStates.Play;
+        public static GameStates gameState = GameStates.Pause;
         SkyBox skyBox;
+        UIManager uiManager;
+
+        public static SpriteFont font;
+        public static SpriteBatch spriteBatch;
+        public static Texture2D logo; 
         //Pool managers = new Pool();
-       
+
         #region Memory Variables
         long initialMemory;
         bool retrieveInitialMemory;
@@ -61,6 +66,7 @@ namespace MotoresDeJogos
             MessageBus.Initialize();
             inputManager = new InputManager(this);
             inputHandler = new InputHandler(this, inputManager);
+            uiManager = new UIManager(this);
             duckManager = new DuckManager( random, Content );
             duckManager.Initialize();
             Player = new DuckPlayer(Vector3.Zero, Content, random, WorldObjects.Ducks[DuckTypes.Red]);
@@ -70,6 +76,9 @@ namespace MotoresDeJogos
             lastMemMeasure = 0;
             mem = 0;
             this.IsMouseVisible = true;
+
+            this.IsMouseVisible = true;
+            this.Components.Add(uiManager);
 
             base.Initialize();
         }
@@ -90,6 +99,12 @@ namespace MotoresDeJogos
             skyBox.Textures[3] = Content.Load<Texture2D>("skybox/bkg1_top3");
             skyBox.Textures[4] = Content.Load<Texture2D>("skybox/bkg1_left2");
             skyBox.Textures[5] = Content.Load<Texture2D>("skybox/bkg1_right1");
+
+            font = Content.Load<SpriteFont>("defaultFont");
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            logo = this.Content.Load<Texture2D>("Logo");
+
+            
         }
 
         /// <summary>
@@ -181,7 +196,9 @@ namespace MotoresDeJogos
             DebugShapeRenderer.Draw(gameTime, ModedCamera.View, ModedCamera.Projection);
 
             skyBox.Draw();
-
+            spriteBatch.Begin();
+            spriteBatch.Draw(Game1.logo, new Vector2(600, 1));
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
