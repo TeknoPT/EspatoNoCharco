@@ -31,6 +31,7 @@ namespace MotoresDeJogos
         public static SpriteFont font;
         public static SpriteBatch spriteBatch;
         public static Texture2D logo; 
+        public static Texture2D victory;
 
         #region Memory Variables
         long initialMemory;
@@ -74,7 +75,6 @@ namespace MotoresDeJogos
             inputManager = new InputManager(this);
             inputHandler = new InputHandler(inputManager);
             uiManager = new UIManager(this);
-
 
             ProjectilePool.Init();
             Player.Init(5000f, GraphicsDevice, WorldObjects.Ducks[DuckTypes.White], DuckTypes.White);
@@ -226,12 +226,20 @@ namespace MotoresDeJogos
                     GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
                     spriteBatch.Begin();
                     spriteBatch.Draw(Game1.logo, new Vector2(600, 1));
+                    Game1.spriteBatch.DrawString(Game1.font, "Ines Oliveira", new Vector2(1300, 750), Color.Tomato);
+                    Game1.spriteBatch.DrawString(Game1.font, "Joao Novo", new Vector2(1300, 790), Color.Tomato);
+                    Game1.spriteBatch.DrawString(Game1.font, "Madalena Barros", new Vector2(1300, 830), Color.Tomato);
                     spriteBatch.End();
                     break;
             }
            
 
             skyBox.Draw();
+
+            //spriteBatch.DrawString(Game1.font, "FPS:" + fps, new Vector2(50, 20), Color.Tomato);
+            //spriteBatch.DrawString(Game1.font, "Health:" + health, new Vector2(50, 60), Color.Tomato);
+            //spriteBatch.DrawString(Game1.font, "Score:" + score, new Vector2(50, 100), Color.Tomato);
+            //spriteBatch.Draw(Game1.victory, new Vector2(800, 100));
 
             base.Draw(gameTime);
         }
