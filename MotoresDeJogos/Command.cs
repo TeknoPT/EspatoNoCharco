@@ -141,8 +141,7 @@ namespace MotoresDeJogos
                 Game1.gameState = GameStates.Pause;
 
             // Trigger menu
-            if ( !UIManager.IsActive() ) UIManager.ShowPauseMenu();
-            else UIManager.HideEveryThing();
+            UIManager.ShowPauseMenu();
         }
     }
 

@@ -188,7 +188,6 @@ namespace MotoresDeJogos
 
             MessageBus.Update();
             skyBox.Update();
-
             
             base.Update(gameTime);
         }
@@ -233,8 +232,6 @@ namespace MotoresDeJogos
            
 
             skyBox.Draw();
-            
-
 
             base.Draw(gameTime);
         }
