@@ -26,7 +26,8 @@ namespace MotoresDeJogos
 
         public static SpriteFont font;
         public static SpriteBatch spriteBatch;
-        public static Texture2D logo; 
+        public static Texture2D logo;
+        public static Texture2D victory;
         //Pool managers = new Pool();
 
         #region Memory Variables
@@ -103,8 +104,9 @@ namespace MotoresDeJogos
             font = Content.Load<SpriteFont>("defaultFont");
             spriteBatch = new SpriteBatch(GraphicsDevice);
             logo = this.Content.Load<Texture2D>("Logo");
+            victory = this.Content.Load<Texture2D>("Victory");
 
-            
+
         }
 
         /// <summary>
@@ -194,11 +196,21 @@ namespace MotoresDeJogos
             Player.Draw();
 
             DebugShapeRenderer.Draw(gameTime, ModedCamera.View, ModedCamera.Projection);
-
+            
             skyBox.Draw();
+
             spriteBatch.Begin();
             spriteBatch.Draw(Game1.logo, new Vector2(600, 1));
+            //spriteBatch.DrawString(Game1.font, "FPS:" + fps, new Vector2(50, 20), Color.Tomato);
+            //spriteBatch.DrawString(Game1.font, "Health:" + health, new Vector2(50, 60), Color.Tomato);
+            //spriteBatch.DrawString(Game1.font, "Score:" + score, new Vector2(50, 100), Color.Tomato);
+            //spriteBatch.Draw(Game1.victory, new Vector2(800, 100));
+
+            Game1.spriteBatch.DrawString(Game1.font, "Ines Oliveira", new Vector2(1300, 750), Color.Tomato);
+            Game1.spriteBatch.DrawString(Game1.font, "Joao Novo", new Vector2(1300, 790), Color.Tomato);
+            Game1.spriteBatch.DrawString(Game1.font, "Madalena Barros", new Vector2(1300, 830), Color.Tomato);
             spriteBatch.End();
+
             base.Draw(gameTime);
         }
     }

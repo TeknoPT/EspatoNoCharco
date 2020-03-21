@@ -30,7 +30,7 @@ namespace MotoresDeJogos
                 Text = "Start",
                 Size = new Vector2(500, 100),
                 BackgroundColor = Color.CadetBlue,
-                Location = new Vector2(750,600)
+                Location = new Vector2(700,600)
             };
 
             startBtn.Clicked += startBtn_Clicked;
@@ -41,7 +41,7 @@ namespace MotoresDeJogos
                 Text = "Credits",
                 Size = new Vector2(500, 100),
                 BackgroundColor = Color.CadetBlue,
-                Location = new Vector2(750, 750)
+                Location = new Vector2(700, 750)
             };
             creditsBtn.Clicked += creditsBtn_Clicked;
             Controls.Add(creditsBtn);
@@ -51,7 +51,7 @@ namespace MotoresDeJogos
                 Text = "Exit",
                 Size = new Vector2(500, 100),
                 BackgroundColor = Color.CadetBlue,
-                Location = new Vector2(750, 900)
+                Location = new Vector2(700, 900)
             };
             exitBtn.Clicked += exitBtn_Clicked;
             Controls.Add(exitBtn);
@@ -62,7 +62,7 @@ namespace MotoresDeJogos
                 Text = "Resume",
                 Size = new Vector2(500, 100),
                 BackgroundColor = Color.CadetBlue,
-                Location = new Vector2(750, 750)
+                Location = new Vector2(700, 650)
             };
             resumeBtn.IsVisible = false;
             resumeBtn.Clicked += resumeBtn_Clicked;
@@ -73,7 +73,7 @@ namespace MotoresDeJogos
                 Text = "Exit",
                 Size = new Vector2(500, 100),
                 BackgroundColor = Color.CadetBlue,
-                Location = new Vector2(750, 900)
+                Location = new Vector2(700, 800)
             };
             exitPauseBtn.IsVisible = false;
             exitPauseBtn.Clicked += exitPauseBtn_Clicked;
@@ -91,12 +91,7 @@ namespace MotoresDeJogos
 
         private void creditsBtn_Clicked(object sender, EventArgs e)
         {
-            Button button = sender as Button;
-            /*Game1.spriteBatch.Begin();
-            Game1.spriteBatch.DrawString(Game1.font, "Ines Oliveira", new Vector2(900, 350), Color.Thistle);
-            Game1.spriteBatch.DrawString(Game1.font, "Joao Novo", new Vector2(900, 400), Color.Thistle);
-            Game1.spriteBatch.DrawString(Game1.font, "Madalena Barros", new Vector2(900, 450), Color.Thistle);
-            Game1.spriteBatch.End();*/
+            Button button = sender as Button;            
         }
 
         private void exitBtn_Clicked(object sender, EventArgs e)
