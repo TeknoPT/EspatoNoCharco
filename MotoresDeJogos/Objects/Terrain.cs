@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MotoresDeJogos.Char;
 using MotoresDeJogos.Interfaces;
 using MotoresDeJogos.Models;
 using System;
@@ -58,8 +59,8 @@ namespace MotoresDeJogos.Objects
                 {
                     effect.LightingEnabled = false;
                     effect.World = world;
-                    effect.View = ModedCamera.View;
-                    effect.Projection = ModedCamera.Projection;
+                    effect.View = Player.cameraView;
+                    effect.Projection = Player.Projection();
                 }
 
                 mesh.Draw();

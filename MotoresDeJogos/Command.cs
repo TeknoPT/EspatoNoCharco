@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MotoresDeJogos.Char;
 using MotoresDeJogos.World;
 using System;
@@ -12,6 +13,7 @@ namespace MotoresDeJogos
     public abstract class Command
     {
         public abstract void Execute();
+        public virtual void Execute(float deltaTime){}
     }
 
     public enum MoveDirection
@@ -19,7 +21,9 @@ namespace MotoresDeJogos
         UP,
         DOWN,
         RIGHT,
-        LEFT
+        LEFT,
+        ROTRIGHT,
+        ROTLEFT
     }
 
     public class MoveCommand : Command
@@ -33,26 +37,37 @@ namespace MotoresDeJogos
             direction = dir;
         }
 
-        public override void Execute()
+        public override void Execute(float deltaTime)
         {
-            MoveDuck();
+            MoveDuck(deltaTime);
         }
 
-        void MoveDuck()
+        public override void Execute()
+        {
+
+        }
+
+        void MoveDuck(float deltaTime)
         {
             switch (direction)
             {
                 case MoveDirection.UP:
-
+                    Player.Move(Keys.Up, deltaTime);
                     break;
                 case MoveDirection.DOWN:
-
+                    Player.Move(Keys.Down, deltaTime);
                     break;
                 case MoveDirection.RIGHT:
-
+                    Player.Move(Keys.Right, deltaTime);
                     break;
                 case MoveDirection.LEFT:
-
+                    Player.Move(Keys.Left, deltaTime);
+                    break;
+                case MoveDirection.ROTRIGHT:
+                    Player.Rotate(Keys.E, deltaTime);
+                    break;
+                case MoveDirection.ROTLEFT:
+                    Player.Rotate(Keys.Q, deltaTime);
                     break;
             }
         }

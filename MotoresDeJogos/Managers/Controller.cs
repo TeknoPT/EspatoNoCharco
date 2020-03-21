@@ -20,7 +20,7 @@ namespace MotoresDeJogos.Managers
         public Controller(int objectsPool)
         {
             objects = new List<ACollidable>();
-            Vector3 position = new Vector3();
+            /*Vector3 position = new Vector3();
             int counter = 0;
             int distanceBetweenRows = 0;
             float startX = -25;
@@ -36,7 +36,7 @@ namespace MotoresDeJogos.Managers
                 position = new Vector3(startX, distanceBetweenRows, distanceBetweenRows);
                 //objects.Add(new DuckEnemy(position, i, 0.8f));
                 counter++;
-            }
+            }*/
 
             floorPosition = Matrix.CreateTranslation(0, 4f, 0);
             floorBoundingBox = new BoundingBox(new Vector3(-25000f, -1500f, -20000f), new Vector3(25000f, -1499f, 18000f));

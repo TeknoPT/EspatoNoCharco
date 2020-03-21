@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MotoresDeJogos.Char;
+using MotoresDeJogos.Projectiles;
+using MotoresDeJogos.World;
 
 namespace MotoresDeJogos
 {
@@ -18,12 +21,14 @@ namespace MotoresDeJogos
         public RedAttack(int damageAmount, string soundName)
         {
             damage = damageAmount;
+
             this.soundName = soundName;
         }
 
         public override void Activate()
         {
-            // Spawn of projectile
+            Projectile projectile = ProjectilePool.GetProjectile();
+            projectile.InitObject(Player.WorldPosition(), Player.GetRotation(), 6000f, damage, WorldObjects.Projectile);
             AudioManager.PlaySoundEffect(soundName);
         }
     }

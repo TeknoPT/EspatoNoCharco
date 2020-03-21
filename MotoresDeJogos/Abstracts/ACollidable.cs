@@ -45,17 +45,11 @@ namespace MotoresDeJogos.Abstracts
 
         public bool IsColliding(BoundingSphere bounding)
         {
-            if (boundingBox != null)
-                return boundingBox.Intersects(bounding);
-
             return boundingSphere.Intersects(bounding);
         }
 
         public bool IsColliding(BoundingBox bounding)
         {
-            if (boundingBox != null)
-                return boundingBox.Intersects(bounding);
-
             return boundingSphere.Intersects(bounding);
         }
 

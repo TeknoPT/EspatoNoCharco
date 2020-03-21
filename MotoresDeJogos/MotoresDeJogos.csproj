@@ -61,7 +61,6 @@
   <ItemGroup>
     <Compile Include="Abstracts\ACollidable.cs" />
     <Compile Include="Char\DuckEnemy.cs" />
-    <Compile Include="Char\DuckPlayer.cs" />
     <Compile Include="Char\Player.cs" />
     <Compile Include="GameStates.cs" />
     <Compile Include="Attack.cs" />
@@ -106,6 +105,8 @@
     <Compile Include="Managers\Physics.cs" />
     <Compile Include="Pool.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Projectiles\Projectile.cs" />
+    <Compile Include="Projectiles\ProjectilePool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="Managers\DuckManager.cs" />

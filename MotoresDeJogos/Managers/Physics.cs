@@ -13,14 +13,13 @@ namespace MotoresDeJogos.Managers
     {
         static List<ACollidable> objects;
         static Vector3 gravityAmount;
-        static bool collision;
         static Controller controller;
 
-        public static void Init(Controller _controller)
+        public static void Init(DuckManager duckManager, Controller _controller)
         {
             controller = _controller;
-            objects = controller.GetObjects();
-            gravityAmount = new Vector3(0, -0.05f, 0);
+            objects = duckManager.GetDuckEnemies();
+            gravityAmount = new Vector3(0, -98f, 0);
         }
 
         public static void Update()
@@ -50,6 +49,8 @@ namespace MotoresDeJogos.Managers
 
             }
 
+
+            // Player Physics Stuff
             if (Player.PlayerCollider().Intersects(controller.FloorCollider()))
             {
                 Player.Collision = true;

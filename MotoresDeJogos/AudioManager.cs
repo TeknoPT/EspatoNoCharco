@@ -78,6 +78,8 @@ namespace MotoresDeJogos
         public static void PlaySoundEffect(string soundName, bool looped, out SoundEffectInstance instance)
         {
             instance = null;
+
+            
             if (audioManager == null || soundList == null)
                 return;
 

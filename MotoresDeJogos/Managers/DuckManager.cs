@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MotoresDeJogos.Abstracts;
 using MotoresDeJogos.Char;
 using MotoresDeJogos.World;
 using System;
@@ -12,12 +13,12 @@ namespace MotoresDeJogos.Managers
     {
         Random random;
         ContentManager Content;
-        private static int poolCounter = 1000;
-        public static int poolMaxSize = 1000;
+        private static int poolCounter = 30;
+        public static int poolMaxSize = 30;
         private int timer = 0;
 
-        private List<DuckEnemy> ducksDead = new List<DuckEnemy>(poolMaxSize);
-        private List<DuckEnemy> ducksAlive = new List<DuckEnemy>(poolMaxSize);
+        private List<ACollidable> ducksDead = new List<ACollidable>(poolMaxSize);
+        private List<ACollidable> ducksAlive = new List<ACollidable>(poolMaxSize);
 
         public DuckManager(Random random, ContentManager Content)
         {
@@ -26,20 +27,34 @@ namespace MotoresDeJogos.Managers
             this.Content = Content;
         }
 
+        public List<ACollidable> GetDuckEnemies()
+        {
+            return ducksAlive;
+        }
+
         public void Initialize()
         {
             DuckEnemy duck;
             Model model = WorldObjects.Ducks[DuckTypes.Green];
 
-            for (int i = 0; i < poolMaxSize; i++)
+            float xSize = 12000;
+            float zSize = 12000;
+
+            for (float x = -xSize; x <= xSize; x += xSize/(poolCounter/8))
             {
-                duck = new DuckEnemy( Content, random, model);
-                MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ID - {0} | Ship Z:{1}", i, duck.Position.Z)));
-                ducksAlive.Add(duck);
-            }   
+                for (float z = -zSize; z <= zSize; z += zSize/ (poolCounter / 8))
+                {
+                    if (x > 8000 || x < -8000 || z > 8000 || z < -8000)
+                    {
+                        duck = new DuckEnemy(new Vector3(x, 0, z), random, model);
+                        ducksAlive.Add(duck);
+                    }
+                }
+            }
+            CollisionDetection.AddObjects(ducksAlive);
         }
 
-       public void reviveShip(DuckEnemy duck)
+        public void reviveShip(DuckEnemy duck)
         {
             if (poolCounter < poolMaxSize)
             {
@@ -55,16 +70,14 @@ namespace MotoresDeJogos.Managers
             {
                 poolCounter--;
                 ducksDead.Add(duck);
-                
-                //MessageBus.InsertNewMessage(new ConsoleMessage(String.Format("ListID - {0} | Pool {1}", shipsDead.IndexOf(ship), poolCounter)));
             }
         }
-        public void Update(GameTime gameTime)
+        public void Update(float deltaTime)
         {
            
             foreach (DuckEnemy duck in ducksAlive)
             {
-                if ( !duck.IsDead() ) duck.Update(gameTime);
+                if ( !duck.IsDead() ) duck.Update(deltaTime);
                 else
                 {
                     sendToGrave(duck);
@@ -75,23 +88,17 @@ namespace MotoresDeJogos.Managers
             {
                 ducksAlive.Remove(duck);
             }
-            
-            timer += gameTime.ElapsedGameTime.Milliseconds;
-            if (timer > 30)
-            {
-                //CollisionDetection.CheckCollison();
-                timer = 0;
-            }
         }
 
         public void Draw()
         {
             foreach (DuckEnemy duck in ducksAlive)
             {
-                if (ModedCamera.frustum.Intersects(duck.BoundingShpere))
+                /*if (ModedCamera.frustum.Intersects(duck.BoundingShpere))
                 {
                     duck.Draw();
-                }
+                }*/
+                duck.Draw();
             }
         }
     }

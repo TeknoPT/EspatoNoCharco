@@ -1,6 +1,7 @@
 ﻿using MotoresDeJogos.Abstracts;
 using MotoresDeJogos.Char;
 using MotoresDeJogos.Interfaces;
+using MotoresDeJogos.Projectiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace MotoresDeJogos.Managers
 
         public static void Update()
         {
-
+            CheckAllCollisions();
         }
 
         #region Collision with Object
@@ -34,19 +35,29 @@ namespace MotoresDeJogos.Managers
         {
             for ( int i = 0; i < worldObjectsAlive.Count(); i++)
             {
+                if (worldObjectsAlive[i].IsColliding(Player.PlayerCollider()))
+                {
+                    // TODO
+                }
+
                 for (int j = 0; j < worldObjectsAlive.Count(); j++)
                 {
                     if (i == j) continue;
 
                     if (!worldObjectsAlive[i].IsDead())
                     {
-                        if (worldObjectsAlive[i].IsColliding(Player.PlayerCollider()))
-                        {
-                            
-                        }
-
                         if (worldObjectsAlive[i].IsColliding(worldObjectsAlive[j].BoundingShpere))
                         {
+                            Console.WriteLine("BATII");
+
+                            if (worldObjectsAlive[i] is Projectile)
+                            {
+                                Console.WriteLine("BATII Dentro");
+
+                                worldObjectsAlive[i].Destroy();
+                                worldObjectsAlive[j].Destroy();
+                                break;
+                            }
                         }
                     }
                     

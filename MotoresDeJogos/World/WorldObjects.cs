@@ -11,6 +11,7 @@ namespace MotoresDeJogos.World
     public static class WorldObjects
     {
         public static Dictionary<DuckTypes, Model> Ducks = new Dictionary<DuckTypes, Model>();
+        public static Dictionary<ProjectileTypes, Model> Projectiles = new Dictionary<ProjectileTypes, Model>();
         public static Model Terrain;
         public static Model Tree;
         public static Model Flower;
@@ -20,11 +21,22 @@ namespace MotoresDeJogos.World
 
         public static void InitModels(ContentManager content)
         {
+            #region Ducks Dictonary
             Ducks.Add( DuckTypes.Black, content.Load<Model>("models\\Black_duckie"));
             Ducks.Add( DuckTypes.While, content.Load<Model>("models\\White_duckie"));
             Ducks.Add( DuckTypes.Red, content.Load<Model>("models\\Red_Duckie"));
             Ducks.Add( DuckTypes.Green, content.Load<Model>("models\\Green_duckie"));
             Ducks.Add( DuckTypes.Blue, content.Load<Model>("models\\Blue_Duckie"));
+            #endregion
+
+            #region Projectiles Dictonary
+            Projectiles.Add( ProjectileTypes.Heart, content.Load<Model>("models\\Heart"));
+            Projectiles.Add( ProjectileTypes.BlueFireBall, content.Load<Model>("models\\"));
+            Projectiles.Add( ProjectileTypes.Skull, content.Load<Model>("models\\Skull"));
+            Projectiles.Add( ProjectileTypes.Toxic, content.Load<Model>("models\\droplet"));
+            Projectiles.Add( ProjectileTypes.Cloud, content.Load<Model>("models\\Cloud"));
+            #endregion
+
             Terrain = content.Load<Model>("models\\Scenery");
             Tree = content.Load<Model>("models\\tree");
             Flower = content.Load<Model>("models\\Flower_v3.1");
@@ -36,6 +48,7 @@ namespace MotoresDeJogos.World
         public static void UnloadEverything()
         {
             Ducks.Clear();
+            Projectiles.Clear();
             Terrain = null;
             Tree = null;
             Flower = null;
@@ -52,6 +65,15 @@ namespace MotoresDeJogos.World
         Red = 2,
         Green = 3,
         Blue = 4
+    }
+
+    public enum ProjectileTypes
+    {
+        Heart,
+        Toxic,
+        BlueFireBall,
+        Cloud,
+        Skull
     }
     
 }

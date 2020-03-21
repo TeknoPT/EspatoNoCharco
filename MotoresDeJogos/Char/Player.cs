@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MotoresDeJogos.Char
 {
-    class Player
+    public class Player
     {
         static MouseState originalMouseState;
 
@@ -21,16 +21,19 @@ namespace MotoresDeJogos.Char
 
         static Model playerModel;
         static BoundingSphere boundingSphere;
+        static BoundingFrustum frustum;
 
         static float currentRotation;
         static float movementSpeed;
+        static float moveSoundTimer;
 
         static Vector3 currentGravityValue;
 
-        private static InputManager inputManager;
+        static RasterizerState rasterizerStateSolid;
 
         #region Collision Variable
         static bool collision;
+
         public static bool Collision
         {
             get { return collision; }
@@ -38,15 +41,21 @@ namespace MotoresDeJogos.Char
         }
         #endregion
 
-        public static void Init(float _speed, InputManager _inputManager, Model model)
+        public static void Init(float _speed, GraphicsDevice graphics, Model model)
         {
             playerModel = model;
-            inputManager = _inputManager;
             collision = false;
             originalMouseState = Mouse.GetState();
-            worldPosition = Matrix.CreateTranslation(new Vector3(-6f, 2f, 0));
-            projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 1500f);
-            currentGravityValue = new Vector3(0, 0, 0);
+            cameraView = Matrix.CreateLookAt(Vector3.Zero, Vector3.Forward, Vector3.Up);
+            worldPosition = Matrix.CreateTranslation(new Vector3(0, 500f, 10000f));
+            projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(60), graphics.Viewport.AspectRatio, 1f, 80000);
+            rasterizerStateSolid = new RasterizerState();
+            rasterizerStateSolid.CullMode = CullMode.None;
+            rasterizerStateSolid.MultiSampleAntiAlias = true;
+            rasterizerStateSolid.FillMode = FillMode.Solid;
+            rasterizerStateSolid.SlopeScaleDepthBias = 0.1f;
+            graphics.RasterizerState = rasterizerStateSolid;
+            currentGravityValue = new Vector3(0, -98f, 0);
             movementSpeed = _speed;
 
             #region Creating Bounds
@@ -72,37 +81,50 @@ namespace MotoresDeJogos.Char
             playerModel = model;
         }
 
-        private static void ProcessInput(float amount)
+        public static void Move(Keys key, float deltaTime)
         {
-            // Keyboard controllers to be replaced with Input Manager
             Vector3 moveVector = new Vector3(0, 0, 0);
+            switch (key)
+            {
+                case Keys.Up:
+                    moveVector += worldPosition.Forward;
+                    break;
+                case Keys.Down:
+                    moveVector += worldPosition.Backward;
+                    break;
+                case Keys.Right:
+                    moveVector += worldPosition.Right;
+                    break;
+                case Keys.Left:
+                    moveVector += worldPosition.Left;
+                    break;
+            }
+            if (moveSoundTimer <= 0)
+            {
+                AudioManager.PlaySoundEffect("Movement");
+                moveSoundTimer = 0.5f;
+            }
+            MovePlayer(moveVector, 0, deltaTime);
+        }
 
-            if (inputManager.JustPressed(Keys.Up))
-                moveVector += worldPosition.Forward;
-            if (inputManager.JustPressed(Keys.Down))
-                moveVector += worldPosition.Backward;
-            if (inputManager.JustPressed(Keys.Right))
-                moveVector += worldPosition.Right;
-            if (inputManager.JustPressed(Keys.Left))
-                moveVector += worldPosition.Left;
-
+        public static void Rotate(Keys key, float deltaTime)
+        {
             float rotationAmount = 0;
 
-            if (inputManager.JustPressed(Keys.Q))
+            if (key == Keys.Q)
                 rotationAmount = 0.05f;
-            else if (inputManager.JustPressed(Keys.E))
+            else if (key == Keys.E)
                 rotationAmount = -0.05f;
-
-            MovePlayer(moveVector, rotationAmount, amount);
+            MovePlayer(Vector3.Zero, rotationAmount, deltaTime);
         }
 
         private static void MovePlayer(Vector3 vectorToAdd, float rotation, float deltaTime)
         {
-            if (!Player.collision)
+            if (!collision)
             {
                 currentGravityValue += Physics.GravityAmount();
                 Vector3 valueToAdd = (vectorToAdd * movementSpeed + currentGravityValue) * deltaTime;
-                worldPosition = Matrix.CreateRotationY(currentRotation + rotation) * Matrix.CreateTranslation(worldPosition.Translation + valueToAdd);
+                worldPosition =  Matrix.CreateRotationY(currentRotation + rotation) * Matrix.CreateTranslation(worldPosition.Translation + valueToAdd);
             }
             else
             {
@@ -114,15 +136,23 @@ namespace MotoresDeJogos.Char
             boundingSphere.Center = worldPosition.Translation;
         }
 
-
-
-        public static void Update(GameTime gameTime)
+        public static float GetRotation()
         {
-            float timeDifference = (float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
-            ProcessInput(timeDifference);
+            return currentRotation;
+        }
 
-            Vector3 cameraPosition = worldPosition.Translation + (worldPosition.Backward * 7) + (worldPosition.Up * 2);
-            Vector3 cameraTarget = worldPosition.Translation + (worldPosition.Forward * 10);
+
+
+        public static void Update(float deltaTime)
+        {
+            if (moveSoundTimer > 0)
+            {
+                moveSoundTimer -= deltaTime;
+            }
+            MovePlayer(Vector3.Zero, 0f, deltaTime);
+
+            Vector3 cameraPosition = worldPosition.Translation + (worldPosition.Backward * 1500) + (worldPosition.Up * 700);
+            Vector3 cameraTarget = worldPosition.Translation + (worldPosition.Forward * 3000);
             cameraView = Matrix.CreateLookAt(cameraPosition, cameraTarget, Vector3.Up);
 
             /*foreach (Ship ship in Physics.GetShips())
@@ -143,6 +173,7 @@ namespace MotoresDeJogos.Char
                 }
                 mesh.Draw();
             }
+            DebugShapeRenderer.AddBoundingSphere(boundingSphere, Color.Black);
         }
 
         public static BoundingSphere PlayerCollider()

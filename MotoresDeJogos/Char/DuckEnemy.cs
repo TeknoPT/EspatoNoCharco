@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MotoresDeJogos.Abstracts;
+using MotoresDeJogos.Char;
 using MotoresDeJogos.Interfaces;
+using MotoresDeJogos.Managers;
 using MotoresDeJogos.World;
 using System;
 using System.Collections.Generic;
@@ -14,6 +16,8 @@ namespace MotoresDeJogos
 {
     class DuckEnemy :  ACollidable
     {
+        Vector3 currentGravityValue;
+
         private Random random;
 
         private float speed;
@@ -42,20 +46,16 @@ namespace MotoresDeJogos
             set { position = value; }
         }
         
-        public DuckEnemy(Vector3 position, ContentManager content, Random random, Model model)
+        public DuckEnemy(Vector3 position, Random random, Model model)
         {
-            Initialize(this.position, content, random, model);
+            Initialize(position, random, model);
         }
 
-        public DuckEnemy(ContentManager content, Random random, Model model)
+        private void Initialize(Vector3 position, Random random, Model model)
         {
-            this.position = new Vector3(random.Next(-WorldGeneration.MAP_SIZE, WorldGeneration.MAP_SIZE), 0, random.Next(-WorldGeneration.MAP_SIZE, WorldGeneration.MAP_SIZE));
-            Initialize(this.position, content, random, model);
-        }
-
-        private void Initialize(Vector3 position, ContentManager content, Random random, Model model)
-        {
+            currentGravityValue = new Vector3(0, -5f, 0);
             this.random = random;
+            OnGround = false;
             this.world = Matrix.CreateTranslation(position);
             this.speed = (float)random.Next(1, 20);
             if (this.speed == 0) this.speed = (float)random.Next(1, 20);
@@ -65,16 +65,29 @@ namespace MotoresDeJogos
             #region Creating Bounds
             foreach (ModelMesh mesh in this.model.Meshes)
             {
-                boundingSphere = BoundingSphere.CreateMerged(this.boundingSphere, mesh.BoundingSphere);
+                boundingSphere = BoundingSphere.CreateMerged(boundingSphere, mesh.BoundingSphere);
             }
             #endregion
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(float deltaTime)
         {
             if (!IsDead())
             {
-                RandomMovement(gameTime);
+                if (!OnGround)
+                {
+                    currentGravityValue += Physics.GravityAmount();
+                    Vector3 valueToAdd = (currentGravityValue) * deltaTime;
+                    world = Matrix.CreateTranslation(world.Translation + valueToAdd);
+                }
+                else
+                {
+                    //Vector3 valueToAdd =  speed * deltaTime;
+                    //worldPosition = Matrix.CreateRotationY(currentRotation + rotation) * Matrix.CreateTranslation(world.Translation + valueToAdd);
+                }
+
+                //currentRotation += rotation;
+                boundingSphere.Center = world.Translation;
             }
         }
 
@@ -102,13 +115,13 @@ namespace MotoresDeJogos
                         effect.LightingEnabled = true;
                         effect.EnableDefaultLighting();
                         effect.World = world;
-                        effect.View = ModedCamera.View;
-                        effect.Projection = ModedCamera.Projection;
+                        effect.View = Player.cameraView;
+                        effect.Projection = Player.Projection();
                     }
 
                     mesh.Draw();
                 }
-                DebugShapeRenderer.AddBoundingSphere(boundingSphere, Color.Green);
+                DebugShapeRenderer.AddBoundingSphere(boundingSphere, Color.Black);
             }
         }
         #endregion
