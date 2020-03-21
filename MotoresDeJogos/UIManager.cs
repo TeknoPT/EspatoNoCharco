@@ -4,61 +4,127 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGame.UI.Forms;
 
 namespace MotoresDeJogos
 {
     class UIManager : ControlManager
     {
-        static Button button1;
-        static Button button2;
+        public static Button startBtn;
+        public static Button creditsBtn;
+        public static Button exitBtn;
+        public static Button resumeBtn;
+        public static Button exitPauseBtn;
         public Game1 game;
-        public static GameStates gameState;
+        //public static GameStates gameState;
         public UIManager(Game game) : base(game)
         {
         }
 
         public override void InitializeComponent()
         {
-            button1 = new Button()
+            //Main Menu
+            startBtn = new Button()
             {
                 Text = "Start",
                 Size = new Vector2(500, 100),
-                BackgroundColor = Color.Chartreuse,
-                Location = new Vector2(750,300)
+                BackgroundColor = Color.CadetBlue,
+                Location = new Vector2(750,600)
             };
 
-            button1.Clicked += button1_Clicked;
-            Controls.Add(button1);
+            startBtn.Clicked += startBtn_Clicked;
+            Controls.Add(startBtn);
 
-            button2 = new Button()
+            creditsBtn = new Button()
+            {
+                Text = "Credits",
+                Size = new Vector2(500, 100),
+                BackgroundColor = Color.CadetBlue,
+                Location = new Vector2(750, 750)
+            };
+            creditsBtn.Clicked += creditsBtn_Clicked;
+            Controls.Add(creditsBtn);
+
+            exitBtn = new Button()
             {
                 Text = "Exit",
                 Size = new Vector2(500, 100),
-                BackgroundColor = Color.Chartreuse,
-                Location = new Vector2(750, 700)
+                BackgroundColor = Color.CadetBlue,
+                Location = new Vector2(750, 900)
             };
-            button2.Clicked += button2_Clicked;
-            Controls.Add(button2);
+            exitBtn.Clicked += exitBtn_Clicked;
+            Controls.Add(exitBtn);
+
+            //Pause Menu
+            resumeBtn = new Button()
+            {
+                Text = "Resume",
+                Size = new Vector2(500, 100),
+                BackgroundColor = Color.CadetBlue,
+                Location = new Vector2(750, 750)
+            };
+            resumeBtn.IsVisible = false;
+            resumeBtn.Clicked += resumeBtn_Clicked;
+            Controls.Add(resumeBtn);
+
+            exitPauseBtn = new Button()
+            {
+                Text = "Exit",
+                Size = new Vector2(500, 100),
+                BackgroundColor = Color.CadetBlue,
+                Location = new Vector2(750, 900)
+            };
+            exitPauseBtn.IsVisible = false;
+            exitPauseBtn.Clicked += exitPauseBtn_Clicked;
+            Controls.Add(exitPauseBtn);
         }
 
-        private void button1_Clicked(object sender, EventArgs e)
+        private void startBtn_Clicked(object sender, EventArgs e)
         {
             Button button = sender as Button;
-            button1.IsVisible = false;
-            button2.IsVisible = false;
+            startBtn.IsVisible = false;
+            creditsBtn.IsVisible = false;
+            exitBtn.IsVisible = false;
             Game1.gameState = GameStates.Play;
         }
 
-        private void button2_Clicked(object sender, EventArgs e)
+        private void creditsBtn_Clicked(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            /*Game1.spriteBatch.Begin();
+            Game1.spriteBatch.DrawString(Game1.font, "Ines Oliveira", new Vector2(900, 350), Color.Thistle);
+            Game1.spriteBatch.DrawString(Game1.font, "Joao Novo", new Vector2(900, 400), Color.Thistle);
+            Game1.spriteBatch.DrawString(Game1.font, "Madalena Barros", new Vector2(900, 450), Color.Thistle);
+            Game1.spriteBatch.End();*/
+        }
+
+        private void exitBtn_Clicked(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            System.Environment.Exit(1);
+        }
+
+        private void resumeBtn_Clicked(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            resumeBtn.IsVisible = false;
+            exitPauseBtn.IsVisible = false;
+            Game1.gameState = GameStates.Play;
+        }
+
+        private void exitPauseBtn_Clicked(object sender, EventArgs e)
         {
             Button button = sender as Button;
             System.Environment.Exit(1);
         }
 
         public static void ShowHideButtons() {
-            button1.IsVisible = !button1.IsVisible;
-            button2.IsVisible = !button2.IsVisible;
+            startBtn.IsVisible = !startBtn.IsVisible;
+            creditsBtn.IsVisible = !creditsBtn.IsVisible;
+            exitBtn.IsVisible = !exitBtn.IsVisible;
+            resumeBtn.IsVisible = !resumeBtn.IsVisible;
+            exitPauseBtn.IsVisible = !exitPauseBtn.IsVisible;
         }
     }
 }

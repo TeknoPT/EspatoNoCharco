@@ -23,8 +23,12 @@ namespace MotoresDeJogos
         public static GameStates gameState = GameStates.Pause;
         SkyBox skyBox;
         UIManager uiManager;
+
+        public static SpriteFont font;
+        public static SpriteBatch spriteBatch;
+        public static Texture2D logo; 
         //Pool managers = new Pool();
-       
+
         #region Memory Variables
         long initialMemory;
         bool retrieveInitialMemory;
@@ -95,6 +99,12 @@ namespace MotoresDeJogos
             skyBox.Textures[3] = Content.Load<Texture2D>("skybox/bkg1_top3");
             skyBox.Textures[4] = Content.Load<Texture2D>("skybox/bkg1_left2");
             skyBox.Textures[5] = Content.Load<Texture2D>("skybox/bkg1_right1");
+
+            font = Content.Load<SpriteFont>("defaultFont");
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            logo = this.Content.Load<Texture2D>("Logo");
+
+            
         }
 
         /// <summary>
@@ -186,7 +196,9 @@ namespace MotoresDeJogos
             DebugShapeRenderer.Draw(gameTime, ModedCamera.View, ModedCamera.Projection);
 
             skyBox.Draw();
-
+            spriteBatch.Begin();
+            spriteBatch.Draw(Game1.logo, new Vector2(600, 1));
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }

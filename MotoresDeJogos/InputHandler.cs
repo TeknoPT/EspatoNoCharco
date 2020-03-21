@@ -61,6 +61,11 @@ namespace MotoresDeJogos
             if (inputManager.JustPressed(Keys.P))
             {
                 buttonPause.Execute();
+                UIManager.resumeBtn.IsVisible = true;
+                UIManager.exitPauseBtn.IsVisible = true;
+                UIManager.startBtn.IsVisible = false;
+                UIManager.creditsBtn.IsVisible = false;
+                UIManager.exitBtn.IsVisible = false;
             }
 
             // Test for DataManager
