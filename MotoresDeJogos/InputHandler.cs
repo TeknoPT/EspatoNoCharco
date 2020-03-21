@@ -24,7 +24,7 @@ namespace MotoresDeJogos
             buttonRotLeft = new MoveCommand(MoveDirection.ROTLEFT);
             buttonRotRight = new MoveCommand(MoveDirection.ROTRIGHT);
             // Attack
-            buttonFire = new AttackCommand(new RedAttack(20, "attack_R"));
+            buttonFire = new AttackCommand();
             // PauseButton
             buttonPause = new PauseCommand();
             // Change Character Model

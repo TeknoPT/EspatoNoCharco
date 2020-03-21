@@ -70,7 +70,7 @@ namespace MotoresDeJogos
             inputHandler = new InputHandler(inputManager);
             
             ProjectilePool.Init();
-            Player.Init(1500f, GraphicsDevice, WorldObjects.Ducks[DuckTypes.Black]);
+            Player.Init(1500f, GraphicsDevice, WorldObjects.Ducks[DuckTypes.White], DuckTypes.White);
             
             #region Start Memory variables
             consoleWriter = new ConsoleWriter();

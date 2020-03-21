@@ -77,13 +77,37 @@ namespace MotoresDeJogos
     {
         Attack attack;
 
-        public AttackCommand(Attack attack)
+        public AttackCommand()
         {
-            this.attack = attack;
+            SelectAttack();
+        }
+
+        private void SelectAttack()
+        {
+            switch (Player.duckModelType)
+            {
+                case DuckTypes.Black:
+                    attack = new SkullAttack(25, "attack_K");
+                    break;
+                case DuckTypes.White:
+                    attack = new CloudAttack(25, "attack_W");
+                    break;
+                case DuckTypes.Red:
+                    attack = new HeartAttack(25, "attack_R");
+                    break;
+                case DuckTypes.Green:
+                    attack = new ToxicAttack(25, "attack_G");
+                    break;
+                case DuckTypes.Blue:
+                    attack = new BlueFireBallAttack(25, "attack_B");
+                    break;
+            }
         }
 
         public override void Execute()
         {
+            SelectAttack();
+
             attack.Activate();
         }
     }
@@ -119,9 +143,9 @@ namespace MotoresDeJogos
             switch (duckType)
             {
                 case DuckTypes.Black:
-                    duckType = DuckTypes.While;
+                    duckType = DuckTypes.White;
                     break;
-                case DuckTypes.While:
+                case DuckTypes.White:
                     duckType = DuckTypes.Red;
                     break;
                 case DuckTypes.Red:
@@ -135,6 +159,7 @@ namespace MotoresDeJogos
                     break;
             }
 
+            Player.duckModelType = duckType;
             Player.LoadModel(WorldObjects.Ducks[duckType]);
         }
     }

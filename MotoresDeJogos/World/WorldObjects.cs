@@ -23,7 +23,7 @@ namespace MotoresDeJogos.World
         {
             #region Ducks Dictonary
             Ducks.Add( DuckTypes.Black, content.Load<Model>("models\\Black_duckie"));
-            Ducks.Add( DuckTypes.While, content.Load<Model>("models\\White_duckie"));
+            Ducks.Add( DuckTypes.White, content.Load<Model>("models\\White_duckie"));
             Ducks.Add( DuckTypes.Red, content.Load<Model>("models\\Red_Duckie"));
             Ducks.Add( DuckTypes.Green, content.Load<Model>("models\\Green_duckie"));
             Ducks.Add( DuckTypes.Blue, content.Load<Model>("models\\Blue_Duckie"));
@@ -31,7 +31,7 @@ namespace MotoresDeJogos.World
 
             #region Projectiles Dictonary
             Projectiles.Add( ProjectileTypes.Heart, content.Load<Model>("models\\Heart"));
-            Projectiles.Add( ProjectileTypes.BlueFireBall, content.Load<Model>("models\\"));
+            Projectiles.Add( ProjectileTypes.BlueFireBall, content.Load<Model>("models\\FireBall"));
             Projectiles.Add( ProjectileTypes.Skull, content.Load<Model>("models\\Skull"));
             Projectiles.Add( ProjectileTypes.Toxic, content.Load<Model>("models\\droplet"));
             Projectiles.Add( ProjectileTypes.Cloud, content.Load<Model>("models\\Cloud"));
@@ -61,7 +61,7 @@ namespace MotoresDeJogos.World
     public enum DuckTypes
     {
         Black = 0,
-        While = 1,
+        White = 1,
         Red = 2,
         Green = 3,
         Blue = 4

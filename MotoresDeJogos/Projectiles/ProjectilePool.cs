@@ -28,7 +28,7 @@ namespace MotoresDeJogos.Projectiles
             }
             else
             {
-                Projectile projectile = new Projectile(WorldObjects.Projectile);
+                Projectile projectile = new Projectile(WorldObjects.Projectiles[ProjectileTypes.Heart]);
                 projectiles.Add(projectile);
                 CollisionDetection.AddObject(projectile);
                 return projectile;

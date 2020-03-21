@@ -33,8 +33,11 @@ namespace MotoresDeJogos.Projectiles
             #endregion
         }
 
-        public void InitObject(Matrix position, float rotation, float speed, int damage)
+        public void InitObject(Matrix position, float rotation, float speed, int damage, Model model)
         {
+            this.model = model;
+
+            boundingSphere.Radius = 0;
             health = 1;
             worldPosition = position;
             this.speed = speed;

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MotoresDeJogos.Managers;
+using MotoresDeJogos.World;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace MotoresDeJogos.Char
 {
     public class Player
     {
+        public static DuckTypes duckModelType;
+
         static MouseState originalMouseState;
 
         public static Matrix cameraView;
@@ -41,8 +44,9 @@ namespace MotoresDeJogos.Char
         }
         #endregion
 
-        public static void Init(float _speed, GraphicsDevice graphics, Model model)
+        public static void Init(float _speed, GraphicsDevice graphics, Model model, DuckTypes _duckModelType)
         {
+            duckModelType = _duckModelType;
             playerModel = model;
             collision = false;
             originalMouseState = Mouse.GetState();
@@ -140,8 +144,6 @@ namespace MotoresDeJogos.Char
         {
             return currentRotation;
         }
-
-
 
         public static void Update(float deltaTime)
         {
