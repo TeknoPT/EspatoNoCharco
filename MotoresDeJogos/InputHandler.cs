@@ -88,7 +88,7 @@ namespace MotoresDeJogos
             // Test for DataManager
             if (inputManager.JustPressed(Keys.R))
             {
-                DataManager.Save(new Data() { score = 30, level = 20 });
+                DataManager.Save(Player.Data);
             }
             if (inputManager.JustPressed(Keys.L))
             {

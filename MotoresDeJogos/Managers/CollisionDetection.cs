@@ -28,7 +28,7 @@ namespace MotoresDeJogos.Managers
 
         public static void Update()
         {
-            //CheckAllCollisions();
+            CheckAllCollisions();
         }
 
         #region Collision with Object

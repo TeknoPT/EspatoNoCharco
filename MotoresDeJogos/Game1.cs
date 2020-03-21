@@ -110,9 +110,9 @@ namespace MotoresDeJogos
             skyBox.Textures[4] = Content.Load<Texture2D>("skybox/left");
             skyBox.Textures[5] = Content.Load<Texture2D>("skybox/right");
 
-            font = Content.Load<SpriteFont>("defaultFont");
+            /*font = Content.Load<SpriteFont>("defaultFont");
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            logo = this.Content.Load<Texture2D>("Logo");
+            logo = this.Content.Load<Texture2D>("Logo");*/
         }
 
         /// <summary>
@@ -172,6 +172,8 @@ namespace MotoresDeJogos
 
             if (gameState == GameStates.Play )
             {
+                GraphicsDevice.BlendState = BlendState.AlphaBlend;
+                GraphicsDevice.DepthStencilState = DepthStencilState.Default;
                 inputManager.Update(gameTime);
                 inputHandler.Update(deltaTime);
                 duckManager.Update(deltaTime);
@@ -187,6 +189,7 @@ namespace MotoresDeJogos
             MessageBus.Update();
             skyBox.Update();
 
+            
             base.Update(gameTime);
         }
 
@@ -220,11 +223,12 @@ namespace MotoresDeJogos
                     break;
                 case GameStates.Pause:
                 case GameStates.Menu:
-                    spriteBatch.Begin();
+                    /*spriteBatch.Begin();
                     spriteBatch.Draw(Game1.logo, new Vector2(600, 1));
-                    spriteBatch.End();
+                    spriteBatch.End();*/
                     break;
             }
+           
 
             skyBox.Draw();
             

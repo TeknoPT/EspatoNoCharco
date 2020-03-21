@@ -65,7 +65,7 @@ namespace MotoresDeJogos.Managers
         {
             #region Floor Setup
             WorldBoundaries.FloorPosition = Matrix.CreateTranslation(0, 4f, 0);
-            WorldBoundaries.FloorBoundingBox = new BoundingBox(new Vector3(-25000f, -1500f, -20000f), new Vector3(25000f, -1450f, 18000f));
+            WorldBoundaries.FloorBoundingBox = new BoundingBox(new Vector3(-25000f, -2000f, -20000f), new Vector3(25000f, -2500f, 18000f));
             #endregion
 
             #region Center Piece
@@ -76,19 +76,19 @@ namespace MotoresDeJogos.Managers
             #region Boundaries Outside the lake
             // FRONT
             WorldBoundaries.LimitFront_Position = Matrix.CreateTranslation(5000f, -7000f, 0);
-            WorldBoundaries.LimitFront_BoundingBox = new BoundingBox(new Vector3(-26000f, -1500f, -17000f), new Vector3(26000f, 1500f, -16900f));
+            WorldBoundaries.LimitFront_BoundingBox = new BoundingBox(new Vector3(-26000f, -2500f, -17000f), new Vector3(26000f, 2500f, -16900f));
 
             // BACK
             WorldBoundaries.LimitBack_Position = Matrix.CreateTranslation(-5000f, -7000f, 0f);
-            WorldBoundaries.LimitBack_BoundingBox = new BoundingBox(new Vector3(-26000f, -1500f, 17000f), new Vector3(26000f, 1500f, 16900f));
+            WorldBoundaries.LimitBack_BoundingBox = new BoundingBox(new Vector3(-26000f, -2500f, 17000f), new Vector3(26000f, 2500f, 16900f));
 
             // LEFT SIDE
             WorldBoundaries.LimitLeft_Position = Matrix.CreateTranslation(5000f, -7000f, 0) * Matrix.CreateRotationY(90f);
-            WorldBoundaries.LimitLeft_BoundingBox = new BoundingBox(new Vector3(-21000f, -1500f, -26000f), new Vector3(-20900f, 1500f, 26000f));
+            WorldBoundaries.LimitLeft_BoundingBox = new BoundingBox(new Vector3(-21000f, -2500f, -26000f), new Vector3(-20900f, 2500f, 26000f));
 
             // RIGHT SIDE
             WorldBoundaries.LimitRight_Position = Matrix.CreateTranslation(-5000f, -7000f, 0) * Matrix.CreateRotationY(90f);
-            WorldBoundaries.LimitRight_BoundingBox = new BoundingBox(new Vector3(21000f, -1500f, -26000f), new Vector3(20900f, 1500f, 26000f));
+            WorldBoundaries.LimitRight_BoundingBox = new BoundingBox(new Vector3(21000f, -2500f, -26000f), new Vector3(20900f, 2500f, 26000f));
             #endregion
         }
 
