@@ -1,5 +1,6 @@
 # MotoresDeJogos
-Game engine developed for a course unit in Master's Degree.
+Game engine developed with MonoGame for a course unit in Master's Degree.
+
 
 
 #Menu
